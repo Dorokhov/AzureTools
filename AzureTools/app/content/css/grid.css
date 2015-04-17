@@ -1,0 +1,8 @@
+﻿td.details-control {
+    background: red no-repeat center center;
+    cursor: pointer;
+}
+
+tr.details td.details-control {
+    background: green no-repeat center center;
+}

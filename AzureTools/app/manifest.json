@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+
+    "name": "Azure Tools",
+    "description": "Tools to improve your Azure expirience",
+    "version": "0.0.0.0001",
+    "permissions": [
+       // "experimental",
+        {
+            "socket": [
+                "tcp-listen:*:*",
+                "tcp-connect",
+                "resolve-host"
+            ]
+
+        }
+    ],
+
+    "icons": {
+        "128": "img/content/icon.png"
+    },
+     "app": {
+        "background": {
+            "scripts": [ "startup.js" ]
+        }
+    }
+
+}

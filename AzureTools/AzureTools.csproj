@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,10 +40,85 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
     <Content Include="app\content\css\grid.css" />
     <Content Include="app\content\img\icon.png" />
     <Content Include="app\index.html" />
+    <Content Include="app\node_modules\angular-route\angular-route.js" />
+    <Content Include="app\node_modules\angular-route\angular-route.min.js" />
+    <Content Include="app\node_modules\angular-route\index.js" />
+    <Content Include="app\node_modules\angular-ui-router\config\jsdoc.js" />
+    <Content Include="app\node_modules\angular-ui-router\config\karma-1.0.8.js" />
+    <Content Include="app\node_modules\angular-ui-router\config\karma-1.1.5.js" />
+    <Content Include="app\node_modules\angular-ui-router\config\karma-1.3.0.js" />
+    <Content Include="app\node_modules\angular-ui-router\config\karma.js" />
+    <Content Include="app\node_modules\angular-ui-router\files.js" />
+    <Content Include="app\node_modules\angular-ui-router\Gruntfile.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.0.8\angular-loader.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.0.8\angular-mocks.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.0.8\angular-sanitize.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.0.8\angular-scenario.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.0.8\angular.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular-loader.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular-mobile.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular-mocks.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular-sanitize.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular-scenario.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.1.5\angular.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-animate.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-loader.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-mocks.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-sanitize.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-scenario.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular-touch.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.2.14\angular.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.3.0\angular-animate.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.3.0\angular-mocks.js" />
+    <Content Include="app\node_modules\angular-ui-router\lib\angular-1.3.0\angular.js" />
+    <Content Include="app\node_modules\angular-ui-router\ngdoc_assets\docnav.html" />
+    <Content Include="app\node_modules\angular-ui-router\ngdoc_assets\StateGoExamples.png" />
+    <Content Include="app\node_modules\angular-ui-router\ngdoc_assets\uirouter-docs.css" />
+    <Content Include="app\node_modules\angular-ui-router\object graph.png" />
+    <Content Include="app\node_modules\angular-ui-router\release\angular-ui-router.js" />
+    <Content Include="app\node_modules\angular-ui-router\release\angular-ui-router.min.js" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\app.js" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts-service.js" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.detail.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.detail.item.edit.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.detail.item.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.js" />
+    <Content Include="app\node_modules\angular-ui-router\sample\app\contacts\contacts.list.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\common\utils\utils-service.js" />
+    <Content Include="app\node_modules\angular-ui-router\sample\css\styles.css" />
+    <Content Include="app\node_modules\angular-ui-router\sample\index.html" />
+    <Content Include="app\node_modules\angular-ui-router\sample\vendor\bootstrap.min.css" />
+    <Content Include="app\node_modules\angular-ui-router\src\common.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\resolve.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\state.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\stateDirectives.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\stateFilters.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\templateFactory.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\urlMatcherFactory.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\urlRouter.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\view.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\viewDirective.js" />
+    <Content Include="app\node_modules\angular-ui-router\src\viewScroll.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\commonSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\compat\matchers.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\debug.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\resolveSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\stateDirectivesSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\stateFiltersSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\stateSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\templateFactorySpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\testUtils.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\urlMatcherFactorySpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\urlRouterSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\viewDirectiveSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\test\viewScrollSpec.js" />
+    <Content Include="app\node_modules\angular-ui-router\tsort.js" />
     <Content Include="app\node_modules\angular\angular-csp.css" />
     <Content Include="app\node_modules\angular\angular.js" />
     <Content Include="app\node_modules\angular\angular.min.js" />
@@ -2140,10 +2217,10 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
-    <Content Include="app\redis\model\redisClient.js" />
+    <Content Include="app\redis\model\redisClientFactoryMock.js" />
+    <Content Include="app\redis\model\redisClientFactory.js" />
     <Content Include="app\startup.js" />
     <Content Include="app\redis\view\index.html" />
-    <Content Include="app\popup.js" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />
     <Content Include="Properties\build\ligershark.chrome.targets" />
@@ -3246,6 +3323,7 @@
   </PropertyGroup>
   <!-- insert a condition to ensure that these are not imported -->
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="false and '$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
@@ -3282,6 +3360,29 @@
     <Content Include="app\node_modules\angular\bower.json" />
     <Content Include="app\node_modules\angular\package.json" />
     <Content Include="app\node_modules\angular\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\node_modules\angular-route\angular-route.min.js.map" />
+    <Content Include="app\node_modules\angular-route\bower.json" />
+    <Content Include="app\node_modules\angular-route\package.json" />
+    <Content Include="app\node_modules\angular-route\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\node_modules\angular-ui-router\.npmignore" />
+    <Content Include="app\node_modules\angular-ui-router\.travis.yml" />
+    <Content Include="app\node_modules\angular-ui-router\bower.json" />
+    <Content Include="app\node_modules\angular-ui-router\CHANGELOG.md" />
+    <Content Include="app\node_modules\angular-ui-router\component.json" />
+    <Content Include="app\node_modules\angular-ui-router\CONTRIBUTING.md" />
+    <Content Include="app\node_modules\angular-ui-router\LICENSE" />
+    <Content Include="app\node_modules\angular-ui-router\migration.md" />
+    <Content Include="app\node_modules\angular-ui-router\package.json" />
+    <Content Include="app\node_modules\angular-ui-router\README.md" />
+    <Content Include="app\node_modules\angular-ui-router\sample\assets\contacts.json" />
+    <Content Include="app\node_modules\angular-ui-router\viewpath.diff" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app\node_modules\angular-ui-router\api\angular-ui-router.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <LigerSharkChromeTargetsPath>$(BuildFolder)\ligershark.chrome.targets</LigerSharkChromeTargetsPath>

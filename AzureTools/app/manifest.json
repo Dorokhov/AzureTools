@@ -17,7 +17,7 @@
     ],
 
     "icons": {
-        "128": "img/content/icon.png"
+        "128": "content/img/icon.png"
     },
      "app": {
         "background": {

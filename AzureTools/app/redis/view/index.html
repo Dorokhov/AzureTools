@@ -1,1 +1,29 @@
-<table id="data" cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>
+<div class="container">
+    <h4>Provide credentials to access your Redis storage</h4>
+
+    <div class="row-fluid">
+        <div class="input-group input-group-sm" style="float:left;">
+            <span class="input-group-addon" style="width:40px">Host</span>
+            <input ng-model="RedisViewModel.Host" class="form-control" />
+        </div>
+
+        <div class="input-group input-group-sm" style="float:left; margin-left:5px;">
+            <span class="input-group-addon" style="width:40px">Port</span>
+            <input ng-model="RedisViewModel.Port" class="form-control" style="float:left;" />
+        </div>
+
+        <div class="input-group input-group-sm" style="float:left; margin-left:5px;">
+            <span class="input-group-addon" style="width:96px">Auth Password</span>
+            <input ng-model="RedisViewModel.Password" class="form-control" style="float:left;" />
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <h4>Results</h4>
+
+    <div class="metro grid" style="font-weight: normal;">
+        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="margin-top:10px;"></table>
+    </div>
+</div>

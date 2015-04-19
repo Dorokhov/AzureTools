@@ -43,7 +43,14 @@
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
     <Content Include="app\content\css\grid.css" />
+    <Content Include="app\content\css\metro-bootstrap.css" />
+    <Content Include="app\content\css\metro-bootstrap.min.css" />
+    <Content Include="app\content\css\metro-ui-css\iconFont.css" />
+    <Content Include="app\content\css\metro-ui-css\metro-bootstrap-responsive.css" />
+    <Content Include="app\content\css\metro-ui-css\metro-bootstrap.css" />
     <Content Include="app\content\img\icon.png" />
+    <Content Include="app\content\js\bootstrap.js" />
+    <Content Include="app\content\js\bootstrap.min.js" />
     <Content Include="app\index.html" />
     <Content Include="app\node_modules\angular-route\angular-route.js" />
     <Content Include="app\node_modules\angular-route\angular-route.min.js" />
@@ -2217,10 +2224,14 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
+    <Content Include="app\tiles\content\img\redis.png" />
     <Content Include="app\redis\model\redisClientFactoryMock.js" />
     <Content Include="app\redis\model\redisClientFactory.js" />
+    <Content Include="app\redis\viewModel\redisViewModel.js" />
     <Content Include="app\startup.js" />
     <Content Include="app\redis\view\index.html" />
+    <Content Include="app\tiles\viewModel\tilesViewModel.js" />
+    <Content Include="app\tiles\view\index.html" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />
     <Content Include="Properties\build\ligershark.chrome.targets" />
@@ -3309,6 +3320,16 @@
     <Content Include="app\node_modules\jquery-browserify\Makefile" />
     <Content Include="app\node_modules\jquery-browserify\package.json" />
     <Content Include="app\node_modules\jquery-browserify\README.md" />
+    <Content Include="packages.config" />
+    <Content Include="app\content\css\metro-ui-css\iconFont.ttf" />
+    <Content Include="app\content\css\metro-ui-css\metroSysIcons.ttf" />
+    <Content Include="app\content\css\metro-ui-css\iconFont.eot" />
+    <Content Include="app\content\css\metro-ui-css\iconFont.woff" />
+    <Content Include="app\content\css\metro-ui-css\metroSysIcons.woff" />
+    <Content Include="app\content\css\metro-ui-css\OpenSans-Bold.woff" />
+    <Content Include="app\content\css\metro-ui-css\OpenSans-Light.woff" />
+    <Content Include="app\content\css\metro-ui-css\OpenSans.woff" />
+    <Content Include="app\content\css\metro-ui-css\PTSerif-Caption.woff" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\manifest.json" />

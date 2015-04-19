@@ -6,3 +6,7 @@
 tr.details td.details-control {
     background: green no-repeat center center;
 }
+
+.grid label{
+    font-size: 12px;
+}

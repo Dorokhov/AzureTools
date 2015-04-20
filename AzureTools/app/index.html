@@ -14,17 +14,54 @@
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="content/js/bootstrap.js"></script>
     <script type="text/javascript" src="bundle.js"></script>
-
 </head>
 <body>
     <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" ui-sref="tiles" style="margin-left: 113px;">Azure Tools</a>
+        <div class="navbar-header" style="margin-left: 113px;">
+            <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 5px;">
+                <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
+                <span>Azure Tools</span>
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-controller="ActionBarController">
+            <span>{{T}}</span>
+            <ul class="nav navbar-nav">
+                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
+                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
+                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+            </ul>
         </div>
     </nav>
 
 
     <div id="content" ui-view>
+    </div>
+
+    <div class="panel panel-primary" style="width:500px; height:200px;">
+        <div class="panel-heading">
+           {{}}
+        </div>
+        <div class="panel-body" ng-bind-html="DialogService.Body">
+            <!--<h4>Provide credentials to access your Redis storage</h4>
+
+        <div>
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" style="width:96px">Host</span>
+                <input ng-model="RedisViewModel.Host" class="form-control" />
+            </div>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" style="width:96px">Port</span>
+                <input ng-model="RedisViewModel.Port" class="form-control" style="float:left;" />
+            </div>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" style="width:96px">Auth Password</span>
+                <input ng-model="RedisViewModel.Password" class="form-control" style="float:left;" />
+            </div>
+        </div>-->
+        </div>
     </div>
 </body>
 </html>

@@ -12,7 +12,18 @@
     };
 
     angular
-        .module('tiles.redis', [angularRoute])
+        .module('actionBar',[])
+        .factory('$actionBarItems', function () {
+            return {};
+        })
+        .controller('ActionBarController', [
+            '$scope', function($scope) {
+            $scope.T = 't';
+        }
+        ]);
+
+    angular
+        .module('tiles.redis', [angularRoute, 'actionBar'])
         .factory('$redisClientFactory', function() {
             var clientFactory =
                 //require('./redis/model/redisClientFactory.js').createClient;

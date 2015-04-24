@@ -1,13 +1,19 @@
-﻿function DialogService() {
-    var self = this;
+﻿exports.create = function() {
+    'use strict';
 
-    self.Body = null;
+    return new function() {
+        'use strict';
 
-    self.save = function() {
+        var self = this;
 
-    };
+        self.Body = null;
 
-    self.cancel = function() {
+        self.save = function() {
 
-    };
-}
+        };
+
+        self.cancel = function() {
+
+        };
+    }
+};

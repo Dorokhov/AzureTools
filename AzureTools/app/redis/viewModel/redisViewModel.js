@@ -1,10 +1,30 @@
-﻿exports.create = function (redisClientFactory, dataTablePresenter) {
+﻿exports.create = function (redisClientFactory, dataTablePresenter, $actionBarItems, $dialogViewModel) {
+    'use strict';
+
     return new function() {
         var self = this;
 
         self.Host = 'redisdor.redis.cache.windows.net';
         self.Port = 6379;
         self.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
+
+        $actionBarItems.IsActionBarVisible = true;
+        $actionBarItems.IsAddKeyVisible = true;
+        $actionBarItems.IsRefreshVisible = true;
+        $actionBarItems.IsSettingsVisible = true;
+
+        $actionBarItems.addKey = function () {
+            $dialogViewModel.IsVisible = true;
+            $dialogViewModel.Body = 'createKeyTemplate';
+            $dialogViewModel.Header = 'Add Key';
+        };
+        $actionBarItems.refresh = function() {};
+        $actionBarItems.changeSettings = function() {
+            $dialogViewModel.IsVisible = true;
+            $dialogViewModel.Body = 'changeSettingsTemplate';
+            $dialogViewModel.Header = 'Settings';
+        };
+
 
         var client = redisClientFactory(self.Host, self.Port, self.Password);
         client.keys('*', function(err, keys) {

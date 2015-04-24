@@ -5,3 +5,28 @@
         <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="margin-top:10px;"></table>
     </div>
 </div>
+
+<script type="text/ng-template" id="createKeyTemplate">
+    <span>Test</span>
+</script>
+
+<script type="text/ng-template" id="changeSettingsTemplate">
+    <h4>Provide credentials to access your Redis storage</h4>
+
+    <div>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="width:96px">Host</span>
+            <input ng-model="RedisViewModel.Host" class="form-control" />
+        </div>
+
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="width:96px">Port</span>
+            <input ng-model="RedisViewModel.Port" class="form-control" style="float:left;" />
+        </div>
+
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon" style="width:96px">Auth Password</span>
+            <input ng-model="RedisViewModel.Password" class="form-control" style="float:left;" />
+        </div>
+    </div>
+</script>

@@ -25,11 +25,10 @@
         </div>
 
         <div class="collapse navbar-collapse navbar-ex1-collapse" ng-controller="ActionBarController">
-            <span>{{T}}</span>
-            <ul class="nav navbar-nav">
-                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
-                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
-                <li><a class="row-fluid" style="cursor:pointer;"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+            <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible">
+                <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
+                <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
+                <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
             </ul>
         </div>
     </nav>
@@ -38,29 +37,11 @@
     <div id="content" ui-view>
     </div>
 
-    <div class="panel panel-primary" style="width:500px; height:200px;">
+    <div class="panel panel-primary" style="width:500px; height:200px;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
         <div class="panel-heading">
-           {{}}
+            {{DialogViewModel.Header}}
         </div>
-        <div class="panel-body" ng-bind-html="DialogService.Body">
-            <!--<h4>Provide credentials to access your Redis storage</h4>
-
-        <div>
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" style="width:96px">Host</span>
-                <input ng-model="RedisViewModel.Host" class="form-control" />
-            </div>
-
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" style="width:96px">Port</span>
-                <input ng-model="RedisViewModel.Port" class="form-control" style="float:left;" />
-            </div>
-
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" style="width:96px">Auth Password</span>
-                <input ng-model="RedisViewModel.Password" class="form-control" style="float:left;" />
-            </div>
-        </div>-->
+        <div class="panel-body" ng-include="DialogViewModel.Body">
         </div>
     </div>
 </body>

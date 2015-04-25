@@ -9,6 +9,7 @@
     <link href="content/css/metro-ui-css/iconFont.css" rel="stylesheet">
 
     <link rel="stylesheet" href="content/css/grid.css" />
+    <link rel="stylesheet" href="content/css/styles.css" />
 
     <!--js-->
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
@@ -17,8 +18,8 @@
 </head>
 <body>
     <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header" style="margin-left: 113px;">
-            <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 5px;">
+        <div class="navbar-header leftOffset">
+            <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
                 <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
                 <span>Azure Tools</span>
             </a>
@@ -37,7 +38,7 @@
     <div id="content" ui-view>
     </div>
 
-    <div class="panel panel-primary" style="width:500px; height:200px;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+    <div class="panel panel-primary popup" style="width:500px; height:200px;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
         <div class="panel-heading">
             {{DialogViewModel.Header}}
         </div>

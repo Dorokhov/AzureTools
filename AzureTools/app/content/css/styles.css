@@ -1,0 +1,13 @@
+﻿.popup{
+    width:800px;
+    margin:30px auto 0;
+    position:absolute;
+    left: 30%;
+  top: 30%;
+  /*margin-left: -400px;
+    margin-top: -40px;*/
+}
+
+.leftOffset {
+    margin-left: 113px;
+}

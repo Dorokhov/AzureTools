@@ -43,6 +43,7 @@
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
     <Content Include="app\common\dialogs\dialog.js" />
+    <Content Include="app\content\css\styles.css" />
     <Content Include="app\content\css\grid.css" />
     <Content Include="app\content\css\metro-bootstrap.css" />
     <Content Include="app\content\css\metro-bootstrap.min.css" />

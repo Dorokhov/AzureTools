@@ -12,6 +12,11 @@ exports.createClient = function () {
 
         get: function (key, cb) {
             cb(null, data[key]);
+        },
+
+        set: function (key, value, cb) {
+            data[key] = value;
+            cb(null, {});
         }
     }
 };

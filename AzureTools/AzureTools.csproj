@@ -43,6 +43,7 @@
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
     <Content Include="app\common\dialogs\dialog.js" />
+    <Content Include="app\content\css\angular-csp.css" />
     <Content Include="app\content\css\styles.css" />
     <Content Include="app\content\css\grid.css" />
     <Content Include="app\content\css\metro-bootstrap.css" />
@@ -2218,6 +2219,50 @@
     <Content Include="app\node_modules\net-chromify\node_modules\util\test\node\log.js" />
     <Content Include="app\node_modules\net-chromify\node_modules\util\test\node\util.js" />
     <Content Include="app\node_modules\net-chromify\node_modules\util\util.js" />
+    <Content Include="app\node_modules\redisscan\index.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\async\lib\async.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\buffer_bench.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\hiredis_parser.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\reconnect_test.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\re_sub_test.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\codec.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\pubsub\pub.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\pubsub\server.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\rpushblpop\pub.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\rpushblpop\server.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\speed\size-rate.png" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\speed\speed.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\sub_quit_test.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\diff_multi_bench_output.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\auth.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\backpressure_drain.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\eval.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\extend.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\file.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\mget.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\monitor.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\multi.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\multi2.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\psubscribe.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\pub_sub.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\simple.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\sort.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\subqueries.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\subquery.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\unix_socket.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\examples\web_server.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\generate_commands.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\index.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\commands.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\parser\hiredis.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\parser\javascript.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\queue.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\to_array.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\lib\util.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\multi_bench.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\test-unref.js" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\test.js" />
+    <Content Include="app\node_modules\redisscan\test.js" />
     <Content Include="app\node_modules\redis\connection_breaker.js" />
     <Content Include="app\node_modules\redis\index.js" />
     <Content Include="app\node_modules\redis\lib\commands.js" />
@@ -2226,6 +2271,8 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
+    <Content Include="app\redis\model\redisSettings.js" />
+    <Content Include="app\redis\presenter\redisPresenter.js" />
     <Content Include="app\tiles\content\img\redis.png" />
     <Content Include="app\redis\model\redisClientFactoryMock.js" />
     <Content Include="app\redis\model\redisClientFactory.js" />
@@ -3338,7 +3385,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\node_modules\angular-browserify\" />
-    <Folder Include="app\redis\presenter\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -3406,6 +3452,26 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\node_modules\angular-ui-router\api\angular-ui-router.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\node_modules\redisscan\.jshintignore" />
+    <Content Include="app\node_modules\redisscan\.jshintrc" />
+    <Content Include="app\node_modules\redisscan\.npmignore" />
+    <Content Include="app\node_modules\redisscan\LICENSE" />
+    <Content Include="app\node_modules\redisscan\node_modules\async\component.json" />
+    <Content Include="app\node_modules\redisscan\node_modules\async\LICENSE" />
+    <Content Include="app\node_modules\redisscan\node_modules\async\package.json" />
+    <Content Include="app\node_modules\redisscan\node_modules\async\README.md" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\.npmignore" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\pubsub\run" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\rpushblpop\run" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\speed\00" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\benches\stress\speed\plot" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\changelog.md" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\package.json" />
+    <Content Include="app\node_modules\redisscan\node_modules\redis\README.md" />
+    <Content Include="app\node_modules\redisscan\package.json" />
+    <Content Include="app\node_modules\redisscan\README.md" />
   </ItemGroup>
   <PropertyGroup>
     <LigerSharkChromeTargetsPath>$(BuildFolder)\ligershark.chrome.targets</LigerSharkChromeTargetsPath>

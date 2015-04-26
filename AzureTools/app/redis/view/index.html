@@ -1,32 +1,38 @@
 <div class="container">
-    <h4>Results</h4>
-
     <div class="metro grid" style="font-weight: normal;">
         <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="margin-top:10px;"></table>
     </div>
 </div>
 
 <script type="text/ng-template" id="createKeyTemplate">
-    <span>Test</span>
+    <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="width:96px">Key</span>
+        <input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
+    </div>
+    
+    <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="width:96px">Value</span>
+        <textarea ng-model="DialogViewModel.BodyViewModel.Value" class="form-control" style="width:372px; height: 100px;resize: none;" />
+    </div>
 </script>
 
 <script type="text/ng-template" id="changeSettingsTemplate">
-    <h4>Provide credentials to access your Redis storage</h4>
+    <label>Provide credentials to access your Redis storage</label>
 
     <div>
-        <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" style="margin-top:2px">
             <span class="input-group-addon" style="width:96px">Host</span>
-            <input ng-model="RedisViewModel.Host" class="form-control" />
+            <input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
         </div>
 
-        <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" style="margin-top:2px">
             <span class="input-group-addon" style="width:96px">Port</span>
-            <input ng-model="RedisViewModel.Port" class="form-control" style="float:left;" />
+            <input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
         </div>
 
-        <div class="input-group input-group-sm">
-            <span class="input-group-addon" style="width:96px">Auth Password</span>
-            <input ng-model="RedisViewModel.Password" class="form-control" style="float:left;" />
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon">Auth Password</span>
+            <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;" />
         </div>
     </div>
 </script>

@@ -1,6 +1,6 @@
-﻿td.details-control {
-    background: red no-repeat center center;
-    cursor: pointer;
+﻿.details-textarea {
+    height: 150px;
+    width:100%
 }
 
 tr.details td.details-control {

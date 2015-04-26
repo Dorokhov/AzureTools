@@ -1,8 +1,9 @@
 <!doctype html>
-<html ng-app="app">
+<html ng-app='app' data-ng-csp>
 <head>
     <title>Azure Tools</title>
     <!--css-->
+    <link href="content/css/angular-csp.css" rel="stylesheet">
     <link href="content/css/metro-ui-css/metro-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="content/css/metro-bootstrap.min.css" />
     <link href="content/css/metro-ui-css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -25,12 +26,12 @@
             </a>
         </div>
 
-        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-controller="ActionBarController">
+        <div ng-controller="ActionBarController" class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible">
-                <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
-                <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
-                <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
-            </ul>
+                    <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
+                    <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
+                    <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+                </ul>
         </div>
     </nav>
 
@@ -38,11 +39,19 @@
     <div id="content" ui-view>
     </div>
 
-    <div class="panel panel-primary popup" style="width:500px; height:200px;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+    <div class="panel panel-primary popup" style="width:500px; height:245px;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
         <div class="panel-heading">
             {{DialogViewModel.Header}}
         </div>
-        <div class="panel-body" ng-include="DialogViewModel.Body">
+
+        <div class="panel-body">
+            <div ng-include="DialogViewModel.Body">
+            </div>
+
+            <div class="btn-group" style="float:right; margin-top:10px">
+                <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
+                <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
+            </div>
         </div>
     </div>
 </body>

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
+    <Content Include="app\common\busyIndicator.js" />
     <Content Include="app\common\dialogs\dialog.js" />
     <Content Include="app\content\css\angular-csp.css" />
     <Content Include="app\content\css\styles.css" />
@@ -2271,6 +2272,7 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
+    <Content Include="app\redis\model\redisScannerMock.js" />
     <Content Include="app\redis\model\redisSettings.js" />
     <Content Include="app\redis\presenter\redisPresenter.js" />
     <Content Include="app\tiles\content\img\redis.png" />

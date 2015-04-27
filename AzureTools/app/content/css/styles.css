@@ -1,13 +1,25 @@
-﻿.popup{
-    width:800px;
-    margin:30px auto 0;
-    position:absolute;
+﻿.popup {
+    width: 800px;
+    margin: 30px auto 0;
+    position: absolute;
     left: 30%;
-  top: 30%;
-  /*margin-left: -400px;
+    top: 30%;
+    /*margin-left: -400px;
     margin-top: -40px;*/
+}
+
+.loading {
+    width: 800px;
+    margin: 30px auto 0;
+    position: absolute;
+    left: 50%;
+    top: 30%;
 }
 
 .leftOffset {
     margin-left: 113px;
+}
+
+.noMarginBottom {
+    margin-bottom: 0px;
 }

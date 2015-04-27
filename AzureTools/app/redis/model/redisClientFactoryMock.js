@@ -1,5 +1,4 @@
 ﻿var data = {a: 1, b:2};
-
 exports.createClient = function () {
     return {
         keys: function (pattern, cb) {

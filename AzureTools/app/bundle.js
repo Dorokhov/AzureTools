@@ -18318,6 +18318,15 @@ module.exports = function(arr, obj){
     $.DataTable = dataTable;
 
     angular
+       .module('common', [angularRoute])
+       .factory('$busyIndicator', ['$rootScope', function ($rootScope) {
+           return require('./common/busyIndicator.js').create($rootScope);
+       }])
+    .controller('BusyIndicatorController', ['$scope', '$busyIndicator', function ($scope, $busyIndicator) {
+        $scope.BusyIndicator = $busyIndicator;
+    }]);
+
+    angular
         .module('dialogs', [angularRoute])
         .factory('$dialogViewModel', function() {
             return require('./common/dialogs/dialog.js').create();
@@ -18351,11 +18360,12 @@ module.exports = function(arr, obj){
         .factory('$redisClientFactory', function () {
             var clientFactory =
                 require('./redis/model/redisClientFactory.js').createClient;
-                //require('./redis/model/redisClientFactoryMock.js').createClient;
+               // require('./redis/model/redisClientFactoryMock.js').createClient;
             return clientFactory;
         })
         .factory('$redisScanner', function () {
             return require('./node_modules/redisscan/index.js');
+           // return require('./redis/model/redisScannerMock.js');
         })
         .factory('$redisSettings', function () {
             return require('./redis/model/redisSettings.js').create();
@@ -18364,10 +18374,10 @@ module.exports = function(arr, obj){
             return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
         }])
         .controller('RedisController', [
-            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner',
-            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner) {
+            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner', '$busyIndicator',
+            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
-                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner);
+                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -18403,17 +18413,42 @@ module.exports = function(arr, obj){
         });
 
     angular
-        .module('app', ['actionBar', 'dialogs', 'tiles', 'tiles.redis'], function() {
+        .module('app', ['common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function() {
            
         });
 })();
-},{"./common/dialogs/dialog.js":164,"./node_modules/angular-ui-router/release/angular-ui-router.js":165,"./node_modules/angular/index.js":167,"./node_modules/datatables/media/js/jquery.dataTables.js":168,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":175,"./redis/model/redisClientFactory.js":177,"./redis/model/redisSettings.js":178,"./redis/presenter/redisPresenter.js":179,"./redis/viewModel/redisviewModel.js":180,"./tiles/viewModel/tilesViewModel.js":181}],164:[function(require,module,exports){
+},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./node_modules/angular-ui-router/release/angular-ui-router.js":166,"./node_modules/angular/index.js":168,"./node_modules/datatables/media/js/jquery.dataTables.js":169,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":176,"./redis/model/redisClientFactory.js":178,"./redis/model/redisSettings.js":179,"./redis/presenter/redisPresenter.js":180,"./redis/viewModel/redisviewModel.js":181,"./tiles/viewModel/tilesViewModel.js":182}],164:[function(require,module,exports){
+exports.create = function ($rootScope) {
+    'use strict';
+
+    return new function() {
+        var self = this;
+        self.IsBusy = false;
+        self.Operations = {};
+        self.setIsBusy = function (operation, value) {
+            self.IsBusy = value;
+            
+            self.Operations[operation] = value;
+
+            if (!$rootScope.$$phase) {
+                $rootScope.$apply();
+            }
+        }
+
+        self.getIsBusy = function (operation) {
+            if (self.Operations[operation] === null || self.Operations[operation] === undefined) {
+                self.Operations[operation] = false;
+            }
+
+            return self.Operations[operation];
+        }
+    }
+};
+},{}],165:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
     return new function() {
-        'use strict';
-
         var self = this;
 
         self.Body = null;
@@ -18429,7 +18464,7 @@ exports.create = function() {
         };
     }
 };
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.13
@@ -22662,7 +22697,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -48972,11 +49007,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":166}],168:[function(require,module,exports){
+},{"./angular":167}],169:[function(require,module,exports){
 /*! DataTables 1.10.6
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -63857,7 +63892,7 @@ module.exports = angular;
 }(window, document));
 
 
-},{"jquery":"jquery"}],169:[function(require,module,exports){
+},{"jquery":"jquery"}],170:[function(require,module,exports){
 (function (process,Buffer){
 /*global Buffer require exports console setTimeout */
 
@@ -65145,7 +65180,7 @@ exports.print = function (err, reply) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/commands":170,"./lib/parser/javascript":171,"./lib/queue":172,"./lib/to_array":173,"./lib/util":174,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],170:[function(require,module,exports){
+},{"./lib/commands":171,"./lib/parser/javascript":172,"./lib/queue":173,"./lib/to_array":174,"./lib/util":175,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],171:[function(require,module,exports){
 // This file was generated by ./generate_commands.js on Wed Apr 23 2014 14:51:21 GMT-0700 (PDT)
 module.exports = [
     "append",
@@ -65310,7 +65345,7 @@ module.exports = [
     "zscan"
 ];
 
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 (function (Buffer){
 var events = require("events"),
     util   = require("../util");
@@ -65615,7 +65650,7 @@ ReplyParser.prototype.send_reply = function (reply) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../util":174,"buffer":2,"events":142}],172:[function(require,module,exports){
+},{"../util":175,"buffer":2,"events":142}],173:[function(require,module,exports){
 // Queue class adapted from Tim Caswell's pattern library
 // http://github.com/creationix/pattern/blob/master/lib/pattern/queue.js
 
@@ -65676,7 +65711,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = Queue;
 }
 
-},{}],173:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 function to_array(args) {
     var len = args.length,
         arr = new Array(len), i;
@@ -65690,7 +65725,7 @@ function to_array(args) {
 
 module.exports = to_array;
 
-},{}],174:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 // Support for very old versions of node where the module was called "sys".  At some point, we should abandon this.
 
 var util;
@@ -65703,7 +65738,7 @@ try {
 
 module.exports = util;
 
-},{"sys":160,"util":160}],175:[function(require,module,exports){
+},{"sys":160,"util":160}],176:[function(require,module,exports){
 var async = require('async');
 
 function genericScan(redis, cmd, key, pattern, each_callback, done_callback) {
@@ -65818,7 +65853,7 @@ module.exports = function (args) {
 };
 
 
-},{"async":176}],176:[function(require,module,exports){
+},{"async":177}],177:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -66780,13 +66815,13 @@ module.exports = function (args) {
 }());
 
 }).call(this,require('_process'))
-},{"_process":145}],177:[function(require,module,exports){
+},{"_process":145}],178:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":169}],178:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":170}],179:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -66800,15 +66835,27 @@ exports.create = function() {
         self.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
     }
 };
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
         self.oTable = null;
         self.Keys = null;
-        var createTable = function() {
+
+        self.showKeys = function (data) {
+            var createClient = function () {
+                var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
+                return client;
+            }
+
+            self.Keys = data;
+
+            if (self.oTable) {
+                self.oTable.destroy();
+            }
+            
             self.oTable = $('#data').DataTable({
                 bFilter: false,
                 bInfo: false,
@@ -66821,28 +66868,17 @@ exports.create = function (redisClientFactory, $redisSettings) {
                         "data": "Key"
                     },
                     {
-                         "title": "Type",
-                         "data": "Type",
+                        "title": "Type",
+                        "data": "Type",
                     },
                 ]
             });
-        };
-
-        self.showKeys = function (data) {
-            var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
-            self.Keys = data;
-
-            if (self.oTable) {
-                self.oTable.destroy();
-                createTable();
-                return;
-            }
-            createTable();
 
             function format(value) {
                 return '<textarea class="details-textarea">' + value + '</textarea>';
             }
 
+            $('#data tbody').off('click', 'tr');
             $('#data tbody').on('click', 'tr', function () {
 
                 var tr = $(this).closest('tr');
@@ -66851,27 +66887,26 @@ exports.create = function (redisClientFactory, $redisSettings) {
                 if (row.child.isShown()) {
                     // This row is already open - close it
                     row.child.hide();
-                   // tr.removeClass('shown');
+                    tr.removeClass('shown');
                 } else {
                     // Open this row
-                    client.get(row.data().Key, function (e, value) {
-                        row.child(format(value)).show();
-                      //  tr.addClass('shown');
-                    });
+                    row.child(format(row.data().Value)).show();
+                    tr.addClass('shown');
                 }
             });
         }
     }
 }
-},{}],180:[function(require,module,exports){
-exports.create = function (redisClientFactory, dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner) {
+},{}],181:[function(require,module,exports){
+exports.create = function (redisClientFactory, dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
     'use strict';
 
     return new function () {
-        'use strict';
-
         var self = this;
-        var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
+        var createClient = function() {
+            var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
+            return client;
+        }
         
         self.Keys = [];
 
@@ -66889,7 +66924,7 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
             $dialogViewModel.save = function() {
                 $dialogViewModel.IsVisible = false;
                 
-                client.set($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function() {
+                createClient().set($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () {
                     
                 });
             };
@@ -66905,36 +66940,31 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
         };
 
         self.loadKeys = function() {
-            //client.scan(0,  function (err, keys) {
-            //    if (err) {
-            //        console.log(err);
-            //    }
-
-            //    dataTablePresenter.showKeys(keys);
-            //})
-            self.Keys.length = 0;
-            $redisScanner({
-                redis: client,
-                each_callback: function (type, key, subkey, p, value, cb) {
-                    console.log('Key:' + key + 'Type' + type);
-                    self.Keys.push({Key:key, Type:type});
-                    cb();
-                },
-                done_callback: function (err) {
-                    if (err) {
-                        console.log('Error:' + err);
+            var loadKeysOperation = 'loadKeys';
+            if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
+                $busyIndicator.setIsBusy(loadKeysOperation, true);
+                self.Keys.length = 0;
+                $redisScanner({
+                    redis: createClient(),
+                    each_callback: function(type, key, subkey, p, value, cb) {
+                        self.Keys.push({ Key: key, Type: type, Value: value });
+                        cb();
+                    },
+                    done_callback: function(err) {
+                        $busyIndicator.setIsBusy(loadKeysOperation, false);
+                        if (err) {
+                            console.log('Error:' + err);
+                        }
+                        dataTablePresenter.showKeys(self.Keys);
                     }
-                    dataTablePresenter.showKeys(self.Keys);
-                    //client.quit();
-                }
-            });
+                });
+            }
         };
         
-
         self.loadKeys();
     }
 }
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 exports.create = function ($state, $actionBarItems) {
     'use strict';
 

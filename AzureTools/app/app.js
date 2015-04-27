@@ -9,6 +9,15 @@
     $.DataTable = dataTable;
 
     angular
+       .module('common', [angularRoute])
+       .factory('$busyIndicator', ['$rootScope', function ($rootScope) {
+           return require('./common/busyIndicator.js').create($rootScope);
+       }])
+    .controller('BusyIndicatorController', ['$scope', '$busyIndicator', function ($scope, $busyIndicator) {
+        $scope.BusyIndicator = $busyIndicator;
+    }]);
+
+    angular
         .module('dialogs', [angularRoute])
         .factory('$dialogViewModel', function() {
             return require('./common/dialogs/dialog.js').create();
@@ -42,11 +51,12 @@
         .factory('$redisClientFactory', function () {
             var clientFactory =
                 require('./redis/model/redisClientFactory.js').createClient;
-                //require('./redis/model/redisClientFactoryMock.js').createClient;
+               // require('./redis/model/redisClientFactoryMock.js').createClient;
             return clientFactory;
         })
         .factory('$redisScanner', function () {
             return require('./node_modules/redisscan/index.js');
+           // return require('./redis/model/redisScannerMock.js');
         })
         .factory('$redisSettings', function () {
             return require('./redis/model/redisSettings.js').create();
@@ -55,10 +65,10 @@
             return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
         }])
         .controller('RedisController', [
-            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner',
-            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner) {
+            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner', '$busyIndicator',
+            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
-                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner);
+                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -94,7 +104,7 @@
         });
 
     angular
-        .module('app', ['actionBar', 'dialogs', 'tiles', 'tiles.redis'], function() {
+        .module('app', ['common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function() {
            
         });
 })();

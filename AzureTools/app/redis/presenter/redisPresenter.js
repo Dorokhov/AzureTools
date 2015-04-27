@@ -1,11 +1,18 @@
 ﻿exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
         self.oTable = null;
         self.Keys = null;
-        var createTable = function() {
+
+        self.showKeys = function (data) {
+            self.Keys = data;
+
+            if (self.oTable) {
+                self.oTable.destroy();
+            }
+            
             self.oTable = $('#data').DataTable({
                 bFilter: false,
                 bInfo: false,
@@ -18,28 +25,17 @@
                         "data": "Key"
                     },
                     {
-                         "title": "Type",
-                         "data": "Type",
+                        "title": "Type",
+                        "data": "Type",
                     },
                 ]
             });
-        };
-
-        self.showKeys = function (data) {
-            var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
-            self.Keys = data;
-
-            if (self.oTable) {
-                self.oTable.destroy();
-                createTable();
-                return;
-            }
-            createTable();
 
             function format(value) {
                 return '<textarea class="details-textarea">' + value + '</textarea>';
             }
 
+            $('#data tbody').off('click', 'tr');
             $('#data tbody').on('click', 'tr', function () {
 
                 var tr = $(this).closest('tr');
@@ -48,13 +44,11 @@
                 if (row.child.isShown()) {
                     // This row is already open - close it
                     row.child.hide();
-                   // tr.removeClass('shown');
+                    tr.removeClass('shown');
                 } else {
                     // Open this row
-                    client.get(row.data().Key, function (e, value) {
-                        row.child(format(value)).show();
-                      //  tr.addClass('shown');
-                    });
+                    row.child(format(row.data().Value)).show();
+                    tr.addClass('shown');
                 }
             });
         }

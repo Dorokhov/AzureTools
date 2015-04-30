@@ -43,6 +43,7 @@
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
     <Content Include="app\common\busyIndicator.js" />
+    <Content Include="app\common\dialogs\confirmation.js" />
     <Content Include="app\common\errorAlert.js" />
     <Content Include="app\common\dialogs\dialog.js" />
     <Content Include="app\content\css\angular-csp.css" />

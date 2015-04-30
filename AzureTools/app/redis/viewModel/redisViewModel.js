@@ -16,7 +16,6 @@
         $actionBarItems.IsSettingsVisible = true;
 
         $actionBarItems.addKey = function () {
-            throw new Error('not implemented');
             $dialogViewModel.IsVisible = true;
             $dialogViewModel.BodyViewModel = {Key:'', Value:''};
             $dialogViewModel.Body = 'createKeyTemplate';

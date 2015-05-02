@@ -1,7 +1,7 @@
 ﻿var redisClientFactoryMock = require('../../redis/model/redisClientFactoryMock.js');
 
 module.exports = function (args) {
-    redisClientFactoryMock.createClient().keys('*', function(err, keys) {
+    redisClientFactoryMock.createClient().keys(args.key, function(err, keys) {
         var i = 0;
         var shouldProceed = true;
         while (shouldProceed) {

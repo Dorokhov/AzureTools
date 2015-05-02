@@ -4,7 +4,9 @@ exports.createClient = function () {
         keys: function (pattern, cb) {
             var allKeys = [];
             for (var propertyName in data) {
-                allKeys.push(propertyName);
+              // if (propertyName.match(pattern)) {
+                    allKeys.push(propertyName);
+              // }
             }
             cb(null, allKeys);
         },

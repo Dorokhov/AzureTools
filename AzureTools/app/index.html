@@ -31,6 +31,7 @@
                 <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
                 <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
                 <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+                <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible"><input ng-model="ActionBarItems.SearchViewModel.Pattern" type="text" class="form-control" style="margin-top:8px;width:400px;float:left;" autofocus /><a style="cursor:pointer;float: left;" ng-click="ActionBarItems.SearchViewModel.search()"><span class="icon-search"></span></a></li>
             </ul>
         </div>
     </nav>

@@ -89,13 +89,13 @@
         .module('tiles.redis', [angularRoute])
         .factory('$redisClientFactory', function () {
             var clientFactory =
-                //require('./redis/model/redisClientFactory.js').createClient;
-                require('./redis/model/redisClientFactoryMock.js').createClient;
+                require('./redis/model/redisClientFactory.js').createClient;
+               // require('./redis/model/redisClientFactoryMock.js').createClient;
             return clientFactory;
         })
         .factory('$redisScanner', function () {
-            // return require('./node_modules/redisscan/index.js');
-            return require('./redis/model/redisScannerMock.js');
+             return require('./node_modules/redisscan/index.js');
+          //  return require('./redis/model/redisScannerMock.js');
         })
         .factory('$redisSettings', function () {
             return require('./redis/model/redisSettings.js').create();

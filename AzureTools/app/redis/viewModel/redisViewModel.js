@@ -59,7 +59,6 @@
                 $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
                 $redisScanner({
-                    cmd:'SCAN',
                     pattern: pattern ? pattern : '*',
                     redis: createClient(),
                     each_callback: function (type, key, subkey, p, value, cb) {
@@ -71,12 +70,18 @@
                         if (err) {
                             console.log('Error:' + err);
                         }
-                        dataTablePresenter.showKeys(self.Keys);
+                        dataTablePresenter.showKeys(self.Keys, self.updateKey);
                     }
                 });
             }
         };
-
+        self.updateKey = function(keyData, newValue) {
+            var type = keyData.Type;
+            if (type === 'string') {
+                console.log('Update. Key:' + keyData.Key + ' Value:' + newValue);
+                createClient().set(keyData.Key, newValue);
+            }
+        };
         self.loadKeys(searchViewModel.Pattern);
     }
 }

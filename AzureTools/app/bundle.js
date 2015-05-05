@@ -66896,7 +66896,7 @@ exports.create = function (redisClientFactory, $redisSettings) {
         self.oTable = null;
         self.Keys = null;
 
-        self.showKeys = function (data) {
+        self.showKeys = function (data, updateCallback) {
             self.Keys = data;
 
             if (self.oTable) {
@@ -66921,13 +66921,20 @@ exports.create = function (redisClientFactory, $redisSettings) {
                 ]
             });
 
-            function format(value) {
-                return '<textarea class="details-textarea">' + value + '</textarea>';
+            function format(type, value) {
+                var detailsClass = 'bigHeight';
+                if (type === 'string') {
+                    detailsClass = 'smallHeight';
+                }
+                return '<div>' +
+                    '<textarea class="details-textarea ' + detailsClass + '">' + value + '</textarea>' +
+                    '<button type="button" class="btn btn-default updateButton">Update</button>' +
+                    '</div>';
             }
 
-            $('#data tbody').off('click', 'tr');
-            $('#data tbody').on('click', 'tr', function () {
-
+            // open/close details
+            $('#data tbody').off('click', 'tr.even,tr.odd');
+            $('#data tbody').on('click', 'tr.even,tr.odd', function () {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
 
@@ -66937,9 +66944,19 @@ exports.create = function (redisClientFactory, $redisSettings) {
                     tr.removeClass('shown');
                 } else {
                     // Open this row
-                    row.child(format(row.data().Value)).show();
+                    row.child(format(row.data().Type, row.data().Value)).show();
                     tr.addClass('shown');
                 }
+            });
+
+            // update value
+            $('#data tbody').off('click', 'button.btn.btn-default.updateButton');
+            $('#data tbody').on('click', 'button.btn.btn-default.updateButton', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var newValue = $(currentRow).find('textarea').val();
+                var row = self.oTable.row(tr);
+                updateCallback(row.data(), newValue);
             });
         }
     }
@@ -67006,7 +67023,6 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                 $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
                 $redisScanner({
-                    cmd:'SCAN',
                     pattern: pattern ? pattern : '*',
                     redis: createClient(),
                     each_callback: function (type, key, subkey, p, value, cb) {
@@ -67018,12 +67034,18 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                         if (err) {
                             console.log('Error:' + err);
                         }
-                        dataTablePresenter.showKeys(self.Keys);
+                        dataTablePresenter.showKeys(self.Keys, self.updateKey);
                     }
                 });
             }
         };
-
+        self.updateKey = function(keyData, newValue) {
+            var type = keyData.Type;
+            if (type === 'string') {
+                console.log('Update. Key:' + keyData.Key + ' Value:' + newValue);
+                createClient().set(keyData.Key, newValue);
+            }
+        };
         self.loadKeys(searchViewModel.Pattern);
     }
 }

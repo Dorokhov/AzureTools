@@ -6,7 +6,7 @@
         self.oTable = null;
         self.Keys = null;
 
-        self.showKeys = function (data) {
+        self.showKeys = function (data, updateCallback) {
             self.Keys = data;
 
             if (self.oTable) {
@@ -31,13 +31,20 @@
                 ]
             });
 
-            function format(value) {
-                return '<textarea class="details-textarea">' + value + '</textarea>';
+            function format(type, value) {
+                var detailsClass = 'bigHeight';
+                if (type === 'string') {
+                    detailsClass = 'smallHeight';
+                }
+                return '<div>' +
+                    '<textarea class="details-textarea ' + detailsClass + '">' + value + '</textarea>' +
+                    '<button type="button" class="btn btn-default updateButton">Update</button>' +
+                    '</div>';
             }
 
-            $('#data tbody').off('click', 'tr');
-            $('#data tbody').on('click', 'tr', function () {
-
+            // open/close details
+            $('#data tbody').off('click', 'tr.even,tr.odd');
+            $('#data tbody').on('click', 'tr.even,tr.odd', function () {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
 
@@ -47,9 +54,19 @@
                     tr.removeClass('shown');
                 } else {
                     // Open this row
-                    row.child(format(row.data().Value)).show();
+                    row.child(format(row.data().Type, row.data().Value)).show();
                     tr.addClass('shown');
                 }
+            });
+
+            // update value
+            $('#data tbody').off('click', 'button.btn.btn-default.updateButton');
+            $('#data tbody').on('click', 'button.btn.btn-default.updateButton', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var newValue = $(currentRow).find('textarea').val();
+                var row = self.oTable.row(tr);
+                updateCallback(row.data(), newValue);
             });
         }
     }

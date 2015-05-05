@@ -1,12 +1,24 @@
 ﻿.details-textarea {
+    width: 100%;
+}
+
+.bigHeight {
     height: 150px;
-    width:100%
+}
+
+.smallHeight {
+    height: 30px;
+}
+
+.updateButton {
+    float: right;
+    margin-top: 5px !important;
 }
 
 tr.details td.details-control {
     background: green no-repeat center center;
 }
 
-.grid label{
+.grid label {
     font-size: 12px;
 }

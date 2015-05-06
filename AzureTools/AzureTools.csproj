@@ -2274,7 +2274,13 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
+    <Content Include="app\redis\model\redisDataAccess.js" />
+    <Content Include="app\redis\model\redisScannerFactory.js" />
+    <Content Include="app\redis\model\activeDatabase.js" />
+    <Content Include="app\redis\model\setRepository.js" />
+    <Content Include="app\redis\model\stringRepository.js" />
     <Content Include="app\redis\model\redisScannerMock.js" />
+    <Content Include="app\redis\model\redisRepositoryFactory.js" />
     <Content Include="app\redis\model\redisSettings.js" />
     <Content Include="app\redis\presenter\redisPresenter.js" />
     <Content Include="app\tiles\content\img\redis.png" />

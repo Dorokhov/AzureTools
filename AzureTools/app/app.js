@@ -8,7 +8,7 @@
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
-    angular.module('exceptionOverride', []).factory('$exceptionHandler',[function () {
+    angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
             var data = {
                 type: 'angular',
@@ -90,12 +90,12 @@
         .factory('$redisClientFactory', function () {
             var clientFactory =
                 require('./redis/model/redisClientFactory.js').createClient;
-               // require('./redis/model/redisClientFactoryMock.js').createClient;
+            // require('./redis/model/redisClientFactoryMock.js').createClient;
             return clientFactory;
         })
         .factory('$redisScanner', function () {
-             return require('./node_modules/redisscan/index.js');
-          //  return require('./redis/model/redisScannerMock.js');
+            return require('./node_modules/redisscan/index.js');
+            //  return require('./redis/model/redisScannerMock.js');
         })
         .factory('$redisSettings', function () {
             return require('./redis/model/redisSettings.js').create();
@@ -105,11 +105,62 @@
                 return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
             }
         ])
+        .factory('$redisDataAccess', ['$activeDatabase', '$redisClientFactory', '$redisSettings', function ($activeDatabase, $redisClientFactory, $redisSettings) {
+            return require('./redis/model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings);
+        }
+        ])
+        .factory('$activeDatabase', [function () {
+            return require('./redis/model/activeDatabase.js').create();
+        }
+        ])
+        .factory('$stringRepo', ['$redisDataAccess', function ($redisDataAccess) {
+            return require('./redis/model/stringRepository.js').create($redisDataAccess);
+        }
+        ])
+        .factory('$setRepo', ['$redisDataAccess', function ($redisDataAccess) {
+            return require('./redis/model/setRepository.js').create($redisDataAccess);
+        }
+        ])
+        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', function ($stringRepo, $setRepo) {
+            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo);
+        }
+        ])
+        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 
+            function ($redisDataAccess, $redisScanner) {
+                return require('./redis/model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
+            }
+        ])
         .controller('RedisController', [
-            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner', '$busyIndicator',
-            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
+            '$scope',
+            '$activeDatabase',
+            '$redisRepositoryFactory',
+            '$redisScannerFactory',
+            '$dataTablePresenter',
+            '$actionBarItems',
+            '$dialogViewModel',
+            '$redisSettings',
+            '$busyIndicator',
+            function (
+                $scope,
+                $activeDatabase,
+                $redisRepositoryFactory,
+                $redisScannerFactory,
+                $dataTablePresenter,
+                $actionBarItems,
+                $dialogViewModel,
+                $redisSettings,
+                $busyIndicator) {
+
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
-                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator);
+                    .create(
+                    $activeDatabase,
+                    $redisRepositoryFactory,
+                    $redisScannerFactory,
+                    $dataTablePresenter,
+                    $actionBarItems,
+                    $dialogViewModel,
+                    $redisSettings,
+                    $busyIndicator);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -145,7 +196,7 @@
         });
 
     angular
-        .module('app', ['exceptionOverride','alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
+        .module('app', ['exceptionOverride', 'alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
 
         })
         .controller('AppController', ['$bugReport', function ($bugReport) { }])

@@ -18317,7 +18317,7 @@ module.exports = function(arr, obj){
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
-    angular.module('exceptionOverride', []).factory('$exceptionHandler',[function () {
+    angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
             var data = {
                 type: 'angular',
@@ -18399,12 +18399,12 @@ module.exports = function(arr, obj){
         .factory('$redisClientFactory', function () {
             var clientFactory =
                 require('./redis/model/redisClientFactory.js').createClient;
-               // require('./redis/model/redisClientFactoryMock.js').createClient;
+            // require('./redis/model/redisClientFactoryMock.js').createClient;
             return clientFactory;
         })
         .factory('$redisScanner', function () {
-             return require('./node_modules/redisscan/index.js');
-          //  return require('./redis/model/redisScannerMock.js');
+            return require('./node_modules/redisscan/index.js');
+            //  return require('./redis/model/redisScannerMock.js');
         })
         .factory('$redisSettings', function () {
             return require('./redis/model/redisSettings.js').create();
@@ -18414,11 +18414,62 @@ module.exports = function(arr, obj){
                 return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
             }
         ])
+        .factory('$redisDataAccess', ['$activeDatabase', '$redisClientFactory', '$redisSettings', function ($activeDatabase, $redisClientFactory, $redisSettings) {
+            return require('./redis/model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings);
+        }
+        ])
+        .factory('$activeDatabase', [function () {
+            return require('./redis/model/activeDatabase.js').create();
+        }
+        ])
+        .factory('$stringRepo', ['$redisDataAccess', function ($redisDataAccess) {
+            return require('./redis/model/stringRepository.js').create($redisDataAccess);
+        }
+        ])
+        .factory('$setRepo', ['$redisDataAccess', function ($redisDataAccess) {
+            return require('./redis/model/setRepository.js').create($redisDataAccess);
+        }
+        ])
+        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', function ($stringRepo, $setRepo) {
+            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo);
+        }
+        ])
+        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 
+            function ($redisDataAccess, $redisScanner) {
+                return require('./redis/model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
+            }
+        ])
         .controller('RedisController', [
-            '$scope', '$redisClientFactory', '$dataTablePresenter', '$actionBarItems', '$dialogViewModel', '$redisSettings', '$redisScanner', '$busyIndicator',
-            function ($scope, $redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
+            '$scope',
+            '$activeDatabase',
+            '$redisRepositoryFactory',
+            '$redisScannerFactory',
+            '$dataTablePresenter',
+            '$actionBarItems',
+            '$dialogViewModel',
+            '$redisSettings',
+            '$busyIndicator',
+            function (
+                $scope,
+                $activeDatabase,
+                $redisRepositoryFactory,
+                $redisScannerFactory,
+                $dataTablePresenter,
+                $actionBarItems,
+                $dialogViewModel,
+                $redisSettings,
+                $busyIndicator) {
+
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
-                    .create($redisClientFactory, $dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator);
+                    .create(
+                    $activeDatabase,
+                    $redisRepositoryFactory,
+                    $redisScannerFactory,
+                    $dataTablePresenter,
+                    $actionBarItems,
+                    $dialogViewModel,
+                    $redisSettings,
+                    $busyIndicator);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -18454,7 +18505,7 @@ module.exports = function(arr, obj){
         });
 
     angular
-        .module('app', ['exceptionOverride','alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
+        .module('app', ['exceptionOverride', 'alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
 
         })
         .controller('AppController', ['$bugReport', function ($bugReport) { }])
@@ -18462,7 +18513,7 @@ module.exports = function(arr, obj){
 
         });
 })();
-},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./common/errorAlert.js":166,"./node_modules/angular-ui-router/release/angular-ui-router.js":167,"./node_modules/angular/index.js":169,"./node_modules/datatables/media/js/jquery.dataTables.js":170,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":177,"./redis/model/redisClientFactory.js":179,"./redis/model/redisSettings.js":180,"./redis/presenter/redisPresenter.js":181,"./redis/viewModel/redisviewModel.js":182,"./tiles/viewModel/tilesViewModel.js":183}],164:[function(require,module,exports){
+},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./common/errorAlert.js":166,"./node_modules/angular-ui-router/release/angular-ui-router.js":167,"./node_modules/angular/index.js":169,"./node_modules/datatables/media/js/jquery.dataTables.js":170,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":177,"./redis/model/activeDatabase.js":179,"./redis/model/redisClientFactory.js":180,"./redis/model/redisDataAccess.js":181,"./redis/model/redisRepositoryFactory.js":182,"./redis/model/redisScannerFactory.js":183,"./redis/model/redisSettings.js":184,"./redis/model/setRepository.js":185,"./redis/model/stringRepository.js":186,"./redis/presenter/redisPresenter.js":187,"./redis/viewModel/redisviewModel.js":188,"./tiles/viewModel/tilesViewModel.js":189}],164:[function(require,module,exports){
 exports.create = function ($rootScope) {
     'use strict';
 
@@ -66868,18 +66919,72 @@ module.exports = function (args) {
 
 }).call(this,require('_process'))
 },{"_process":145}],179:[function(require,module,exports){
+exports.create = function() {
+    'use strict';
+
+    return new function() {
+        var self = this;
+
+        self.Current = 0;
+    }
+};
+},{}],180:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":171}],180:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":171}],181:[function(require,module,exports){
+exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings) {
+    'use strict';
+    return new function () {
+        var self = this;
+
+        self.createClient = function () {
+            var client = $redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
+            if ($activeDatabase.Current !== null) {
+                client.select($activeDatabase.Current);
+            }
+
+            return client;
+        }
+    }
+};
+},{}],182:[function(require,module,exports){
+exports.create = function (stringRepo, setRepo) {
+    'use strict';
+
+    return function (type) {
+        var self = this;
+
+        switch (type) {
+            case 'string':
+                return stringRepo;
+            case 'set':
+                return setRepo;
+            default:
+                throw new Error('Unsupported creating data type: ' + type);
+        }
+    };
+};
+},{}],183:[function(require,module,exports){
+exports.create = function ($redisDataAccess, $redisScanner) {
+    'use strict';
+
+    return function (args) {
+        $redisScanner({
+            pattern: args.pattern ? args.pattern : '*',
+            redis: $redisDataAccess.createClient(),
+            each_callback: args.each_callback,
+            done_callback: args.done_callback
+        });
+    }
+};
+},{}],184:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
     return new function() {
-        'use strict';
-
         var self = this;
 
         self.Host = 'redisdor.redis.cache.windows.net';
@@ -66887,7 +66992,40 @@ exports.create = function() {
         self.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
     }
 };
-},{}],181:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
+exports.create = function ($redisDataAccess) {
+    'use strict';
+
+    return new function() {
+        var self = this;
+        self.create = function (key, value, cb) {
+            var members = JSON.parse(value);
+            $redisDataAccess.createClient().sadd(key, members, cb);
+        };
+
+        self.update = function (keyData, newValue) {
+            var updatedMembers = JSON.parse(newValue);
+            $redisDataAccess.createClient().del(keyData.Key);
+            $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
+        };
+    };
+};
+},{}],186:[function(require,module,exports){
+exports.create = function ($redisDataAccess) {
+    'use strict';
+
+    return new function() {
+        var self = this;
+        self.create = function(key, value, cb) {
+            $redisDataAccess.createClient().set(key, value, cb);
+        };
+
+        self.update = function (keyData, newValue) {
+            $redisDataAccess.createClient().set(keyData.Key, newValue);
+        };
+    };
+};
+},{}],187:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
@@ -66961,8 +67099,16 @@ exports.create = function (redisClientFactory, $redisSettings) {
         }
     }
 }
-},{}],182:[function(require,module,exports){
-exports.create = function (redisClientFactory, dataTablePresenter, $actionBarItems, $dialogViewModel, $redisSettings, $redisScanner, $busyIndicator) {
+},{}],188:[function(require,module,exports){
+exports.create = function (
+    $activeDatabase,
+    $redisRepositoryFactory,
+    $redisScannerFactory,
+    $dataTablePresenter,
+    $actionBarItems,
+    $dialogViewModel,
+    $redisSettings,
+    $busyIndicator) {
     'use strict';
 
     return new function () {
@@ -66970,14 +67116,6 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
 
         var loadKeysOperation = 'loadKeys';
 
-        var createClient = function (dbNumber) {
-            var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
-            if (dbNumber !== null) {
-                client.select(dbNumber);
-            }
-
-            return client;
-        }
 
         self.Keys = [];
         var searchViewModel = {
@@ -66989,10 +67127,11 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
 
         var databaseViewModel = {
             setCurrent: function (n) {
+                $activeDatabase.Current = n;
                 this.Current = n;
                 searchViewModel.search();
             },
-            Current: 0
+            Current: $activeDatabase.Current
         };
         // redis action bar
         $actionBarItems.IsActionBarVisible = true;
@@ -67019,16 +67158,8 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
             $dialogViewModel.save = function () {
                 $dialogViewModel.IsVisible = false;
                 var type = $dialogViewModel.BodyViewModel.SelectedType;
-                if (type === 'string') {
-                    createClient(databaseViewModel.Current).set($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
-                }
-                else if (type === 'set') {
-                    console.log("Creating:" + $dialogViewModel.BodyViewModel.Value);
-                    var members = JSON.parse($dialogViewModel.BodyViewModel.Value);
-                    createClient(databaseViewModel.Current).sadd($dialogViewModel.BodyViewModel.Key, members);
-                } else {
-                    throw new Error('Unsupported creating data type: ' + type);
-                }
+                var repo = $redisRepositoryFactory(type);
+                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function() {});
             };
         };
 
@@ -67051,16 +67182,17 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
                 $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
-                $redisScanner({
-                    pattern: pattern ? pattern : '*',
-                    redis: createClient(databaseViewModel.Current),
+
+                $redisScannerFactory({
+                    pattern:pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
+                        console.log('each callback');
                         if (type === 'set') {
                             // group values by key for set
                             var existing = self.Keys.filter(function (item) {
                                 return item.Key == key;
                             });
-                            
+
                             if (existing !== null && existing[0] !== undefined) {
                                 var values = JSON.parse(existing[0].Value);
                                 values.push(value);
@@ -67069,7 +67201,7 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                                 self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
                             }
                         } else {
-                            self.Keys.push({ Key: key, Type: type, Value: value});
+                            self.Keys.push({ Key: key, Type: type, Value: value });
                         }
                         cb();
                     },
@@ -67078,27 +67210,22 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                         if (err) {
                             console.log('Error:' + err);
                         }
-                        dataTablePresenter.showKeys(self.Keys, self.updateKey);
+                        $dataTablePresenter.showKeys(self.Keys, self.updateKey);
                     }
                 });
             }
         };
+
         self.updateKey = function (keyData, newValue) {
             var type = keyData.Type;
-            if (type === 'string') {
-                console.log('Update. Key:' + keyData.Key + ' Value:' + newValue);
-                createClient(databaseViewModel.Current).set(keyData.Key, newValue);
-            }
-            else if (type === 'set') {
-                var updatedMembers = JSON.parse(newValue);
-                createClient(databaseViewModel.Current).del(keyData.Key);
-                createClient(databaseViewModel.Current).sadd(keyData.Key, updatedMembers);
-            }
+            var repo = $redisRepositoryFactory(type);
+            repo.update(keyData, newValue);
         };
+
         self.loadKeys(searchViewModel.Pattern);
     }
 }
-},{}],183:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 exports.create = function ($state, $actionBarItems) {
     'use strict';
 

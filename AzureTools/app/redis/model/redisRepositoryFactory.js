@@ -1,4 +1,4 @@
-﻿exports.create = function (stringRepo, setRepo) {
+﻿exports.create = function (stringRepo, setRepo, hashSetRepo) {
     'use strict';
 
     return function (type) {
@@ -9,6 +9,9 @@
                 return stringRepo;
             case 'set':
                 return setRepo;
+            case 'hash set':
+            case 'hash':
+                return hashSetRepo;
             default:
                 throw new Error('Unsupported creating data type: ' + type);
         }

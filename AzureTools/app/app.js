@@ -121,8 +121,12 @@
             return require('./redis/model/setRepository.js').create($redisDataAccess);
         }
         ])
-        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', function ($stringRepo, $setRepo) {
-            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo);
+         .factory('$hashSetRepo', ['$redisDataAccess', function ($redisDataAccess) {
+             return require('./redis/model/hashRepository.js').create($redisDataAccess);
+         }
+         ])
+        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
+            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
         }
         ])
         .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 

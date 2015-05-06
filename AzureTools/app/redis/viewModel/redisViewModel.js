@@ -44,7 +44,7 @@
             $dialogViewModel.BodyViewModel = {
                 Key: '',
                 Value: '',
-                Types: ['string', 'set'],
+                Types: ['string', 'set', 'hash set'],
                 SelectedType: 'string',
                 selectType: function (value) {
                     this.SelectedType = value;
@@ -57,7 +57,7 @@
                 $dialogViewModel.IsVisible = false;
                 var type = $dialogViewModel.BodyViewModel.SelectedType;
                 var repo = $redisRepositoryFactory(type);
-                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function() {});
+                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
             };
         };
 
@@ -74,7 +74,20 @@
 
         $actionBarItems.SearchViewModel = searchViewModel;
         $actionBarItems.DatabaseViewModel = databaseViewModel;
+        
+        var groupByKey = function(type, key, value) {
+            var existing = self.Keys.filter(function (item) {
+                return item.Key == key;
+            });
 
+            if (existing !== null && existing[0] !== undefined) {
+                var values = JSON.parse(existing[0].Value);
+                values.push(value);
+                existing[0].Value = JSON.stringify(values);
+            } else {
+                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
+            }
+        }
         // load redis data
         self.loadKeys = function (pattern) {
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
@@ -82,23 +95,15 @@
                 self.Keys.length = 0;
 
                 $redisScannerFactory({
-                    pattern:pattern,
+                    pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
-                        console.log('each callback');
                         if (type === 'set') {
-                            // group values by key for set
-                            var existing = self.Keys.filter(function (item) {
-                                return item.Key == key;
-                            });
-
-                            if (existing !== null && existing[0] !== undefined) {
-                                var values = JSON.parse(existing[0].Value);
-                                values.push(value);
-                                existing[0].Value = JSON.stringify(values);
-                            } else {
-                                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
-                            }
-                        } else {
+                            groupByKey(type, key, value);
+                        }
+                        else if (type == 'hash') {
+                            groupByKey(type, key, [subkey, value]);
+                        }
+                        else {
                             self.Keys.push({ Key: key, Type: type, Value: value });
                         }
                         cb();

@@ -18430,8 +18430,12 @@ module.exports = function(arr, obj){
             return require('./redis/model/setRepository.js').create($redisDataAccess);
         }
         ])
-        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', function ($stringRepo, $setRepo) {
-            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo);
+         .factory('$hashSetRepo', ['$redisDataAccess', function ($redisDataAccess) {
+             return require('./redis/model/hashRepository.js').create($redisDataAccess);
+         }
+         ])
+        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
+            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
         }
         ])
         .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 
@@ -18513,7 +18517,7 @@ module.exports = function(arr, obj){
 
         });
 })();
-},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./common/errorAlert.js":166,"./node_modules/angular-ui-router/release/angular-ui-router.js":167,"./node_modules/angular/index.js":169,"./node_modules/datatables/media/js/jquery.dataTables.js":170,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":177,"./redis/model/activeDatabase.js":179,"./redis/model/redisClientFactory.js":180,"./redis/model/redisDataAccess.js":181,"./redis/model/redisRepositoryFactory.js":182,"./redis/model/redisScannerFactory.js":183,"./redis/model/redisSettings.js":184,"./redis/model/setRepository.js":185,"./redis/model/stringRepository.js":186,"./redis/presenter/redisPresenter.js":187,"./redis/viewModel/redisviewModel.js":188,"./tiles/viewModel/tilesViewModel.js":189}],164:[function(require,module,exports){
+},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./common/errorAlert.js":166,"./node_modules/angular-ui-router/release/angular-ui-router.js":167,"./node_modules/angular/index.js":169,"./node_modules/datatables/media/js/jquery.dataTables.js":170,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":177,"./redis/model/activeDatabase.js":179,"./redis/model/hashRepository.js":180,"./redis/model/redisClientFactory.js":181,"./redis/model/redisDataAccess.js":182,"./redis/model/redisRepositoryFactory.js":183,"./redis/model/redisScannerFactory.js":184,"./redis/model/redisSettings.js":185,"./redis/model/setRepository.js":186,"./redis/model/stringRepository.js":187,"./redis/presenter/redisPresenter.js":188,"./redis/viewModel/redisviewModel.js":189,"./tiles/viewModel/tilesViewModel.js":190}],164:[function(require,module,exports){
 exports.create = function ($rootScope) {
     'use strict';
 
@@ -66929,12 +66933,31 @@ exports.create = function() {
     }
 };
 },{}],180:[function(require,module,exports){
+exports.create = function ($redisDataAccess) {
+    'use strict';
+
+    return new function() {
+        var self = this;
+        self.create = function (key, value, cb) {
+            var members = JSON.parse(value);
+            for (var i = 0; i < members.length; i++) {
+                $redisDataAccess.createClient().hset(key, members[i][0], members[i][1], cb);
+            }
+        };
+
+        self.update = function (keyData, newValue) {
+            $redisDataAccess.createClient().del(keyData.Key);
+            self.create(keyData.Key, newValue);
+        };
+    };
+};
+},{}],181:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":171}],181:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":171}],182:[function(require,module,exports){
 exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings) {
     'use strict';
     return new function () {
@@ -66950,8 +66973,8 @@ exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings)
         }
     }
 };
-},{}],182:[function(require,module,exports){
-exports.create = function (stringRepo, setRepo) {
+},{}],183:[function(require,module,exports){
+exports.create = function (stringRepo, setRepo, hashSetRepo) {
     'use strict';
 
     return function (type) {
@@ -66962,12 +66985,15 @@ exports.create = function (stringRepo, setRepo) {
                 return stringRepo;
             case 'set':
                 return setRepo;
+            case 'hash set':
+            case 'hash':
+                return hashSetRepo;
             default:
                 throw new Error('Unsupported creating data type: ' + type);
         }
     };
 };
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 exports.create = function ($redisDataAccess, $redisScanner) {
     'use strict';
 
@@ -66980,7 +67006,7 @@ exports.create = function ($redisDataAccess, $redisScanner) {
         });
     }
 };
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -66992,7 +67018,7 @@ exports.create = function() {
         self.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
     }
 };
-},{}],185:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67010,7 +67036,7 @@ exports.create = function ($redisDataAccess) {
         };
     };
 };
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67025,7 +67051,7 @@ exports.create = function ($redisDataAccess) {
         };
     };
 };
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
@@ -67099,7 +67125,7 @@ exports.create = function (redisClientFactory, $redisSettings) {
         }
     }
 }
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 exports.create = function (
     $activeDatabase,
     $redisRepositoryFactory,
@@ -67146,7 +67172,7 @@ exports.create = function (
             $dialogViewModel.BodyViewModel = {
                 Key: '',
                 Value: '',
-                Types: ['string', 'set'],
+                Types: ['string', 'set', 'hash set'],
                 SelectedType: 'string',
                 selectType: function (value) {
                     this.SelectedType = value;
@@ -67159,7 +67185,7 @@ exports.create = function (
                 $dialogViewModel.IsVisible = false;
                 var type = $dialogViewModel.BodyViewModel.SelectedType;
                 var repo = $redisRepositoryFactory(type);
-                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function() {});
+                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
             };
         };
 
@@ -67176,7 +67202,20 @@ exports.create = function (
 
         $actionBarItems.SearchViewModel = searchViewModel;
         $actionBarItems.DatabaseViewModel = databaseViewModel;
+        
+        var groupByKey = function(type, key, value) {
+            var existing = self.Keys.filter(function (item) {
+                return item.Key == key;
+            });
 
+            if (existing !== null && existing[0] !== undefined) {
+                var values = JSON.parse(existing[0].Value);
+                values.push(value);
+                existing[0].Value = JSON.stringify(values);
+            } else {
+                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
+            }
+        }
         // load redis data
         self.loadKeys = function (pattern) {
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
@@ -67184,23 +67223,16 @@ exports.create = function (
                 self.Keys.length = 0;
 
                 $redisScannerFactory({
-                    pattern:pattern,
+                    pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
-                        console.log('each callback');
+                        console.log('each callback ' + type);
                         if (type === 'set') {
-                            // group values by key for set
-                            var existing = self.Keys.filter(function (item) {
-                                return item.Key == key;
-                            });
-
-                            if (existing !== null && existing[0] !== undefined) {
-                                var values = JSON.parse(existing[0].Value);
-                                values.push(value);
-                                existing[0].Value = JSON.stringify(values);
-                            } else {
-                                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
-                            }
-                        } else {
+                            groupByKey(type, key, value);
+                        }
+                        else if (type == 'hash') {
+                            groupByKey(type, key, [subkey, value]);
+                        }
+                        else {
                             self.Keys.push({ Key: key, Type: type, Value: value });
                         }
                         cb();
@@ -67225,7 +67257,7 @@ exports.create = function (
         self.loadKeys(searchViewModel.Pattern);
     }
 }
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 exports.create = function ($state, $actionBarItems) {
     'use strict';
 

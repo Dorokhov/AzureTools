@@ -2278,6 +2278,7 @@
     <Content Include="app\redis\model\redisScannerFactory.js" />
     <Content Include="app\redis\model\activeDatabase.js" />
     <Content Include="app\redis\model\setRepository.js" />
+    <Content Include="app\redis\model\hashRepository.js" />
     <Content Include="app\redis\model\stringRepository.js" />
     <Content Include="app\redis\model\redisScannerMock.js" />
     <Content Include="app\redis\model\redisRepositoryFactory.js" />

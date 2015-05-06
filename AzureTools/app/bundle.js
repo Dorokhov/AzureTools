@@ -18370,6 +18370,9 @@ module.exports = function(arr, obj){
         .factory('$dialogViewModel', function () {
             return require('./common/dialogs/dialog.js').create();
         })
+        .factory('$confirmViewModel', function () {
+            return require('./common/dialogs/confirmation.js').create();
+        })
         .controller('DialogsController', [
             '$scope', '$dialogViewModel', function ($scope, $dialogViewModel) {
                 $scope.DialogViewModel = $dialogViewModel;
@@ -18380,6 +18383,11 @@ module.exports = function(arr, obj){
                     function (evt, toState, toParams, fromState, fromParams) {
                         $dialogViewModel.IsVisible = false;
                     });
+            }
+        ])
+        .controller('ConfirmationController', [
+            '$scope', '$confirmViewModel', function ($scope, $confirmViewModel) {
+                $scope.ConfirmationViewModel = $confirmViewModel;
             }
         ]);
 
@@ -18438,7 +18446,7 @@ module.exports = function(arr, obj){
             return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
         }
         ])
-        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 
+        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner',
             function ($redisDataAccess, $redisScanner) {
                 return require('./redis/model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
             }
@@ -18451,6 +18459,7 @@ module.exports = function(arr, obj){
             '$dataTablePresenter',
             '$actionBarItems',
             '$dialogViewModel',
+            '$confirmViewModel',
             '$redisSettings',
             '$busyIndicator',
             function (
@@ -18461,6 +18470,7 @@ module.exports = function(arr, obj){
                 $dataTablePresenter,
                 $actionBarItems,
                 $dialogViewModel,
+                $confirmViewModel,
                 $redisSettings,
                 $busyIndicator) {
 
@@ -18472,6 +18482,7 @@ module.exports = function(arr, obj){
                     $dataTablePresenter,
                     $actionBarItems,
                     $dialogViewModel,
+                    $confirmViewModel,
                     $redisSettings,
                     $busyIndicator);
             }
@@ -18517,7 +18528,7 @@ module.exports = function(arr, obj){
 
         });
 })();
-},{"./common/busyIndicator.js":164,"./common/dialogs/dialog.js":165,"./common/errorAlert.js":166,"./node_modules/angular-ui-router/release/angular-ui-router.js":167,"./node_modules/angular/index.js":169,"./node_modules/datatables/media/js/jquery.dataTables.js":170,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":177,"./redis/model/activeDatabase.js":179,"./redis/model/hashRepository.js":180,"./redis/model/redisClientFactory.js":181,"./redis/model/redisDataAccess.js":182,"./redis/model/redisRepositoryFactory.js":183,"./redis/model/redisScannerFactory.js":184,"./redis/model/redisSettings.js":185,"./redis/model/setRepository.js":186,"./redis/model/stringRepository.js":187,"./redis/presenter/redisPresenter.js":188,"./redis/viewModel/redisviewModel.js":189,"./tiles/viewModel/tilesViewModel.js":190}],164:[function(require,module,exports){
+},{"./common/busyIndicator.js":164,"./common/dialogs/confirmation.js":165,"./common/dialogs/dialog.js":166,"./common/errorAlert.js":167,"./node_modules/angular-ui-router/release/angular-ui-router.js":168,"./node_modules/angular/index.js":170,"./node_modules/datatables/media/js/jquery.dataTables.js":171,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":178,"./redis/model/activeDatabase.js":180,"./redis/model/hashRepository.js":181,"./redis/model/redisClientFactory.js":182,"./redis/model/redisDataAccess.js":183,"./redis/model/redisRepositoryFactory.js":184,"./redis/model/redisScannerFactory.js":185,"./redis/model/redisSettings.js":186,"./redis/model/setRepository.js":187,"./redis/model/stringRepository.js":188,"./redis/presenter/redisPresenter.js":189,"./redis/viewModel/redisviewModel.js":190,"./tiles/viewModel/tilesViewModel.js":191}],164:[function(require,module,exports){
 exports.create = function ($rootScope) {
     'use strict';
 
@@ -18545,6 +18556,46 @@ exports.create = function ($rootScope) {
     }
 };
 },{}],165:[function(require,module,exports){
+exports.create = function () {
+    'use strict';
+
+    return new function () {
+        var self = this;
+        var onConfirmedCb = null;
+        var onDeclinedCb = null;
+
+        self.Header = 'Confirm';
+        self.Body = null;
+        self.BodyViewModel = null;
+        self.IsVisible = false;
+
+        self.yes = function () {
+            self.IsVisible = false;
+            if (onConfirmedCb) {
+                onConfirmedCb();
+            }
+        };
+
+        self.no = function () {
+            self.IsVisible = false;
+            if (onDeclinedCb) {
+                onDeclinedCb();
+            }
+        };
+
+        self.show = function (onConfirmed, onDeclined) {
+            console.log("confirm");
+            self.IsVisible = true;
+            onConfirmedCb = onConfirmed;
+            onDeclinedCb = onDeclined;
+        };
+
+        self.scope = function() {
+            return angular.element($("#confirmationDialog")).scope();
+        }
+    }
+};
+},{}],166:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -18564,14 +18615,14 @@ exports.create = function() {
         };
     }
 };
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 exports.create = function(email) {
     'use strict';
     var self = this;
     self.Email = email;
     return function() {}
 };
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.13
@@ -22804,7 +22855,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],168:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -49114,11 +49165,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],169:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":168}],170:[function(require,module,exports){
+},{"./angular":169}],171:[function(require,module,exports){
 /*! DataTables 1.10.6
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -63999,7 +64050,7 @@ module.exports = angular;
 }(window, document));
 
 
-},{"jquery":"jquery"}],171:[function(require,module,exports){
+},{"jquery":"jquery"}],172:[function(require,module,exports){
 (function (process,Buffer){
 /*global Buffer require exports console setTimeout */
 
@@ -65287,7 +65338,7 @@ exports.print = function (err, reply) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/commands":172,"./lib/parser/javascript":173,"./lib/queue":174,"./lib/to_array":175,"./lib/util":176,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],172:[function(require,module,exports){
+},{"./lib/commands":173,"./lib/parser/javascript":174,"./lib/queue":175,"./lib/to_array":176,"./lib/util":177,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],173:[function(require,module,exports){
 // This file was generated by ./generate_commands.js on Wed Apr 23 2014 14:51:21 GMT-0700 (PDT)
 module.exports = [
     "append",
@@ -65452,7 +65503,7 @@ module.exports = [
     "zscan"
 ];
 
-},{}],173:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 (function (Buffer){
 var events = require("events"),
     util   = require("../util");
@@ -65757,7 +65808,7 @@ ReplyParser.prototype.send_reply = function (reply) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../util":176,"buffer":2,"events":142}],174:[function(require,module,exports){
+},{"../util":177,"buffer":2,"events":142}],175:[function(require,module,exports){
 // Queue class adapted from Tim Caswell's pattern library
 // http://github.com/creationix/pattern/blob/master/lib/pattern/queue.js
 
@@ -65818,7 +65869,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = Queue;
 }
 
-},{}],175:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 function to_array(args) {
     var len = args.length,
         arr = new Array(len), i;
@@ -65832,7 +65883,7 @@ function to_array(args) {
 
 module.exports = to_array;
 
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 // Support for very old versions of node where the module was called "sys".  At some point, we should abandon this.
 
 var util;
@@ -65845,7 +65896,7 @@ try {
 
 module.exports = util;
 
-},{"sys":160,"util":160}],177:[function(require,module,exports){
+},{"sys":160,"util":160}],178:[function(require,module,exports){
 var async = require('async');
 
 function genericScan(redis, cmd, key, pattern, each_callback, done_callback) {
@@ -65960,7 +66011,7 @@ module.exports = function (args) {
 };
 
 
-},{"async":178}],178:[function(require,module,exports){
+},{"async":179}],179:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -66922,7 +66973,7 @@ module.exports = function (args) {
 }());
 
 }).call(this,require('_process'))
-},{"_process":145}],179:[function(require,module,exports){
+},{"_process":145}],180:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -66932,7 +66983,7 @@ exports.create = function() {
         self.Current = 0;
     }
 };
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -66949,15 +67000,19 @@ exports.create = function ($redisDataAccess) {
             $redisDataAccess.createClient().del(keyData.Key);
             self.create(keyData.Key, newValue);
         };
+
+        self.delete = function (keyData) {
+            $redisDataAccess.createClient().del(keyData.Key);
+        };
     };
 };
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":171}],182:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":172}],183:[function(require,module,exports){
 exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings) {
     'use strict';
     return new function () {
@@ -66973,7 +67028,7 @@ exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings)
         }
     }
 };
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 exports.create = function (stringRepo, setRepo, hashSetRepo) {
     'use strict';
 
@@ -66993,7 +67048,7 @@ exports.create = function (stringRepo, setRepo, hashSetRepo) {
         }
     };
 };
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 exports.create = function ($redisDataAccess, $redisScanner) {
     'use strict';
 
@@ -67006,7 +67061,7 @@ exports.create = function ($redisDataAccess, $redisScanner) {
         });
     }
 };
-},{}],185:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -67018,7 +67073,7 @@ exports.create = function() {
         self.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
     }
 };
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67034,9 +67089,13 @@ exports.create = function ($redisDataAccess) {
             $redisDataAccess.createClient().del(keyData.Key);
             $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
         };
+
+        self.delete = function (keyData) {
+            $redisDataAccess.createClient().del(keyData.Key);
+        };
     };
 };
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67049,9 +67108,13 @@ exports.create = function ($redisDataAccess) {
         self.update = function (keyData, newValue) {
             $redisDataAccess.createClient().set(keyData.Key, newValue);
         };
+
+        self.delete = function (keyData) {
+            $redisDataAccess.createClient().del(keyData.Key);
+        };
     };
 };
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
@@ -67060,7 +67123,7 @@ exports.create = function (redisClientFactory, $redisSettings) {
         self.oTable = null;
         self.Keys = null;
 
-        self.showKeys = function (data, updateCallback) {
+        self.showKeys = function (data, updateCallback, removeCallback) {
             self.Keys = data;
 
             if (self.oTable) {
@@ -67081,6 +67144,12 @@ exports.create = function (redisClientFactory, $redisSettings) {
                     {
                         "title": "Type",
                         "data": "Type",
+                    },
+                    {
+                        "title": "",
+                        "render": function() {
+                            return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
+                        },
                     },
                 ]
             });
@@ -67113,7 +67182,7 @@ exports.create = function (redisClientFactory, $redisSettings) {
                 }
             });
 
-            // update value
+            // handle update
             $('#data tbody').off('click', 'button.btn.btn-default.updateButton');
             $('#data tbody').on('click', 'button.btn.btn-default.updateButton', function () {
                 var currentRow = $(this).closest('tr');
@@ -67122,10 +67191,19 @@ exports.create = function (redisClientFactory, $redisSettings) {
                 var row = self.oTable.row(tr);
                 updateCallback(row.data(), newValue);
             });
+
+            // handle remove 
+            $('#data tbody').off('click', 'a.remove');
+            $('#data tbody').on('click', 'a.remove', function (event) {
+                var tr = $(this).closest('tr');
+                var row = self.oTable.row(tr);
+                removeCallback(row.data());
+                return false;
+            });
         }
     }
 }
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 exports.create = function (
     $activeDatabase,
     $redisRepositoryFactory,
@@ -67133,6 +67211,7 @@ exports.create = function (
     $dataTablePresenter,
     $actionBarItems,
     $dialogViewModel,
+    $confirmViewModel,
     $redisSettings,
     $busyIndicator) {
     'use strict';
@@ -67225,7 +67304,6 @@ exports.create = function (
                 $redisScannerFactory({
                     pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
-                        console.log('each callback ' + type);
                         if (type === 'set') {
                             groupByKey(type, key, value);
                         }
@@ -67242,7 +67320,7 @@ exports.create = function (
                         if (err) {
                             console.log('Error:' + err);
                         }
-                        $dataTablePresenter.showKeys(self.Keys, self.updateKey);
+                        $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
                 });
             }
@@ -67254,10 +67332,22 @@ exports.create = function (
             repo.update(keyData, newValue);
         };
 
+        self.removeKey = function (keyData) {
+            $confirmViewModel.scope().$apply(function () {
+                $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
+                $confirmViewModel.show(function() {
+                    var type = keyData.Type;
+                    var repo = $redisRepositoryFactory(type);
+                    repo.delete(keyData);
+                    searchViewModel.search();
+                });
+            });
+        };
+        
         self.loadKeys(searchViewModel.Pattern);
     }
 }
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 exports.create = function ($state, $actionBarItems) {
     'use strict';
 

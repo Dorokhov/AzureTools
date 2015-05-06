@@ -61,6 +61,9 @@
         .factory('$dialogViewModel', function () {
             return require('./common/dialogs/dialog.js').create();
         })
+        .factory('$confirmViewModel', function () {
+            return require('./common/dialogs/confirmation.js').create();
+        })
         .controller('DialogsController', [
             '$scope', '$dialogViewModel', function ($scope, $dialogViewModel) {
                 $scope.DialogViewModel = $dialogViewModel;
@@ -71,6 +74,11 @@
                     function (evt, toState, toParams, fromState, fromParams) {
                         $dialogViewModel.IsVisible = false;
                     });
+            }
+        ])
+        .controller('ConfirmationController', [
+            '$scope', '$confirmViewModel', function ($scope, $confirmViewModel) {
+                $scope.ConfirmationViewModel = $confirmViewModel;
             }
         ]);
 
@@ -129,7 +137,7 @@
             return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
         }
         ])
-        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner', 
+        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner',
             function ($redisDataAccess, $redisScanner) {
                 return require('./redis/model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
             }
@@ -142,6 +150,7 @@
             '$dataTablePresenter',
             '$actionBarItems',
             '$dialogViewModel',
+            '$confirmViewModel',
             '$redisSettings',
             '$busyIndicator',
             function (
@@ -152,6 +161,7 @@
                 $dataTablePresenter,
                 $actionBarItems,
                 $dialogViewModel,
+                $confirmViewModel,
                 $redisSettings,
                 $busyIndicator) {
 
@@ -163,6 +173,7 @@
                     $dataTablePresenter,
                     $actionBarItems,
                     $dialogViewModel,
+                    $confirmViewModel,
                     $redisSettings,
                     $busyIndicator);
             }

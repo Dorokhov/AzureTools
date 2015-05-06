@@ -13,5 +13,9 @@
             $redisDataAccess.createClient().del(keyData.Key);
             $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
         };
+
+        self.delete = function (keyData) {
+            $redisDataAccess.createClient().del(keyData.Key);
+        };
     };
 };

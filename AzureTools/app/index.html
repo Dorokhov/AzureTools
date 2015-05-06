@@ -82,5 +82,21 @@
             </div>
         </div>
     </div>
+
+    <div id="confirmationDialog" class="panel panel-warning popup" style="width:500px; height:145px;" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
+        <div class="panel-heading">
+            {{ConfirmationViewModel.Header}}
+        </div>
+
+        <div class="panel-body">
+            <div ng-bind="ConfirmationViewModel.Body">
+            </div>
+
+            <div class="btn-group" style="float:right; margin-top:10px">
+                <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.yes()">Yes</button>
+                <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.no()">No</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

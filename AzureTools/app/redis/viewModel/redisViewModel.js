@@ -5,6 +5,7 @@
     $dataTablePresenter,
     $actionBarItems,
     $dialogViewModel,
+    $confirmViewModel,
     $redisSettings,
     $busyIndicator) {
     'use strict';
@@ -113,7 +114,7 @@
                         if (err) {
                             console.log('Error:' + err);
                         }
-                        $dataTablePresenter.showKeys(self.Keys, self.updateKey);
+                        $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
                 });
             }
@@ -125,6 +126,18 @@
             repo.update(keyData, newValue);
         };
 
+        self.removeKey = function (keyData) {
+            $confirmViewModel.scope().$apply(function () {
+                $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
+                $confirmViewModel.show(function() {
+                    var type = keyData.Type;
+                    var repo = $redisRepositoryFactory(type);
+                    repo.delete(keyData);
+                    searchViewModel.search();
+                });
+            });
+        };
+        
         self.loadKeys(searchViewModel.Pattern);
     }
 }

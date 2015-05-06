@@ -6,7 +6,7 @@
         self.oTable = null;
         self.Keys = null;
 
-        self.showKeys = function (data, updateCallback) {
+        self.showKeys = function (data, updateCallback, removeCallback) {
             self.Keys = data;
 
             if (self.oTable) {
@@ -27,6 +27,12 @@
                     {
                         "title": "Type",
                         "data": "Type",
+                    },
+                    {
+                        "title": "",
+                        "render": function() {
+                            return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
+                        },
                     },
                 ]
             });
@@ -59,7 +65,7 @@
                 }
             });
 
-            // update value
+            // handle update
             $('#data tbody').off('click', 'button.btn.btn-default.updateButton');
             $('#data tbody').on('click', 'button.btn.btn-default.updateButton', function () {
                 var currentRow = $(this).closest('tr');
@@ -67,6 +73,15 @@
                 var newValue = $(currentRow).find('textarea').val();
                 var row = self.oTable.row(tr);
                 updateCallback(row.data(), newValue);
+            });
+
+            // handle remove 
+            $('#data tbody').off('click', 'a.remove');
+            $('#data tbody').on('click', 'a.remove', function (event) {
+                var tr = $(this).closest('tr');
+                var row = self.oTable.row(tr);
+                removeCallback(row.data());
+                return false;
             });
         }
     }

@@ -66970,8 +66970,12 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
 
         var loadKeysOperation = 'loadKeys';
 
-        var createClient = function () {
+        var createClient = function (dbNumber) {
             var client = redisClientFactory($redisSettings.Host, $redisSettings.Port, $redisSettings.Password);
+            if (dbNumber !== null) {
+                client.select(dbNumber);
+            }
+
             return client;
         }
 
@@ -66982,25 +66986,49 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
             },
             Pattern: '*'
         };
+
+        var databaseViewModel = {
+            setCurrent: function (n) {
+                this.Current = n;
+                searchViewModel.search();
+            },
+            Current: 0
+        };
         // redis action bar
         $actionBarItems.IsActionBarVisible = true;
         $actionBarItems.IsAddKeyVisible = true;
         $actionBarItems.IsRefreshVisible = true;
         $actionBarItems.IsSettingsVisible = true;
         $actionBarItems.IsSearchVisible = true;
+        $actionBarItems.IsDatabaseSelectVisible = true;
 
         $actionBarItems.addKey = function () {
             $dialogViewModel.IsVisible = true;
-            $dialogViewModel.BodyViewModel = { Key: '', Value: '' };
+            $dialogViewModel.BodyViewModel = {
+                Key: '',
+                Value: '',
+                Types: ['string', 'set'],
+                SelectedType: 'string',
+                selectType: function (value) {
+                    this.SelectedType = value;
+                }
+            };
             $dialogViewModel.Body = 'createKeyTemplate';
             $dialogViewModel.Header = 'Add Key';
 
             $dialogViewModel.save = function () {
                 $dialogViewModel.IsVisible = false;
-
-                createClient().set($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () {
-
-                });
+                var type = $dialogViewModel.BodyViewModel.SelectedType;
+                if (type === 'string') {
+                    createClient(databaseViewModel.Current).set($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
+                }
+                else if (type === 'set') {
+                    console.log("Creating:" + $dialogViewModel.BodyViewModel.Value);
+                    var members = JSON.parse($dialogViewModel.BodyViewModel.Value);
+                    createClient(databaseViewModel.Current).sadd($dialogViewModel.BodyViewModel.Key, members);
+                } else {
+                    throw new Error('Unsupported creating data type: ' + type);
+                }
             };
         };
 
@@ -67016,6 +67044,7 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
         };
 
         $actionBarItems.SearchViewModel = searchViewModel;
+        $actionBarItems.DatabaseViewModel = databaseViewModel;
 
         // load redis data
         self.loadKeys = function (pattern) {
@@ -67024,9 +67053,24 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                 self.Keys.length = 0;
                 $redisScanner({
                     pattern: pattern ? pattern : '*',
-                    redis: createClient(),
+                    redis: createClient(databaseViewModel.Current),
                     each_callback: function (type, key, subkey, p, value, cb) {
-                        self.Keys.push({ Key: key, Type: type, Value: value });
+                        if (type === 'set') {
+                            // group values by key for set
+                            var existing = self.Keys.filter(function (item) {
+                                return item.Key == key;
+                            });
+                            
+                            if (existing !== null && existing[0] !== undefined) {
+                                var values = JSON.parse(existing[0].Value);
+                                values.push(value);
+                                existing[0].Value = JSON.stringify(values);
+                            } else {
+                                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
+                            }
+                        } else {
+                            self.Keys.push({ Key: key, Type: type, Value: value});
+                        }
                         cb();
                     },
                     done_callback: function (err) {
@@ -67039,11 +67083,16 @@ exports.create = function (redisClientFactory, dataTablePresenter, $actionBarIte
                 });
             }
         };
-        self.updateKey = function(keyData, newValue) {
+        self.updateKey = function (keyData, newValue) {
             var type = keyData.Type;
             if (type === 'string') {
                 console.log('Update. Key:' + keyData.Key + ' Value:' + newValue);
-                createClient().set(keyData.Key, newValue);
+                createClient(databaseViewModel.Current).set(keyData.Key, newValue);
+            }
+            else if (type === 'set') {
+                var updatedMembers = JSON.parse(newValue);
+                createClient(databaseViewModel.Current).del(keyData.Key);
+                createClient(databaseViewModel.Current).sadd(keyData.Key, updatedMembers);
             }
         };
         self.loadKeys(searchViewModel.Pattern);

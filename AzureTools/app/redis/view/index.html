@@ -6,6 +6,19 @@
 
 <script type="text/ng-template" id="createKeyTemplate">
     <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="width:96px">Type</span>
+        <div class="dropdown" style="float:left; margin-left: 5px;">
+            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{DialogViewModel.BodyViewModel.SelectedType}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="input-group input-group-sm" style="margin-top:2px">
         <span class="input-group-addon" style="width:96px">Key</span>
         <input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
     </div>
@@ -14,6 +27,7 @@
         <span class="input-group-addon" style="width:96px">Value</span>
         <textarea ng-model="DialogViewModel.BodyViewModel.Value" class="form-control" style="width:372px; height: 100px;resize: none;" />
     </div>
+
 </script>
 
 <script type="text/ng-template" id="changeSettingsTemplate">

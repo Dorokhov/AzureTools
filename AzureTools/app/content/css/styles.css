@@ -1,5 +1,4 @@
 ﻿.popup {
-    width: 800px;
     margin: 30px auto 0;
     position: absolute;
     left: 30%;
@@ -22,4 +21,38 @@
 
 .noMarginBottom {
     margin-bottom: 0px;
+}
+
+
+@media (max-width:992px) {
+    .margin-to-align {
+      margin-left: 0px;
+      position: relative;
+  }
+}
+
+@media (max-width:992px) {
+    .tile-preview{
+      margin-left: 0px;
+      position: relative;
+      width: 160px;
+  }
+}
+
+@media (min-width: 992px) {
+  .margin-to-align {
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      width: 940px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .margin-to-align {
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      width: 1140px;
+  }
 }

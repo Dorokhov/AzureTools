@@ -38,12 +38,8 @@
             });
 
             function format(type, value) {
-                var detailsClass = 'bigHeight';
-                if (type === 'string') {
-                    detailsClass = 'smallHeight';
-                }
                 return '<div>' +
-                    '<textarea class="details-textarea ' + detailsClass + '">' + value + '</textarea>' +
+                    '<textarea class="details-textarea">' + value + '</textarea>' +
                     '<button type="button" class="btn btn-default updateButton">Update</button>' +
                     '</div>';
             }
@@ -61,6 +57,13 @@
                 } else {
                     // Open this row
                     row.child(format(row.data().Type, row.data().Value)).show();
+                    
+                    // fit text area to content
+                    var detailsTr = tr.next();
+                    var textarea = detailsTr.find("textarea");
+                    textarea.height((textarea.prop("scrollHeight")));
+
+                    detailsTr.addClass('shown');
                     tr.addClass('shown');
                 }
             });

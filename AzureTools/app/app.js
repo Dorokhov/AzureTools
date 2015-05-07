@@ -8,6 +8,8 @@
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
+    window.isDebugVersion = true;
+
     angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
             var data = {
@@ -50,6 +52,11 @@
                 return require('./common/busyIndicator.js').create($rootScope);
             }
         ])
+        .factory('$messageBus', [
+            '$rootScope', function ($rootScope) {
+                return require('./common/messageBus.js').create($rootScope);
+            }
+        ])
         .controller('BusyIndicatorController', [
             '$scope', '$busyIndicator', function ($scope, $busyIndicator) {
                 $scope.BusyIndicator = $busyIndicator;
@@ -64,9 +71,14 @@
         .factory('$confirmViewModel', function () {
             return require('./common/dialogs/confirmation.js').create();
         })
+        .factory('$notifyViewModel', ['$timeout',function ($timeout) {
+            return require('./common/dialogs/notification.js').create($timeout);
+        }])
         .controller('DialogsController', [
-            '$scope', '$dialogViewModel', function ($scope, $dialogViewModel) {
+            '$scope', '$dialogViewModel', '$notifyViewModel', function ($scope, $dialogViewModel, $notifyViewModel) {
                 $scope.DialogViewModel = $dialogViewModel;
+                $scope.NotifyViewModel = $notifyViewModel;
+
                 $dialogViewModel.Body = '';
                 $dialogViewModel.IsVisible = false;
 
@@ -113,8 +125,8 @@
                 return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
             }
         ])
-        .factory('$redisDataAccess', ['$activeDatabase', '$redisClientFactory', '$redisSettings', function ($activeDatabase, $redisClientFactory, $redisSettings) {
-            return require('./redis/model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings);
+        .factory('$redisDataAccess', ['$activeDatabase', '$redisClientFactory', '$redisSettings', '$messageBus', function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
+            return require('./redis/model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings, $messageBus);
         }
         ])
         .factory('$activeDatabase', [function () {
@@ -151,8 +163,10 @@
             '$actionBarItems',
             '$dialogViewModel',
             '$confirmViewModel',
+            '$notifyViewModel',
             '$redisSettings',
             '$busyIndicator',
+            '$messageBus',
             function (
                 $scope,
                 $activeDatabase,
@@ -162,8 +176,10 @@
                 $actionBarItems,
                 $dialogViewModel,
                 $confirmViewModel,
+                $notifyViewModel,
                 $redisSettings,
-                $busyIndicator) {
+                $busyIndicator,
+                $messageBus) {
 
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
                     .create(
@@ -174,8 +190,10 @@
                     $actionBarItems,
                     $dialogViewModel,
                     $confirmViewModel,
+                    $notifyViewModel,
                     $redisSettings,
-                    $busyIndicator);
+                    $busyIndicator,
+                    $messageBus);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {

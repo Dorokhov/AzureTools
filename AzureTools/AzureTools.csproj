@@ -44,6 +44,7 @@
     <Content Include="app\bundle.js" />
     <Content Include="app\common\busyIndicator.js" />
     <Content Include="app\common\dialogs\confirmation.js" />
+    <Content Include="app\common\dialogs\notification.js" />
     <Content Include="app\common\errorAlert.js" />
     <Content Include="app\common\dialogs\dialog.js" />
     <Content Include="app\content\css\angular-csp.css" />
@@ -2274,6 +2275,7 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
+    <Content Include="app\common\messageBus.js" />
     <Content Include="app\redis\model\redisDataAccess.js" />
     <Content Include="app\redis\model\redisScannerFactory.js" />
     <Content Include="app\redis\model\activeDatabase.js" />

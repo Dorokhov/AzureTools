@@ -1,13 +1,6 @@
-﻿.details-textarea {
+﻿.details-textarea{
     width: 100%;
-}
 
-.bigHeight {
-    height: 150px;
-}
-
-.smallHeight {
-    height: 30px;
 }
 
 .updateButton {
@@ -21,4 +14,8 @@ tr.details td.details-control {
 
 .grid label {
     font-size: 12px;
+}
+
+tr.shown {
+    background: #eeeeee;
 }

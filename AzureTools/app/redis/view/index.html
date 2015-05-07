@@ -6,9 +6,9 @@
 
 <script type="text/ng-template" id="createKeyTemplate">
     <div class="input-group input-group-sm" style="margin-top:2px">
-        <span class="input-group-addon" style="width:96px">Type</span>
+        <span class="input-group-addon" style="border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid; width:97px;">Type</span>
         <div class="dropdown" style="float:left; margin-left: 5px;">
-            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
                 {{DialogViewModel.BodyViewModel.SelectedType}}
                 <span class="caret"></span>
             </button>
@@ -25,15 +25,17 @@
     
     <div class="input-group input-group-sm" style="margin-top:2px">
         <span class="input-group-addon" style="width:96px">Value</span>
-        <textarea ng-model="DialogViewModel.BodyViewModel.Value" class="form-control" style="width:372px; height: 100px;resize: none;" />
+        <textarea ng-model="DialogViewModel.BodyViewModel.Value" class="form-control" style="width:372px; height: 100px;" />
     </div>
 
 </script>
 
 <script type="text/ng-template" id="changeSettingsTemplate">
-    <label>Provide credentials to access your Redis storage</label>
+    <div class="input-group input-group-sm">
+        <label>Provide credentials to access your Redis storage</label>
+    </div>
 
-    <div>
+    <div class="input-group input-group-sm">
         <div class="input-group input-group-sm" style="margin-top:2px">
             <span class="input-group-addon" style="width:96px">Host</span>
             <input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
@@ -46,7 +48,8 @@
 
         <div class="input-group input-group-sm" style="margin-top:2px">
             <span class="input-group-addon">Auth Password</span>
-            <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;" />
+            <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
         </div>
     </div>
+
 </script>

@@ -1588,7 +1588,7 @@ a {
   margin: 0;
 }
 .metro .table.striped tbody tr:nth-child(odd) {
-  background: #eeeeee;
+  /*background: #eeeeee;*/
 }
 .metro .table.bordered {
   border: 1px #eaeaea solid;

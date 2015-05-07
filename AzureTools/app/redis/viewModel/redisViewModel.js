@@ -6,8 +6,10 @@
     $actionBarItems,
     $dialogViewModel,
     $confirmViewModel,
+    $notifyViewModel,
     $redisSettings,
-    $busyIndicator) {
+    $busyIndicator,
+    $messageBus) {
     'use strict';
 
     return new function () {
@@ -68,15 +70,25 @@
 
         $actionBarItems.changeSettings = function () {
             $dialogViewModel.IsVisible = true;
-            $dialogViewModel.BodyViewModel = $redisSettings;
+            $dialogViewModel.BodyViewModel = {
+                Host: $redisSettings.Host,
+                Port: $redisSettings.Port,
+                Password: $redisSettings.Password,
+            }
             $dialogViewModel.Body = 'changeSettingsTemplate';
             $dialogViewModel.Header = 'Settings';
+            $dialogViewModel.save = function() {
+                $redisSettings.Host = $dialogViewModel.BodyViewModel.Host;
+                $redisSettings.Port = $dialogViewModel.BodyViewModel.Port;
+                $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
+                $dialogViewModel.IsVisible = false;
+            };
         };
 
         $actionBarItems.SearchViewModel = searchViewModel;
         $actionBarItems.DatabaseViewModel = databaseViewModel;
-        
-        var groupByKey = function(type, key, value) {
+
+        var groupByKey = function (type, key, value) {
             var existing = self.Keys.filter(function (item) {
                 return item.Key == key;
             });
@@ -91,6 +103,7 @@
         }
         // load redis data
         self.loadKeys = function (pattern) {
+            $notifyViewModel.close();
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
                 $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
@@ -112,8 +125,9 @@
                     done_callback: function (err) {
                         $busyIndicator.setIsBusy(loadKeysOperation, false);
                         if (err) {
-                            console.log('Error:' + err);
+                            $messageBus.publish('redis-communication-error', err);
                         }
+
                         $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
                 });
@@ -129,7 +143,7 @@
         self.removeKey = function (keyData) {
             $confirmViewModel.scope().$apply(function () {
                 $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
-                $confirmViewModel.show(function() {
+                $confirmViewModel.show(function () {
                     var type = keyData.Type;
                     var repo = $redisRepositoryFactory(type);
                     repo.delete(keyData);
@@ -137,7 +151,29 @@
                 });
             });
         };
-        
-        self.loadKeys(searchViewModel.Pattern);
+
+        // init
+        if ($redisSettings.isEmpty()) {
+            $actionBarItems.changeSettings();
+        } else {
+            self.loadKeys(searchViewModel.Pattern);
+        }
+
+        $messageBus.subscribe('redis-communication-error', function (event, data) {
+            console.log('Received data: ' + data);
+            if (data !== undefined && data !== null) {
+                if (data.name && data.name === 'Error') {
+                    console.log('Handled error: ' + data.message);
+                    $confirmViewModel.scope().$apply(function() {
+                        $notifyViewModel.showWarning(data.message);
+                    });
+                } else {
+                    console.log('Handled data: ' + data);
+                    $confirmViewModel.scope().$apply(function() {
+                        $notifyViewModel.showWarning(data);
+                    });
+                }
+            }
+        });
     }
 }

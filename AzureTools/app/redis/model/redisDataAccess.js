@@ -1,4 +1,4 @@
-﻿exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings) {
+﻿exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
     'use strict';
     return new function () {
         var self = this;
@@ -8,7 +8,9 @@
             if ($activeDatabase.Current !== null) {
                 client.select($activeDatabase.Current);
             }
-
+            client.on("error", function(msg) {
+                $messageBus.publish('redis-communication-error', msg);
+            });
             return client;
         }
     }

@@ -18357,14 +18357,18 @@ module.exports = function(arr, obj){
     angular
         .module('common', [angularRoute])
         .factory('$busyIndicator', [
-            '$rootScope', function ($rootScope) {
-                return require('./common/busyIndicator.js').create($rootScope);
+            '$rootScope', '$timeout', function ($rootScope, $timeout) {
+                return require('./common/busyIndicator.js').create($rootScope, $timeout);
             }
         ])
         .factory('$messageBus', [
             '$rootScope', function ($rootScope) {
                 return require('./common/messageBus.js').create($rootScope);
             }
+        ])
+        .factory('$utils', [function () {
+            return require('./common/utils.js').create();
+        }
         ])
         .controller('BusyIndicatorController', [
             '$scope', '$busyIndicator', function ($scope, $busyIndicator) {
@@ -18380,7 +18384,7 @@ module.exports = function(arr, obj){
         .factory('$confirmViewModel', function () {
             return require('./common/dialogs/confirmation.js').create();
         })
-        .factory('$notifyViewModel', ['$timeout',function ($timeout) {
+        .factory('$notifyViewModel', ['$timeout', function ($timeout) {
             return require('./common/dialogs/notification.js').create($timeout);
         }])
         .controller('DialogsController', [
@@ -18442,16 +18446,26 @@ module.exports = function(arr, obj){
             return require('./redis/model/activeDatabase.js').create();
         }
         ])
-        .factory('$stringRepo', ['$redisDataAccess', function ($redisDataAccess) {
-            return require('./redis/model/stringRepository.js').create($redisDataAccess);
+        .factory('$baseRepo', ['$redisDataAccess', '$utils', function ($redisDataAccess, $utils) {
+            return require('./redis/model/baseRepository.js').create($redisDataAccess, $utils);
         }
         ])
-        .factory('$setRepo', ['$redisDataAccess', function ($redisDataAccess) {
-            return require('./redis/model/setRepository.js').create($redisDataAccess);
+        .factory('$stringRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+            var stringRepo = require('./redis/model/stringRepository.js').create($redisDataAccess);
+            angular.extend(stringRepo, $baseRepo);
+            return stringRepo;
         }
         ])
-         .factory('$hashSetRepo', ['$redisDataAccess', function ($redisDataAccess) {
-             return require('./redis/model/hashRepository.js').create($redisDataAccess);
+        .factory('$setRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+            var setRepo = require('./redis/model/setRepository.js').create($redisDataAccess);
+            angular.extend(setRepo, $baseRepo);
+            return setRepo;
+        }
+        ])
+         .factory('$hashSetRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+             var hashRepo = require('./redis/model/hashRepository.js').create($redisDataAccess);
+             angular.extend(hashRepo, $baseRepo);
+             return hashRepo;
          }
          ])
         .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
@@ -18465,6 +18479,7 @@ module.exports = function(arr, obj){
         ])
         .controller('RedisController', [
             '$scope',
+            '$timeout',
             '$activeDatabase',
             '$redisRepositoryFactory',
             '$redisScannerFactory',
@@ -18478,6 +18493,7 @@ module.exports = function(arr, obj){
             '$messageBus',
             function (
                 $scope,
+                $timeout,
                 $activeDatabase,
                 $redisRepositoryFactory,
                 $redisScannerFactory,
@@ -18492,6 +18508,7 @@ module.exports = function(arr, obj){
 
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
                     .create(
+                    $timeout,
                     $activeDatabase,
                     $redisRepositoryFactory,
                     $redisScannerFactory,
@@ -18546,8 +18563,8 @@ module.exports = function(arr, obj){
 
         });
 })();
-},{"./common/busyIndicator.js":164,"./common/dialogs/confirmation.js":165,"./common/dialogs/dialog.js":166,"./common/dialogs/notification.js":167,"./common/errorAlert.js":168,"./common/messageBus.js":169,"./node_modules/angular-ui-router/release/angular-ui-router.js":170,"./node_modules/angular/index.js":172,"./node_modules/datatables/media/js/jquery.dataTables.js":173,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":180,"./redis/model/activeDatabase.js":182,"./redis/model/hashRepository.js":183,"./redis/model/redisClientFactory.js":184,"./redis/model/redisDataAccess.js":185,"./redis/model/redisRepositoryFactory.js":186,"./redis/model/redisScannerFactory.js":187,"./redis/model/redisSettings.js":188,"./redis/model/setRepository.js":189,"./redis/model/stringRepository.js":190,"./redis/presenter/redisPresenter.js":191,"./redis/viewModel/redisviewModel.js":192,"./tiles/viewModel/tilesViewModel.js":193}],164:[function(require,module,exports){
-exports.create = function ($rootScope) {
+},{"./common/busyIndicator.js":164,"./common/dialogs/confirmation.js":165,"./common/dialogs/dialog.js":166,"./common/dialogs/notification.js":167,"./common/errorAlert.js":168,"./common/messageBus.js":169,"./common/utils.js":170,"./node_modules/angular-ui-router/release/angular-ui-router.js":171,"./node_modules/angular/index.js":173,"./node_modules/datatables/media/js/jquery.dataTables.js":174,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":181,"./redis/model/activeDatabase.js":183,"./redis/model/baseRepository.js":184,"./redis/model/hashRepository.js":185,"./redis/model/redisClientFactory.js":186,"./redis/model/redisDataAccess.js":187,"./redis/model/redisRepositoryFactory.js":188,"./redis/model/redisScannerFactory.js":189,"./redis/model/redisSettings.js":190,"./redis/model/setRepository.js":191,"./redis/model/stringRepository.js":192,"./redis/presenter/redisPresenter.js":193,"./redis/viewModel/redisviewModel.js":194,"./tiles/viewModel/tilesViewModel.js":195}],164:[function(require,module,exports){
+exports.create = function ($rootScope, $timeout) {
     'use strict';
 
     return new function() {
@@ -18559,9 +18576,9 @@ exports.create = function ($rootScope) {
             
             self.Operations[operation] = value;
 
-            if (!$rootScope.$$phase) {
+            $timeout(function() {
                 $rootScope.$apply();
-            }
+            });
         }
 
         self.getIsBusy = function (operation) {
@@ -18623,7 +18640,9 @@ exports.create = function() {
         self.Body = null;
         self.BodyViewModel = null;
         self.IsVisible = false;
-
+        self.IsChecked = false;
+        self.WithOption = false;
+        self.OptionText = '';
         self.save = function() {
             self.IsVisible = false;
         };
@@ -18674,11 +18693,37 @@ exports.create = function ($rootScope) {
         };
 
         self.subscribe = function (eventName, cb) {
-            $rootScope.$on(eventName, cb);
+            if (eventName instanceof Array) {
+                eventName.forEach(function(en) {
+                    self.subscribe(en, cb);
+                });
+            }else if (typeof eventName === 'string') {
+                $rootScope.$on(eventName, cb);
+            } else {
+                throw Error('TypeError: Unsupported type of "eventName" arg:' + typeof eventName);
+            }
         };
     }
 };
 },{}],170:[function(require,module,exports){
+exports.create = function () {
+    'use strict';
+    return new function() {
+        var self = this;
+        self.safeJsonParse = function (value) {
+            try {
+                return JSON.parse(value);
+            } catch (e) {
+                throw {
+                    name: 'Json Parse Error',
+                    message: 'Invalid JSON "' + value + '"',
+                    details: e
+                }
+            }
+        };
+    };
+};
+},{}],171:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.13
@@ -22911,7 +22956,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -49221,11 +49266,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],172:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":171}],173:[function(require,module,exports){
+},{"./angular":172}],174:[function(require,module,exports){
 /*! DataTables 1.10.6
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -64106,7 +64151,7 @@ module.exports = angular;
 }(window, document));
 
 
-},{"jquery":"jquery"}],174:[function(require,module,exports){
+},{"jquery":"jquery"}],175:[function(require,module,exports){
 (function (process,Buffer){
 /*global Buffer require exports console setTimeout */
 
@@ -65394,7 +65439,7 @@ exports.print = function (err, reply) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/commands":175,"./lib/parser/javascript":176,"./lib/queue":177,"./lib/to_array":178,"./lib/util":179,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],175:[function(require,module,exports){
+},{"./lib/commands":176,"./lib/parser/javascript":177,"./lib/queue":178,"./lib/to_array":179,"./lib/util":180,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],176:[function(require,module,exports){
 // This file was generated by ./generate_commands.js on Wed Apr 23 2014 14:51:21 GMT-0700 (PDT)
 module.exports = [
     "append",
@@ -65559,7 +65604,7 @@ module.exports = [
     "zscan"
 ];
 
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 (function (Buffer){
 var events = require("events"),
     util   = require("../util");
@@ -65864,7 +65909,7 @@ ReplyParser.prototype.send_reply = function (reply) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../util":179,"buffer":2,"events":142}],177:[function(require,module,exports){
+},{"../util":180,"buffer":2,"events":142}],178:[function(require,module,exports){
 // Queue class adapted from Tim Caswell's pattern library
 // http://github.com/creationix/pattern/blob/master/lib/pattern/queue.js
 
@@ -65925,7 +65970,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = Queue;
 }
 
-},{}],178:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 function to_array(args) {
     var len = args.length,
         arr = new Array(len), i;
@@ -65939,7 +65984,7 @@ function to_array(args) {
 
 module.exports = to_array;
 
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 // Support for very old versions of node where the module was called "sys".  At some point, we should abandon this.
 
 var util;
@@ -65952,7 +65997,7 @@ try {
 
 module.exports = util;
 
-},{"sys":160,"util":160}],180:[function(require,module,exports){
+},{"sys":160,"util":160}],181:[function(require,module,exports){
 var async = require('async');
 
 function genericScan(redis, cmd, key, pattern, each_callback, done_callback) {
@@ -66067,7 +66112,7 @@ module.exports = function (args) {
 };
 
 
-},{"async":181}],181:[function(require,module,exports){
+},{"async":182}],182:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -67029,7 +67074,7 @@ module.exports = function (args) {
 }());
 
 }).call(this,require('_process'))
-},{"_process":145}],182:[function(require,module,exports){
+},{"_process":145}],183:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -67039,36 +67084,45 @@ exports.create = function() {
         self.Current = 0;
     }
 };
-},{}],183:[function(require,module,exports){
-exports.create = function ($redisDataAccess) {
+},{}],184:[function(require,module,exports){
+exports.create = function ($redisDataAccess, $utils) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
-        self.create = function (key, value, cb) {
-            var members = JSON.parse(value);
-            for (var i = 0; i < members.length; i++) {
-                $redisDataAccess.createClient().hset(key, members[i][0], members[i][1], cb);
-            }
-        };
-
-        self.update = function (keyData, newValue) {
-            $redisDataAccess.createClient().del(keyData.Key);
-            self.create(keyData.Key, newValue);
-        };
-
+        self.Utils = $utils;
         self.delete = function (keyData) {
             $redisDataAccess.createClient().del(keyData.Key);
         };
     };
 };
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
+exports.create = function ($redisDataAccess) {
+    'use strict';
+
+    return new function () {
+        var self = this;
+        self.create = function (key, value, cb) {
+            var members = self.Utils.safeJsonParse(value);
+            for (var i = 0; i < members.length; i++) {
+                $redisDataAccess.createClient().hset(key, members[i][0], members[i][1], cb);
+            }
+        };
+
+        self.update = function (keyData, newValue, cb) {
+            self.Utils.safeJsonParse(newValue);
+            $redisDataAccess.createClient().del(keyData.Key);
+            self.create(keyData.Key, newValue, cb);
+        };
+    };
+};
+},{}],186:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":174}],185:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":175}],187:[function(require,module,exports){
 exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
     'use strict';
     return new function () {
@@ -67086,7 +67140,7 @@ exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings,
         }
     }
 };
-},{}],186:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 exports.create = function (stringRepo, setRepo, hashSetRepo) {
     'use strict';
 
@@ -67106,7 +67160,7 @@ exports.create = function (stringRepo, setRepo, hashSetRepo) {
         }
     };
 };
-},{}],187:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 exports.create = function ($redisDataAccess, $redisScanner) {
     'use strict';
 
@@ -67119,7 +67173,7 @@ exports.create = function ($redisDataAccess, $redisScanner) {
         });
     }
 };
-},{}],188:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -67141,29 +67195,30 @@ exports.create = function() {
         };
     }
 };
-},{}],189:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
+        
         self.create = function (key, value, cb) {
-            var members = JSON.parse(value);
-            $redisDataAccess.createClient().sadd(key, members, cb);
+            var members = self.Utils.safeJsonParse(value);
+            if (members != null) {
+                $redisDataAccess.createClient().sadd(key, members, cb);
+            }
         };
 
         self.update = function (keyData, newValue) {
-            var updatedMembers = JSON.parse(newValue);
-            $redisDataAccess.createClient().del(keyData.Key);
-            $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
-        };
-
-        self.delete = function (keyData) {
-            $redisDataAccess.createClient().del(keyData.Key);
+            var updatedMembers = self.Utils.safeJsonParse(newValue);
+            if (updatedMembers != null) {
+                $redisDataAccess.createClient().del(keyData.Key);
+                $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
+            }
         };
     };
 };
-},{}],190:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67176,13 +67231,9 @@ exports.create = function ($redisDataAccess) {
         self.update = function (keyData, newValue) {
             $redisDataAccess.createClient().set(keyData.Key, newValue);
         };
-
-        self.delete = function (keyData) {
-            $redisDataAccess.createClient().del(keyData.Key);
-        };
     };
 };
-},{}],191:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
@@ -67190,20 +67241,35 @@ exports.create = function (redisClientFactory, $redisSettings) {
         var self = this;
         self.oTable = null;
         self.Keys = null;
+        self.cleanUp = function() {
+            if (self.oTable) {
+                self.oTable.destroy();
+            }
+
+        };
 
         self.showKeys = function (data, updateCallback, removeCallback) {
             self.Keys = data;
 
-            if (self.oTable) {
-                self.oTable.destroy();
-            }
-            
+            var calcDataTableHeight = function () {
+                return ($(window).height() - 150);
+            };
+
+            self.cleanUp();
+
+            $(window).unbind('resize');
+            $(window).bind('resize',function () {
+                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.oTable.columns.adjust().draw();
+            });
+
             self.oTable = $('#data').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
-
+                scrollY: calcDataTableHeight(),
                 "data": self.Keys,
+                autoWidth:false,
                 "columns": [
                     {
                         "title": "Key",
@@ -67221,7 +67287,7 @@ exports.create = function (redisClientFactory, $redisSettings) {
                     },
                 ]
             });
-
+            
             function format(type, value) {
                 return '<div>' +
                     '<textarea class="details-textarea">' + value + '</textarea>' +
@@ -67274,8 +67340,9 @@ exports.create = function (redisClientFactory, $redisSettings) {
         }
     }
 }
-},{}],192:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 exports.create = function (
+    $timeout,
     $activeDatabase,
     $redisRepositoryFactory,
     $redisScannerFactory,
@@ -67320,6 +67387,9 @@ exports.create = function (
         $actionBarItems.IsDatabaseSelectVisible = true;
 
         $actionBarItems.addKey = function () {
+            $dialogViewModel.WithOption = true;
+            $dialogViewModel.IsChecked = true;
+            $dialogViewModel.OptionText = 'Close dialog on save';
             $dialogViewModel.IsVisible = true;
             $dialogViewModel.BodyViewModel = {
                 Key: '',
@@ -67328,16 +67398,47 @@ exports.create = function (
                 SelectedType: 'string',
                 selectType: function (value) {
                     this.SelectedType = value;
-                }
+                    var example = '';
+                    switch (this.SelectedType) {
+                        case 'string':
+                            example = 'any string';
+                            break;
+                        case 'set':
+                            example = '["set value 1", "set value 2"]';
+                            break;
+                        case 'hash set':
+                            example = '[ ["name 1", "value 1"], ["name 2, "value 2"] ]';
+                            break;
+                    }
+
+                    this.ValueExample = 'Example: ' + example;
+                },
+                ValueExample: 'Example: any string'
             };
             $dialogViewModel.Body = 'createKeyTemplate';
             $dialogViewModel.Header = 'Add Key';
 
             $dialogViewModel.save = function () {
-                $dialogViewModel.IsVisible = false;
                 var type = $dialogViewModel.BodyViewModel.SelectedType;
                 var repo = $redisRepositoryFactory(type);
-                repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
+
+                try {
+                    repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
+                } catch (e) {
+                    if (e.name && e.name === 'Json Parse Error') {
+                        console.log(e.details);
+                        showError(e.message + ' ' + $dialogViewModel.BodyViewModel.ValueExample);
+                        return;
+                    }
+
+                    throw e;
+                } 
+                $dialogViewModel.BodyViewModel.Key = '';
+                $dialogViewModel.BodyViewModel.Value = '';
+
+                if ($dialogViewModel.IsChecked) {
+                    $dialogViewModel.IsVisible = false;
+                }
             };
         };
 
@@ -67346,6 +67447,8 @@ exports.create = function (
         };
 
         $actionBarItems.changeSettings = function () {
+            $dialogViewModel.WithOption = false;
+            $dialogViewModel.OptionText = '';
             $dialogViewModel.IsVisible = true;
             $dialogViewModel.BodyViewModel = {
                 Host: $redisSettings.Host,
@@ -67354,7 +67457,7 @@ exports.create = function (
             }
             $dialogViewModel.Body = 'changeSettingsTemplate';
             $dialogViewModel.Header = 'Settings';
-            $dialogViewModel.save = function() {
+            $dialogViewModel.save = function () {
                 $redisSettings.Host = $dialogViewModel.BodyViewModel.Host;
                 $redisSettings.Port = $dialogViewModel.BodyViewModel.Port;
                 $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
@@ -67384,7 +67487,6 @@ exports.create = function (
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
                 $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
-
                 $redisScannerFactory({
                     pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
@@ -67401,7 +67503,10 @@ exports.create = function (
                     },
                     done_callback: function (err) {
                         $busyIndicator.setIsBusy(loadKeysOperation, false);
-                        $messageBus.publish('redis-communication-error', err);
+                        if (err) {
+                            $messageBus.publish('redis-communication-error', err);
+                        }
+
                         $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
                 });
@@ -67433,25 +67538,33 @@ exports.create = function (
             self.loadKeys(searchViewModel.Pattern);
         }
 
-        $messageBus.subscribe('redis-communication-error', function (event, data) {
-            console.log('Received data: ' + data);
+        var showError = function(data) {
             if (data !== undefined && data !== null) {
                 if (data.name && data.name === 'Error') {
                     console.log('Handled error: ' + data.message);
-                    $confirmViewModel.scope().$apply(function() {
-                        $notifyViewModel.showWarning(data.message);
+                    $timeout(function () {
+                        $confirmViewModel.scope().$apply(function () {
+                            $notifyViewModel.showWarning(data.message);
+                        });
                     });
                 } else {
                     console.log('Handled data: ' + data);
-                    $confirmViewModel.scope().$apply(function() {
-                        $notifyViewModel.showWarning(data);
+                    $timeout(function () {
+                        $confirmViewModel.scope().$apply(function () {
+                            $notifyViewModel.showWarning(data);
+                        });
                     });
                 }
             }
+        }
+        $messageBus.subscribe(
+            ['json-format-failure', 'redis-communication-error'], function (event, data) {
+                console.log('Received data: ' + data);
+            showError(data);
         });
     }
 }
-},{}],193:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 exports.create = function ($state, $actionBarItems) {
     'use strict';
 

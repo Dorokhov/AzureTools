@@ -1,4 +1,4 @@
-﻿exports.create = function ($rootScope) {
+﻿exports.create = function ($rootScope, $timeout) {
     'use strict';
 
     return new function() {
@@ -10,9 +10,9 @@
             
             self.Operations[operation] = value;
 
-            if (!$rootScope.$$phase) {
+            $timeout(function() {
                 $rootScope.$apply();
-            }
+            });
         }
 
         self.getIsBusy = function (operation) {

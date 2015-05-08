@@ -19,3 +19,7 @@ tr.details td.details-control {
 tr.shown {
     background: #eeeeee;
 }
+
+#data thead{
+    display:none;
+}

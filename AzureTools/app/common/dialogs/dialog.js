@@ -7,7 +7,9 @@
         self.Body = null;
         self.BodyViewModel = null;
         self.IsVisible = false;
-
+        self.IsChecked = false;
+        self.WithOption = false;
+        self.OptionText = '';
         self.save = function() {
             self.IsVisible = false;
         };

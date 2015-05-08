@@ -3,12 +3,30 @@
 <head>
     <title>Azure Tools</title>
     <!--css-->
+    <link href="content/css/metro-ui-css/iconFont.eot" rel="stylesheet">
+    <link href="content/css/metro-ui-css/iconFont.ttf" rel="stylesheet">
+    <link href="content/css/metro-ui-css/iconFont.woff" rel="stylesheet">
+    <link href="content/css/metro-ui-css/OpenSans-Bold.woff" rel="stylesheet">
+    <link href="content/css/metro-ui-css/OpenSans-Light.woff" rel="stylesheet">
+    <link href="content/css/metro-ui-css/OpenSans.woff" rel="stylesheet">
+    <link href="content/css/metro-ui-css/PTSerif-Caption.woff" rel="stylesheet">
+    <link href="content/css/metro-ui-css/metroSysIcons.ttf" rel="stylesheet">
+    <link href="content/css/metro-ui-css/metroSysIcons.woff" rel="stylesheet">
+    <link href="content/css/fonts/FontAwesome.otf" rel="stylesheet">
+    <link href="content/css/fonts/fontawesome-webfont.eot" rel="stylesheet">
+    <link href="content/css/fonts/fontawesome-webfont.svg" rel="stylesheet">
+    <link href="content/css/fonts/fontawesome-webfont.ttf" rel="stylesheet">
+    <link href="content/css/fonts/fontawesome-webfont.woff" rel="stylesheet">
+    <link href="content/css/fonts/fontawesome-webfont.woff2" rel="stylesheet">
+
+    <link href="content/css/metro-ui-css/iconFont.css" rel="stylesheet">
+    <link href="content/css/metro-ui-css/font-awesome.css" rel="stylesheet">
+
     <link href="content/css/angular-csp.css" rel="stylesheet">
     <link href="content/css/metro-ui-css/metro-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="content/css/metro-bootstrap.min.css" />
     <link href="content/css/metro-ui-css/metro-bootstrap-responsive.css" rel="stylesheet">
-    <link href="content/css/metro-ui-css/iconFont.css" rel="stylesheet">
-
+    
     <link rel="stylesheet" href="content/css/grid.css" />
     <link rel="stylesheet" href="content/css/styles.css" />
 
@@ -81,6 +99,11 @@
         <div class="panel-body">
             <div ng-include="DialogViewModel.Body">
             </div>
+            
+            <label class="checkbox" ng-show="DialogViewModel.WithOption">
+                <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked">
+                <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
+            </label>
 
             <div class="btn-group" style="float:right; margin-top:10px">
                 <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>

@@ -5,20 +5,35 @@
         var self = this;
         self.oTable = null;
         self.Keys = null;
+        self.cleanUp = function() {
+            if (self.oTable) {
+                self.oTable.destroy();
+            }
+
+        };
 
         self.showKeys = function (data, updateCallback, removeCallback) {
             self.Keys = data;
 
-            if (self.oTable) {
-                self.oTable.destroy();
-            }
-            
+            var calcDataTableHeight = function () {
+                return ($(window).height() - 150);
+            };
+
+            self.cleanUp();
+
+            $(window).unbind('resize');
+            $(window).bind('resize',function () {
+                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.oTable.columns.adjust().draw();
+            });
+
             self.oTable = $('#data').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
-
+                scrollY: calcDataTableHeight(),
                 "data": self.Keys,
+                autoWidth:false,
                 "columns": [
                     {
                         "title": "Key",
@@ -36,7 +51,7 @@
                     },
                 ]
             });
-
+            
             function format(type, value) {
                 return '<div>' +
                     '<textarea class="details-textarea">' + value + '</textarea>' +

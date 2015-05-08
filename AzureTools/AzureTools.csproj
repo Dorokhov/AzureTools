@@ -47,7 +47,10 @@
     <Content Include="app\common\dialogs\notification.js" />
     <Content Include="app\common\errorAlert.js" />
     <Content Include="app\common\dialogs\dialog.js" />
+    <Content Include="app\common\utils.js" />
     <Content Include="app\content\css\angular-csp.css" />
+    <Content Include="app\content\css\fonts\fontawesome-webfont.svg" />
+    <Content Include="app\content\css\metro-ui-css\font-awesome.css" />
     <Content Include="app\content\css\styles.css" />
     <Content Include="app\content\css\grid.css" />
     <Content Include="app\content\css\metro-bootstrap.css" />
@@ -2279,6 +2282,7 @@
     <Content Include="app\redis\model\redisDataAccess.js" />
     <Content Include="app\redis\model\redisScannerFactory.js" />
     <Content Include="app\redis\model\activeDatabase.js" />
+    <Content Include="app\redis\model\baseRepository.js" />
     <Content Include="app\redis\model\setRepository.js" />
     <Content Include="app\redis\model\hashRepository.js" />
     <Content Include="app\redis\model\stringRepository.js" />
@@ -3485,6 +3489,13 @@
     <Content Include="app\node_modules\redisscan\node_modules\redis\README.md" />
     <Content Include="app\node_modules\redisscan\package.json" />
     <Content Include="app\node_modules\redisscan\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\content\css\fonts\fontawesome-webfont.eot" />
+    <Content Include="app\content\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="app\content\css\fonts\fontawesome-webfont.woff" />
+    <Content Include="app\content\css\fonts\fontawesome-webfont.woff2" />
+    <Content Include="app\content\css\fonts\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <LigerSharkChromeTargetsPath>$(BuildFolder)\ligershark.chrome.targets</LigerSharkChromeTargetsPath>

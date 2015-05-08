@@ -48,14 +48,18 @@
     angular
         .module('common', [angularRoute])
         .factory('$busyIndicator', [
-            '$rootScope', function ($rootScope) {
-                return require('./common/busyIndicator.js').create($rootScope);
+            '$rootScope', '$timeout', function ($rootScope, $timeout) {
+                return require('./common/busyIndicator.js').create($rootScope, $timeout);
             }
         ])
         .factory('$messageBus', [
             '$rootScope', function ($rootScope) {
                 return require('./common/messageBus.js').create($rootScope);
             }
+        ])
+        .factory('$utils', [function () {
+            return require('./common/utils.js').create();
+        }
         ])
         .controller('BusyIndicatorController', [
             '$scope', '$busyIndicator', function ($scope, $busyIndicator) {
@@ -71,7 +75,7 @@
         .factory('$confirmViewModel', function () {
             return require('./common/dialogs/confirmation.js').create();
         })
-        .factory('$notifyViewModel', ['$timeout',function ($timeout) {
+        .factory('$notifyViewModel', ['$timeout', function ($timeout) {
             return require('./common/dialogs/notification.js').create($timeout);
         }])
         .controller('DialogsController', [
@@ -133,16 +137,26 @@
             return require('./redis/model/activeDatabase.js').create();
         }
         ])
-        .factory('$stringRepo', ['$redisDataAccess', function ($redisDataAccess) {
-            return require('./redis/model/stringRepository.js').create($redisDataAccess);
+        .factory('$baseRepo', ['$redisDataAccess', '$utils', function ($redisDataAccess, $utils) {
+            return require('./redis/model/baseRepository.js').create($redisDataAccess, $utils);
         }
         ])
-        .factory('$setRepo', ['$redisDataAccess', function ($redisDataAccess) {
-            return require('./redis/model/setRepository.js').create($redisDataAccess);
+        .factory('$stringRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+            var stringRepo = require('./redis/model/stringRepository.js').create($redisDataAccess);
+            angular.extend(stringRepo, $baseRepo);
+            return stringRepo;
         }
         ])
-         .factory('$hashSetRepo', ['$redisDataAccess', function ($redisDataAccess) {
-             return require('./redis/model/hashRepository.js').create($redisDataAccess);
+        .factory('$setRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+            var setRepo = require('./redis/model/setRepository.js').create($redisDataAccess);
+            angular.extend(setRepo, $baseRepo);
+            return setRepo;
+        }
+        ])
+         .factory('$hashSetRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+             var hashRepo = require('./redis/model/hashRepository.js').create($redisDataAccess);
+             angular.extend(hashRepo, $baseRepo);
+             return hashRepo;
          }
          ])
         .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
@@ -156,6 +170,7 @@
         ])
         .controller('RedisController', [
             '$scope',
+            '$timeout',
             '$activeDatabase',
             '$redisRepositoryFactory',
             '$redisScannerFactory',
@@ -169,6 +184,7 @@
             '$messageBus',
             function (
                 $scope,
+                $timeout,
                 $activeDatabase,
                 $redisRepositoryFactory,
                 $redisScannerFactory,
@@ -183,6 +199,7 @@
 
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
                     .create(
+                    $timeout,
                     $activeDatabase,
                     $redisRepositoryFactory,
                     $redisScannerFactory,

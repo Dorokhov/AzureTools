@@ -1,6 +1,6 @@
 <div class="container">
     <div class="metro grid" style="font-weight: normal;">
-        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="margin-top:10px;"></table>
+        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
     </div>
 </div>
 
@@ -25,7 +25,10 @@
     
     <div class="input-group input-group-sm" style="margin-top:2px">
         <span class="input-group-addon" style="width:96px">Value</span>
-        <textarea ng-model="DialogViewModel.BodyViewModel.Value" class="form-control" style="width:372px; height: 100px;" />
+        <textarea ng-model="DialogViewModel.BodyViewModel.Value"
+                  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
+                  class="form-control"
+                  style="width:372px; height: 100px;" />
     </div>
 
 </script>
@@ -37,17 +40,17 @@
 
     <div class="input-group input-group-sm">
         <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px">Host</span>
+            <span class="input-group-addon" style="width:96px;">Host</span>
             <input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
         </div>
 
         <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px">Port</span>
+            <span class="input-group-addon" style="width:96px;font-size:12px;">Port</span>
             <input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
         </div>
 
         <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon">Auth Password</span>
+            <span class="input-group-addon" style="font-size:12px;">Auth Password</span>
             <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
         </div>
     </div>

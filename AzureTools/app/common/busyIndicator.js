@@ -5,10 +5,23 @@
         var self = this;
         self.IsBusy = false;
         self.Operations = {};
-        self.setIsBusy = function (operation, value) {
+        self.CancelCallbacks = {};
+        self.cancel = function () {
+            self.IsBusy = false;
+            for (var key1 in self.Operations) {
+                self.Operations[key1] = false;
+            }
+
+            for (var key2 in self.CancelCallbacks) {
+                self.CancelCallbacks[key2]();
+            }
+        };
+
+        self.setIsBusy = function (operation, value, cancelCb) {
             self.IsBusy = value;
             
             self.Operations[operation] = value;
+            self.CancelCallbacks[operation] = cancelCb;
 
             $timeout(function() {
                 $rootScope.$apply();

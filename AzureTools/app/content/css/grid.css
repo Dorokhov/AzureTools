@@ -20,6 +20,8 @@ tr.shown {
     background: #eeeeee;
 }
 
-#data thead{
-    display:none;
+.dataTables_scrollHead {
+    background: white;
+    top: 20px;
+    z-index: 100;
 }

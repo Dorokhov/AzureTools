@@ -18317,7 +18317,7 @@ module.exports = function(arr, obj){
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
-    window.isDebugVersion = true;
+    window.isDebugVersion = false;
 
     angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
@@ -18558,6 +18558,19 @@ module.exports = function(arr, obj){
         .module('app', ['exceptionOverride', 'alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
 
         })
+    .directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    })
         .controller('AppController', ['$bugReport', function ($bugReport) { }])
         .config(function () {
 
@@ -18571,10 +18584,23 @@ exports.create = function ($rootScope, $timeout) {
         var self = this;
         self.IsBusy = false;
         self.Operations = {};
-        self.setIsBusy = function (operation, value) {
+        self.CancelCallbacks = {};
+        self.cancel = function () {
+            self.IsBusy = false;
+            for (var key1 in self.Operations) {
+                self.Operations[key1] = false;
+            }
+
+            for (var key2 in self.CancelCallbacks) {
+                self.CancelCallbacks[key2]();
+            }
+        };
+
+        self.setIsBusy = function (operation, value, cancelCb) {
             self.IsBusy = value;
             
             self.Operations[operation] = value;
+            self.CancelCallbacks[operation] = cancelCb;
 
             $timeout(function() {
                 $rootScope.$apply();
@@ -18643,6 +18669,10 @@ exports.create = function() {
         self.IsChecked = false;
         self.WithOption = false;
         self.OptionText = '';
+        self.onChecked = function() {
+
+        };
+
         self.save = function() {
             self.IsVisible = false;
         };
@@ -67091,8 +67121,18 @@ exports.create = function ($redisDataAccess, $utils) {
     return new function () {
         var self = this;
         self.Utils = $utils;
+        self.safeRedisCmd = function (cb) {
+            var client = $redisDataAccess.createClient();
+            try {
+                cb(client);
+            } finally {
+                client.quit();
+            }
+        };
         self.delete = function (keyData) {
-            $redisDataAccess.createClient().del(keyData.Key);
+            self.safeRedisCmd(function (client) {
+                client.del(keyData.Key);
+            });
         };
     };
 };
@@ -67105,13 +67145,18 @@ exports.create = function ($redisDataAccess) {
         self.create = function (key, value, cb) {
             var members = self.Utils.safeJsonParse(value);
             for (var i = 0; i < members.length; i++) {
-                $redisDataAccess.createClient().hset(key, members[i][0], members[i][1], cb);
+                self.safeRedisCmd(function (client) {
+                    client.hset(key, members[i][0], members[i][1], cb);
+                });
             }
         };
 
         self.update = function (keyData, newValue, cb) {
             self.Utils.safeJsonParse(newValue);
-            $redisDataAccess.createClient().del(keyData.Key);
+            // TODO: Transaction here
+            self.safeRedisCmd(function (client) {
+                client.del(keyData.Key);
+            });
             self.create(keyData.Key, newValue, cb);
         };
     };
@@ -67120,6 +67165,7 @@ exports.create = function ($redisDataAccess) {
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
+    console.log('Creating client ' + host + ' ' + port + ' ' + password);
     return redis.createClient(port, host, { auth_pass: password });
 };
 },{"../../node_modules/redis/index.js":175}],187:[function(require,module,exports){
@@ -67133,7 +67179,12 @@ exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings,
             if ($activeDatabase.Current !== null) {
                 client.select($activeDatabase.Current);
             }
-            client.on("error", function(msg) {
+            client.on("error", function (msg) {
+                client.end();
+                $messageBus.publish('redis-communication-error', msg);
+            });
+            client.on("end", function (msg) {
+                client.end();
                 $messageBus.publish('redis-communication-error', msg);
             });
             return client;
@@ -67165,12 +67216,17 @@ exports.create = function ($redisDataAccess, $redisScanner) {
     'use strict';
 
     return function (args) {
+        var client = $redisDataAccess.createClient();
         $redisScanner({
             pattern: args.pattern ? args.pattern : '*',
-            redis: $redisDataAccess.createClient(),
+            redis: client,
             each_callback: args.each_callback,
-            done_callback: args.done_callback
+            done_callback: function (err) {
+                client.quit();
+                args.done_callback(err);
+            }
         });
+        return client;
     }
 };
 },{}],190:[function(require,module,exports){
@@ -67201,19 +67257,24 @@ exports.create = function ($redisDataAccess) {
 
     return new function () {
         var self = this;
-        
+
         self.create = function (key, value, cb) {
             var members = self.Utils.safeJsonParse(value);
             if (members != null) {
-                $redisDataAccess.createClient().sadd(key, members, cb);
+                self.safeRedisCmd(function (client) {
+                    client.sadd(key, members, cb);
+                });
             }
         };
 
         self.update = function (keyData, newValue) {
             var updatedMembers = self.Utils.safeJsonParse(newValue);
             if (updatedMembers != null) {
-                $redisDataAccess.createClient().del(keyData.Key);
-                $redisDataAccess.createClient().sadd(keyData.Key, updatedMembers);
+                // TODO: Replace with transaction
+                self.safeRedisCmd(function (client) {
+                    client.del(keyData.Key);
+                    client.sadd(keyData.Key, updatedMembers);
+                });
             }
         };
     };
@@ -67222,14 +67283,18 @@ exports.create = function ($redisDataAccess) {
 exports.create = function ($redisDataAccess) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
-        self.create = function(key, value, cb) {
-            $redisDataAccess.createClient().set(key, value, cb);
+        self.create = function (key, value, cb) {
+            self.safeRedisCmd(function (client) {
+                client.set(key, value, cb);
+            });
         };
 
         self.update = function (keyData, newValue) {
-            $redisDataAccess.createClient().set(keyData.Key, newValue);
+            self.safeRedisCmd(function (client) {
+                client.set(keyData.Key, newValue);
+            });
         };
     };
 };
@@ -67268,9 +67333,10 @@ exports.create = function (redisClientFactory, $redisSettings) {
                 bInfo: false,
                 bPaginate: false,
                 scrollY: calcDataTableHeight(),
-                "data": self.Keys,
-                autoWidth:false,
-                "columns": [
+                //scrollCollapse: true,
+                data: self.Keys,
+                autoWidth: false,
+                columns: [
                     {
                         "title": "Key",
                         "data": "Key"
@@ -67367,7 +67433,15 @@ exports.create = function (
             search: function () {
                 self.loadKeys(this.Pattern);
             },
-            Pattern: '*'
+            Pattern: '',
+            clear: function () {
+                this.Pattern = '';
+                this.IsClearVisible = false;
+            },
+            IsClearVisible: false,
+            onChange: function () {
+                this.IsClearVisible = this.Pattern !== '';
+            }
         };
 
         var databaseViewModel = {
@@ -67432,12 +67506,13 @@ exports.create = function (
                     }
 
                     throw e;
-                } 
+                }
                 $dialogViewModel.BodyViewModel.Key = '';
                 $dialogViewModel.BodyViewModel.Value = '';
 
                 if ($dialogViewModel.IsChecked) {
                     $dialogViewModel.IsVisible = false;
+                    searchViewModel.search();
                 }
             };
         };
@@ -67447,8 +67522,21 @@ exports.create = function (
         };
 
         $actionBarItems.changeSettings = function () {
-            $dialogViewModel.WithOption = false;
-            $dialogViewModel.OptionText = '';
+            $dialogViewModel.WithOption = true;
+            $dialogViewModel.OptionText = 'Use demo credentials';
+            $dialogViewModel.IsChecked = false;
+            $dialogViewModel.onChecked = function () {
+                console.log('on checked');
+                if ($dialogViewModel.IsChecked) {
+                    $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
+                    $dialogViewModel.BodyViewModel.Port = 6379;
+                    $dialogViewModel.BodyViewModel.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
+                } else {
+                    $dialogViewModel.BodyViewModel.Host = $redisSettings.Host;
+                    $dialogViewModel.BodyViewModel.Port = $redisSettings.Port;
+                    $dialogViewModel.BodyViewModel.Password = $redisSettings.Password;
+                }
+            };
             $dialogViewModel.IsVisible = true;
             $dialogViewModel.BodyViewModel = {
                 Host: $redisSettings.Host,
@@ -67462,6 +67550,7 @@ exports.create = function (
                 $redisSettings.Port = $dialogViewModel.BodyViewModel.Port;
                 $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
                 $dialogViewModel.IsVisible = false;
+                searchViewModel.search();
             };
         };
 
@@ -67485,9 +67574,8 @@ exports.create = function (
         self.loadKeys = function (pattern) {
             $notifyViewModel.close();
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
-                $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
-                $redisScannerFactory({
+                var client = $redisScannerFactory({
                     pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
                         if (type === 'set') {
@@ -67509,6 +67597,9 @@ exports.create = function (
 
                         $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
+                });
+                $busyIndicator.setIsBusy(loadKeysOperation, true, function () {
+                    client.end();
                 });
             }
         };
@@ -67538,7 +67629,7 @@ exports.create = function (
             self.loadKeys(searchViewModel.Pattern);
         }
 
-        var showError = function(data) {
+        var showError = function (data) {
             if (data !== undefined && data !== null) {
                 if (data.name && data.name === 'Error') {
                     console.log('Handled error: ' + data.message);
@@ -67558,10 +67649,10 @@ exports.create = function (
             }
         }
         $messageBus.subscribe(
-            ['json-format-failure', 'redis-communication-error'], function (event, data) {
+            ['redis-communication-error'], function (event, data) {
                 console.log('Received data: ' + data);
-            showError(data);
-        });
+                showError(data);
+            });
     }
 }
 },{}],195:[function(require,module,exports){
@@ -67575,6 +67666,8 @@ exports.create = function ($state, $actionBarItems) {
         self.openRedis = function() {
             $state.go('redis', {});
         }
+
+        self.openRedis();
     }
 }
 },{}],"jquery":[function(require,module,exports){

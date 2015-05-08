@@ -4,8 +4,18 @@
     return new function () {
         var self = this;
         self.Utils = $utils;
+        self.safeRedisCmd = function (cb) {
+            var client = $redisDataAccess.createClient();
+            try {
+                cb(client);
+            } finally {
+                client.quit();
+            }
+        };
         self.delete = function (keyData) {
-            $redisDataAccess.createClient().del(keyData.Key);
+            self.safeRedisCmd(function (client) {
+                client.del(keyData.Key);
+            });
         };
     };
 };

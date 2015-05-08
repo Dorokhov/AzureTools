@@ -26,7 +26,7 @@
     <link href="content/css/metro-ui-css/metro-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="content/css/metro-bootstrap.min.css" />
     <link href="content/css/metro-ui-css/metro-bootstrap-responsive.css" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="content/css/grid.css" />
     <link rel="stylesheet" href="content/css/styles.css" />
 
@@ -36,94 +36,110 @@
     <script type="text/javascript" src="bundle.js"></script>
 </head>
 <body ng-controller="AppController">
-    <nav class="navbar navbar-default noMarginBottom" role="navigation">
-        <div class="margin-to-align">
-            <div class="navbar-header" style="margin-left: auto; margin-right:auto;">
-                <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
-                    <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
-                    <span>Azure Tools</span>
-                </a>
+    <div>
+        <nav class="navbar navbar-default noMarginBottom" role="navigation">
+            <div class="margin-to-align">
+                <div class="navbar-header" style="margin-left: auto; margin-right:auto;">
+                    <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
+                        <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
+                        <span>Azure Tools</span>
+                    </a>
+                </div>
+
+                <div ng-controller="ActionBarController" class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible">
+                        <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
+                            <span style="color:white;float:left;" class="on-left-more">Database</span>
+                            <div class="dropdown" style="float:left; margin-left: 5px; margin-top:-2px;">
+                                <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ActionBarItems.DatabaseViewModel.Current}}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
+                        <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
+                        <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+                        <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible">
+                            <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                   ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                   ng-enter="ActionBarItems.SearchViewModel.search()"
+                                   type="text" class="form-control" style="margin-top:8px;width:400px;float:left;" autofocus />
+                            <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+
+                            <a style="cursor:pointer;float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
+                                <span class="icon-search"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </nav>
 
-            <div ng-controller="ActionBarController" class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible">
-                    <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
-                        <span style="color:white;float:left;" class="on-left-more">Database</span>
-                        <div class="dropdown" style="float:left; margin-left: 5px; margin-top:-2px;">
-                            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ActionBarItems.DatabaseViewModel.Current}}
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
-                    <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
-                    <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
-                    <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible"><input ng-model="ActionBarItems.SearchViewModel.Pattern" type="text" class="form-control" style="margin-top:8px;width:400px;float:left;" autofocus /><a style="cursor:pointer;float: left;" ng-click="ActionBarItems.SearchViewModel.search()"><span class="icon-search"></span></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div id="alertArea" class="alert alert-danger" style="display:none;">
-        Error occured
-        <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
-    </div>
-
-    <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible">
-        Error!
-        <div>{{NotifyViewModel.Body}}</div>
-    </div>
-
-    <div style="height:20px">
-        <div class="progress progress-striped active noMarginBottom" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
-            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                <span class="sr-only">45% Complete</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="content" ui-view>
-    </div>
-
-    <div class="loading" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true"><span>Loading...</span></div>
-
-    <div class="panel panel-primary popup" style="display: inline-block;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
-        <div class="panel-heading">
-            {{DialogViewModel.Header}}
+        <div id="alertArea" class="alert alert-danger" style="display:none;">
+            Error occured
+            <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
         </div>
 
-        <div class="panel-body">
-            <div ng-include="DialogViewModel.Body">
+        <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible">
+            Error!
+            <div>{{NotifyViewModel.Body}}</div>
+        </div>
+
+        <div style="height:20px">
+            <div class="progress progress-striped active noMarginBottom" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <span class="sr-only">45% Complete</span>
+                </div>
             </div>
+        </div>
+
+        <div id="content" ui-view>
+        </div>
+
+        <div class="loading" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
             
-            <label class="checkbox" ng-show="DialogViewModel.WithOption">
-                <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked">
-                <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
-            </label>
-
-            <div class="btn-group" style="float:right; margin-top:10px">
-                <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
-                <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="confirmationDialog" class="panel panel-warning popup" style="width:500px; height:145px;" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
-        <div class="panel-heading">
-            {{ConfirmationViewModel.Header}}
+            <span>Loading...</span>
+            <a ng-click="BusyIndicator.cancel()" style="cursor: pointer;">Cancel</a>
         </div>
 
-        <div class="panel-body">
-            <div ng-bind="ConfirmationViewModel.Body">
+        <div class="panel panel-primary popup" style="display: inline-block;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+            <div class="panel-heading">
+                {{DialogViewModel.Header}}
             </div>
 
-            <div class="btn-group" style="float:right; margin-top:10px">
-                <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.yes()">Yes</button>
-                <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.no()">No</button>
+            <div class="panel-body">
+                <div ng-include="DialogViewModel.Body">
+                </div>
+
+                <label class="checkbox" ng-show="DialogViewModel.WithOption">
+                    <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()">
+                    <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
+                </label>
+
+                <div class="btn-group" style="float:right; margin-top:10px">
+                    <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmationDialog" class="panel panel-warning popup" style="width:500px; height:145px;" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
+            <div class="panel-heading">
+                {{ConfirmationViewModel.Header}}
+            </div>
+
+            <div class="panel-body">
+                <div ng-bind="ConfirmationViewModel.Body">
+                </div>
+
+                <div class="btn-group" style="float:right; margin-top:10px">
+                    <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.yes()">Yes</button>
+                    <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.no()">No</button>
+                </div>
             </div>
         </div>
     </div>

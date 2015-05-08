@@ -10,6 +10,10 @@
         self.IsChecked = false;
         self.WithOption = false;
         self.OptionText = '';
+        self.onChecked = function() {
+
+        };
+
         self.save = function() {
             self.IsVisible = false;
         };

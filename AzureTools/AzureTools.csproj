@@ -59,6 +59,7 @@
     <Content Include="app\content\css\metro-ui-css\metro-bootstrap-responsive.css" />
     <Content Include="app\content\css\metro-ui-css\metro-bootstrap.css" />
     <Content Include="app\content\img\icon.png" />
+    <Content Include="app\content\img\windows-azure.png" />
     <Content Include="app\content\js\bootstrap.js" />
     <Content Include="app\content\js\bootstrap.min.js" />
     <Content Include="app\index.html" />

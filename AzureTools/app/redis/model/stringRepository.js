@@ -1,14 +1,18 @@
 ﻿exports.create = function ($redisDataAccess) {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
-        self.create = function(key, value, cb) {
-            $redisDataAccess.createClient().set(key, value, cb);
+        self.create = function (key, value, cb) {
+            self.safeRedisCmd(function (client) {
+                client.set(key, value, cb);
+            });
         };
 
         self.update = function (keyData, newValue) {
-            $redisDataAccess.createClient().set(keyData.Key, newValue);
+            self.safeRedisCmd(function (client) {
+                client.set(keyData.Key, newValue);
+            });
         };
     };
 };

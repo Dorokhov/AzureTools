@@ -2,11 +2,16 @@
     'use strict';
 
     return function (args) {
+        var client = $redisDataAccess.createClient();
         $redisScanner({
             pattern: args.pattern ? args.pattern : '*',
-            redis: $redisDataAccess.createClient(),
+            redis: client,
             each_callback: args.each_callback,
-            done_callback: args.done_callback
+            done_callback: function (err) {
+                client.quit();
+                args.done_callback(err);
+            }
         });
+        return client;
     }
 };

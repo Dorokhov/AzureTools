@@ -3,7 +3,7 @@
 
     "name": "Azure Tools",
     "description": "Tools to improve your Azure expirience",
-    "version": "0.0.0.0001",
+    "version": "0.1",
     "permissions": [
         {
             "socket": [
@@ -16,7 +16,7 @@
     ],
 
     "icons": {
-        "128": "content/img/icon.png"
+        "128": "content/img/windows-azure.png"
     },
 
     "app": {

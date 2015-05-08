@@ -8,7 +8,7 @@
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
-    window.isDebugVersion = true;
+    window.isDebugVersion = false;
 
     angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
@@ -249,6 +249,19 @@
         .module('app', ['exceptionOverride', 'alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
 
         })
+    .directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    })
         .controller('AppController', ['$bugReport', function ($bugReport) { }])
         .config(function () {
 

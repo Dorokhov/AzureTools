@@ -8,5 +8,7 @@
         self.openRedis = function() {
             $state.go('redis', {});
         }
+
+        self.openRedis();
     }
 }

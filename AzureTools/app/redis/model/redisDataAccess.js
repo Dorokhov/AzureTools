@@ -8,7 +8,12 @@
             if ($activeDatabase.Current !== null) {
                 client.select($activeDatabase.Current);
             }
-            client.on("error", function(msg) {
+            client.on("error", function (msg) {
+                client.end();
+                $messageBus.publish('redis-communication-error', msg);
+            });
+            client.on("end", function (msg) {
+                client.end();
                 $messageBus.publish('redis-communication-error', msg);
             });
             return client;

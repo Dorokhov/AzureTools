@@ -24,7 +24,15 @@
             search: function () {
                 self.loadKeys(this.Pattern);
             },
-            Pattern: '*'
+            Pattern: '',
+            clear: function () {
+                this.Pattern = '';
+                this.IsClearVisible = false;
+            },
+            IsClearVisible: false,
+            onChange: function () {
+                this.IsClearVisible = this.Pattern !== '';
+            }
         };
 
         var databaseViewModel = {
@@ -89,12 +97,13 @@
                     }
 
                     throw e;
-                } 
+                }
                 $dialogViewModel.BodyViewModel.Key = '';
                 $dialogViewModel.BodyViewModel.Value = '';
 
                 if ($dialogViewModel.IsChecked) {
                     $dialogViewModel.IsVisible = false;
+                    searchViewModel.search();
                 }
             };
         };
@@ -104,8 +113,21 @@
         };
 
         $actionBarItems.changeSettings = function () {
-            $dialogViewModel.WithOption = false;
-            $dialogViewModel.OptionText = '';
+            $dialogViewModel.WithOption = true;
+            $dialogViewModel.OptionText = 'Use demo credentials';
+            $dialogViewModel.IsChecked = false;
+            $dialogViewModel.onChecked = function () {
+                console.log('on checked');
+                if ($dialogViewModel.IsChecked) {
+                    $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
+                    $dialogViewModel.BodyViewModel.Port = 6379;
+                    $dialogViewModel.BodyViewModel.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
+                } else {
+                    $dialogViewModel.BodyViewModel.Host = $redisSettings.Host;
+                    $dialogViewModel.BodyViewModel.Port = $redisSettings.Port;
+                    $dialogViewModel.BodyViewModel.Password = $redisSettings.Password;
+                }
+            };
             $dialogViewModel.IsVisible = true;
             $dialogViewModel.BodyViewModel = {
                 Host: $redisSettings.Host,
@@ -119,6 +141,7 @@
                 $redisSettings.Port = $dialogViewModel.BodyViewModel.Port;
                 $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
                 $dialogViewModel.IsVisible = false;
+                searchViewModel.search();
             };
         };
 
@@ -142,9 +165,8 @@
         self.loadKeys = function (pattern) {
             $notifyViewModel.close();
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
-                $busyIndicator.setIsBusy(loadKeysOperation, true);
                 self.Keys.length = 0;
-                $redisScannerFactory({
+                var client = $redisScannerFactory({
                     pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
                         if (type === 'set') {
@@ -166,6 +188,9 @@
 
                         $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                     }
+                });
+                $busyIndicator.setIsBusy(loadKeysOperation, true, function () {
+                    client.end();
                 });
             }
         };
@@ -195,7 +220,7 @@
             self.loadKeys(searchViewModel.Pattern);
         }
 
-        var showError = function(data) {
+        var showError = function (data) {
             if (data !== undefined && data !== null) {
                 if (data.name && data.name === 'Error') {
                     console.log('Handled error: ' + data.message);
@@ -217,7 +242,7 @@
         $messageBus.subscribe(
             ['redis-communication-error'], function (event, data) {
                 console.log('Received data: ' + data);
-            showError(data);
-        });
+                showError(data);
+            });
     }
 }

@@ -32,9 +32,10 @@
                 bInfo: false,
                 bPaginate: false,
                 scrollY: calcDataTableHeight(),
-                "data": self.Keys,
-                autoWidth:false,
-                "columns": [
+                //scrollCollapse: true,
+                data: self.Keys,
+                autoWidth: false,
+                columns: [
                     {
                         "title": "Key",
                         "data": "Key"

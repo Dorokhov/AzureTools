@@ -2280,6 +2280,7 @@
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
     <Content Include="app\common\messageBus.js" />
+    <Content Include="app\common\validator.js" />
     <Content Include="app\redis\model\redisDataAccess.js" />
     <Content Include="app\redis\model\redisScannerFactory.js" />
     <Content Include="app\redis\model\activeDatabase.js" />

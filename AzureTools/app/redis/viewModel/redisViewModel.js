@@ -10,14 +10,14 @@
     $notifyViewModel,
     $redisSettings,
     $busyIndicator,
-    $messageBus) {
+    $messageBus,
+    $validator) {
     'use strict';
 
     return new function () {
         var self = this;
 
         var loadKeysOperation = 'loadKeys';
-
 
         self.Keys = [];
         var searchViewModel = {
@@ -28,6 +28,7 @@
             clear: function () {
                 this.Pattern = '';
                 this.IsClearVisible = false;
+                searchViewModel.search();
             },
             IsClearVisible: false,
             onChange: function () {
@@ -44,6 +45,7 @@
             Current: $activeDatabase.Current
         };
         // redis action bar
+        $actionBarItems.ModuleName = ': Redis';
         $actionBarItems.IsActionBarVisible = true;
         $actionBarItems.IsAddKeyVisible = true;
         $actionBarItems.IsRefreshVisible = true;
@@ -117,7 +119,6 @@
             $dialogViewModel.OptionText = 'Use demo credentials';
             $dialogViewModel.IsChecked = false;
             $dialogViewModel.onChecked = function () {
-                console.log('on checked');
                 if ($dialogViewModel.IsChecked) {
                     $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
                     $dialogViewModel.BodyViewModel.Port = 6379;
@@ -137,8 +138,13 @@
             $dialogViewModel.Body = 'changeSettingsTemplate';
             $dialogViewModel.Header = 'Settings';
             $dialogViewModel.save = function () {
+                if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
+                    showError('Port value is wrong. Port must be in range [1;65535]');
+                    return;
+                };
+
                 $redisSettings.Host = $dialogViewModel.BodyViewModel.Host;
-                $redisSettings.Port = $dialogViewModel.BodyViewModel.Port;
+                $redisSettings.Port = +$dialogViewModel.BodyViewModel.Port;
                 $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
                 $dialogViewModel.IsVisible = false;
                 searchViewModel.search();
@@ -162,10 +168,13 @@
             }
         }
         // load redis data
+        var maxItemsToLoad = 100;
+
         self.loadKeys = function (pattern) {
             $notifyViewModel.close();
             if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
                 self.Keys.length = 0;
+                var loadedNumber = 0;
                 var client = $redisScannerFactory({
                     pattern: pattern,
                     each_callback: function (type, key, subkey, p, value, cb) {
@@ -178,7 +187,13 @@
                         else {
                             self.Keys.push({ Key: key, Type: type, Value: value });
                         }
-                        cb();
+                        loadedNumber++;
+                        if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
+                            showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
+                            cb(true);
+                        } else {
+                            cb(false);
+                        }
                     },
                     done_callback: function (err) {
                         $busyIndicator.setIsBusy(loadKeysOperation, false);
@@ -223,22 +238,31 @@
         var showError = function (data) {
             if (data !== undefined && data !== null) {
                 if (data.name && data.name === 'Error') {
-                    console.log('Handled error: ' + data.message);
                     $timeout(function () {
-                        $confirmViewModel.scope().$apply(function () {
+                        $notifyViewModel.scope().$apply(function () {
                             $notifyViewModel.showWarning(data.message);
                         });
                     });
                 } else {
-                    console.log('Handled data: ' + data);
                     $timeout(function () {
-                        $confirmViewModel.scope().$apply(function () {
+                        $notifyViewModel.scope().$apply(function () {
                             $notifyViewModel.showWarning(data);
                         });
                     });
                 }
             }
         }
+
+        var showInfo = function (msg) {
+            if (msg !== undefined && msg !== null) {
+                $timeout(function () {
+                    $notifyViewModel.scope().$apply(function () {
+                        $notifyViewModel.showInfo(msg);
+                    });
+                });
+            }
+        }
+
         $messageBus.subscribe(
             ['redis-communication-error'], function (event, data) {
                 console.log('Received data: ' + data);

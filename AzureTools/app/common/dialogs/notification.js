@@ -7,10 +7,17 @@
         self.Body = null;
         self.IsVisible = false;
 
-        self.showWarning = function(msg) {
+        self.showWarning = function (msg) {
+            msg = 'Error! ' + msg;
             self.Body = msg;
             self.IsVisible = true;
         };
+
+        self.showInfo = function (msg) {
+            self.Body = msg;
+            self.IsVisible = true;
+        };
+
         self.close = function() {
             self.IsVisible = false;
         };

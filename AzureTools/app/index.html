@@ -38,11 +38,12 @@
 <body ng-controller="AppController">
     <div>
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div class="margin-to-align">
+            <div class="margin-to-align" ng-controller="ActionBarController">
                 <div class="navbar-header" style="margin-left: auto; margin-right:auto;">
                     <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
                         <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
                         <span>Azure Tools</span>
+                        <span>{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
 
@@ -85,7 +86,6 @@
         </div>
 
         <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible">
-            Error!
             <div>{{NotifyViewModel.Body}}</div>
         </div>
 
@@ -101,7 +101,7 @@
         </div>
 
         <div class="loading" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
-            
+
             <span>Loading...</span>
             <a ng-click="BusyIndicator.cancel()" style="cursor: pointer;">Cancel</a>
         </div>

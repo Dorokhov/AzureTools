@@ -9,7 +9,6 @@
     $.DataTable = dataTable;
 
     window.isDebugVersion = false;
-
     angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
         return function (exception, cause) {
             var data = {
@@ -50,6 +49,10 @@
         .factory('$busyIndicator', [
             '$rootScope', '$timeout', function ($rootScope, $timeout) {
                 return require('./common/busyIndicator.js').create($rootScope, $timeout);
+            }
+        ])
+        .factory('$validator', [function () {
+                return require('./common/validator.js').create();
             }
         ])
         .factory('$messageBus', [
@@ -182,6 +185,7 @@
             '$redisSettings',
             '$busyIndicator',
             '$messageBus',
+            '$validator',
             function (
                 $scope,
                 $timeout,
@@ -195,7 +199,8 @@
                 $notifyViewModel,
                 $redisSettings,
                 $busyIndicator,
-                $messageBus) {
+                $messageBus,
+                $validator) {
 
                 $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
                     .create(
@@ -210,7 +215,8 @@
                     $notifyViewModel,
                     $redisSettings,
                     $busyIndicator,
-                    $messageBus);
+                    $messageBus,
+                    $validator);
             }
         ])
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -262,8 +268,7 @@
             });
         };
     })
-        .controller('AppController', ['$bugReport', function ($bugReport) { }])
-        .config(function () {
-
+        .controller('AppController', ['$bugReport', '$state', function ($bugReport, $state) {}])
+        .config(function ($urlRouterProvider) {
         });
 })();

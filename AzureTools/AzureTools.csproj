@@ -42,12 +42,13 @@
   <ItemGroup>
     <Content Include="app\app.js" />
     <Content Include="app\bundle.js" />
-    <Content Include="app\common\busyIndicator.js" />
+    <Content Include="app\common\dialogsModule.js" />
+    <Content Include="app\common\actionBarModule.js" />
+    <Content Include="app\common\services\busyIndicator.js" />
     <Content Include="app\common\dialogs\confirmation.js" />
     <Content Include="app\common\dialogs\notification.js" />
-    <Content Include="app\common\errorAlert.js" />
     <Content Include="app\common\dialogs\dialog.js" />
-    <Content Include="app\common\utils.js" />
+    <Content Include="app\common\services\utils.js" />
     <Content Include="app\content\css\angular-csp.css" />
     <Content Include="app\content\css\metro-ui-css\font-awesome.css" />
     <Content Include="app\content\css\styles.css" />
@@ -60,6 +61,7 @@
     <Content Include="app\content\img\windows-azure.png" />
     <Content Include="app\content\js\bootstrap.js" />
     <Content Include="app\content\js\bootstrap.min.js" />
+    <Content Include="app\directives\appDirectives.js" />
     <Content Include="app\index.html" />
     <Content Include="app\node_modules\angular-route\angular-route.js" />
     <Content Include="app\node_modules\angular-route\angular-route.min.js" />
@@ -2277,8 +2279,8 @@
     <Content Include="app\node_modules\redis\lib\queue.js" />
     <Content Include="app\node_modules\redis\lib\to_array.js" />
     <Content Include="app\node_modules\redis\lib\util.js" />
-    <Content Include="app\common\messageBus.js" />
-    <Content Include="app\common\validator.js" />
+    <Content Include="app\common\services\messageBus.js" />
+    <Content Include="app\common\services\validator.js" />
     <Content Include="app\redis\model\redisDataAccess.js" />
     <Content Include="app\redis\model\redisScannerFactory.js" />
     <Content Include="app\redis\model\activeDatabase.js" />
@@ -2290,12 +2292,17 @@
     <Content Include="app\redis\model\redisRepositoryFactory.js" />
     <Content Include="app\redis\model\redisSettings.js" />
     <Content Include="app\redis\presenter\redisPresenter.js" />
+    <Content Include="app\redis\redisModule.js" />
+    <Content Include="app\common\commonModule.js" />
+    <Content Include="app\redis\services\redisServices.js" />
+    <Content Include="app\exceptionHandling\exceptionHandlingModule.js" />
     <Content Include="app\tiles\content\img\redis.png" />
     <Content Include="app\redis\model\redisClientFactoryMock.js" />
     <Content Include="app\redis\model\redisClientFactory.js" />
     <Content Include="app\redis\viewModel\redisViewModel.js" />
     <Content Include="app\startup.js" />
     <Content Include="app\redis\view\index.html" />
+    <Content Include="app\tiles\tilesModule.js" />
     <Content Include="app\tiles\viewModel\tilesViewModel.js" />
     <Content Include="app\tiles\view\index.html" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />

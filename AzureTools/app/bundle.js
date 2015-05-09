@@ -18318,59 +18318,64 @@ module.exports = function(arr, obj){
     $.DataTable = dataTable;
 
     window.isDebugVersion = false;
-    angular.module('exceptionOverride', []).factory('$exceptionHandler', [function () {
-        return function (exception, cause) {
-            var data = {
-                type: 'angular',
-                url: window.location.hash,
-                localtime: Date.now()
-            };
-            if (cause) { data.cause = cause; }
-            if (exception) {
-                if (exception.message) { data.message = exception.message; }
-                if (exception.name) { data.name = exception.name; }
-                if (exception.stack) { data.stack = exception.stack; }
-            }
 
-            var el = document.getElementById('sendEmail');
-            var alertArea = document.getElementById('alertArea');
-            if (el && alertArea) {
-                alertArea.style.display = "block";
-                el.href = 'mailto:' + 'azuretools@gmail.com' + '?subject=' + 'Bug Report' + '&body='
-                    + data.message + '|' + data.name + '|' + data.stack
-                + '|' + data.type + '|' + data.url + '|' + data.localtime;
-            }
+    require('./exceptionHandling/exceptionHandlingModule.js').register(angular);
+    require('./common/commonModule.js').register(angular, angularRoute);
+    require('./common/dialogsModule.js').register(angular, angularRoute);
+    require('./common/actionBarModule.js').register(angular);
+    require('./redis/redisModule.js').register(angular, angularRoute);
+    require('./tiles/tilesModule.js').register(angular, angularRoute);
 
-            throw exception;
-        };
-    }]);
+    var app = angular
+        .module('app', [
+            'exceptionOverride',
+            'common',
+            'actionBar',
+            'dialogs',
+            'tiles',
+            'tiles.redis'
+        ], function() {});
+    require('./directives/appDirectives.js')
+        .register(app)
+        .controller('AppController', ['$state', function ($state) { }]);
+})();
+},{"./common/actionBarModule.js":164,"./common/commonModule.js":165,"./common/dialogsModule.js":166,"./directives/appDirectives.js":174,"./exceptionHandling/exceptionHandlingModule.js":175,"./node_modules/angular-ui-router/release/angular-ui-router.js":176,"./node_modules/angular/index.js":178,"./node_modules/datatables/media/js/jquery.dataTables.js":179,"./node_modules/jquery/dist/jquery.js":"jquery","./redis/redisModule.js":199,"./tiles/tilesModule.js":202}],164:[function(require,module,exports){
+exports.register = function (angular) {
+    'use strict';
 
     angular
-        .module('alerts', [])
-        .factory('$bugReport', [
-            function () {
-                return require('./common/errorAlert.js').create('azuretools@gmail.com');
+        .module('actionBar', [])
+        .factory('$actionBarItems', function () {
+            return { IsActionBarVisible: false };
+        })
+        .controller('ActionBarController', [
+            '$scope', '$actionBarItems', function ($scope, $actionBarItems) {
+                $scope.ActionBarItems = $actionBarItems;
             }
         ]);
-
+}
+},{}],165:[function(require,module,exports){
+exports.register = function (angular, angularRoute) {
+    'use strict';
+    
     angular
         .module('common', [angularRoute])
         .factory('$busyIndicator', [
             '$rootScope', '$timeout', function ($rootScope, $timeout) {
-                return require('./common/busyIndicator.js').create($rootScope, $timeout);
+                return require('./services/busyIndicator.js').create($rootScope, $timeout);
             }
         ])
         .factory('$validator', [function () {
-                return require('./common/validator.js').create();
-            }
+            return require('./services/validator.js').create();
+        }
         ])
         .factory('$messageBus', [
             '$rootScope', function ($rootScope) {
-                return require('./common/messageBus.js').create($rootScope);
+                return require('./services/messageBus.js').create($rootScope);
             }
         ])
         .factory('$utils', [function () {
-            return require('./common/utils.js').create();
+            return require('./services/utils.js').create();
         }
         ])
         .controller('BusyIndicatorController', [
@@ -18378,17 +18383,21 @@ module.exports = function(arr, obj){
                 $scope.BusyIndicator = $busyIndicator;
             }
         ]);
+}
+},{"./services/busyIndicator.js":170,"./services/messageBus.js":171,"./services/utils.js":172,"./services/validator.js":173}],166:[function(require,module,exports){
+exports.register = function (angular, angularRoute) {
+    'use strict';
 
     angular
         .module('dialogs', [angularRoute])
         .factory('$dialogViewModel', function () {
-            return require('./common/dialogs/dialog.js').create();
+            return require('./dialogs/dialog.js').create();
         })
         .factory('$confirmViewModel', function () {
-            return require('./common/dialogs/confirmation.js').create();
+            return require('./dialogs/confirmation.js').create();
         })
         .factory('$notifyViewModel', ['$timeout', function ($timeout) {
-            return require('./common/dialogs/notification.js').create($timeout);
+            return require('./dialogs/notification.js').create($timeout);
         }])
         .controller('DialogsController', [
             '$scope', '$dialogViewModel', '$notifyViewModel', function ($scope, $dialogViewModel, $notifyViewModel) {
@@ -18409,219 +18418,8 @@ module.exports = function(arr, obj){
                 $scope.ConfirmationViewModel = $confirmViewModel;
             }
         ]);
-
-    angular
-        .module('actionBar', [])
-        .factory('$actionBarItems', function () {
-            return { IsActionBarVisible: false };
-        })
-        .controller('ActionBarController', [
-            '$scope', '$actionBarItems', function ($scope, $actionBarItems) {
-                $scope.ActionBarItems = $actionBarItems;
-            }
-        ]);
-
-    angular
-        .module('tiles.redis', [angularRoute])
-        .factory('$redisClientFactory', function () {
-            var clientFactory =
-                require('./redis/model/redisClientFactory.js').createClient;
-            // require('./redis/model/redisClientFactoryMock.js').createClient;
-            return clientFactory;
-        })
-        .factory('$redisScanner', function () {
-            return require('./node_modules/redisscan/index.js');
-            //  return require('./redis/model/redisScannerMock.js');
-        })
-        .factory('$redisSettings', function () {
-            return require('./redis/model/redisSettings.js').create();
-        })
-        .factory('$dataTablePresenter', [
-            '$redisClientFactory', '$redisSettings', function ($redisClientFactory, $redisSettings) {
-                return require('./redis/presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
-            }
-        ])
-        .factory('$redisDataAccess', ['$activeDatabase', '$redisClientFactory', '$redisSettings', '$messageBus', function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
-            return require('./redis/model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings, $messageBus);
-        }
-        ])
-        .factory('$activeDatabase', [function () {
-            return require('./redis/model/activeDatabase.js').create();
-        }
-        ])
-        .factory('$baseRepo', ['$redisDataAccess', '$utils', function ($redisDataAccess, $utils) {
-            return require('./redis/model/baseRepository.js').create($redisDataAccess, $utils);
-        }
-        ])
-        .factory('$stringRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
-            var stringRepo = require('./redis/model/stringRepository.js').create($redisDataAccess);
-            angular.extend(stringRepo, $baseRepo);
-            return stringRepo;
-        }
-        ])
-        .factory('$setRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
-            var setRepo = require('./redis/model/setRepository.js').create($redisDataAccess);
-            angular.extend(setRepo, $baseRepo);
-            return setRepo;
-        }
-        ])
-         .factory('$hashSetRepo', ['$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
-             var hashRepo = require('./redis/model/hashRepository.js').create($redisDataAccess);
-             angular.extend(hashRepo, $baseRepo);
-             return hashRepo;
-         }
-         ])
-        .factory('$redisRepositoryFactory', ['$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
-            return require('./redis/model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
-        }
-        ])
-        .factory('$redisScannerFactory', ['$redisDataAccess', '$redisScanner',
-            function ($redisDataAccess, $redisScanner) {
-                return require('./redis/model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
-            }
-        ])
-        .controller('RedisController', [
-            '$scope',
-            '$timeout',
-            '$activeDatabase',
-            '$redisRepositoryFactory',
-            '$redisScannerFactory',
-            '$dataTablePresenter',
-            '$actionBarItems',
-            '$dialogViewModel',
-            '$confirmViewModel',
-            '$notifyViewModel',
-            '$redisSettings',
-            '$busyIndicator',
-            '$messageBus',
-            '$validator',
-            function (
-                $scope,
-                $timeout,
-                $activeDatabase,
-                $redisRepositoryFactory,
-                $redisScannerFactory,
-                $dataTablePresenter,
-                $actionBarItems,
-                $dialogViewModel,
-                $confirmViewModel,
-                $notifyViewModel,
-                $redisSettings,
-                $busyIndicator,
-                $messageBus,
-                $validator) {
-
-                $scope.RedisViewModel = require('./redis/viewModel/redisviewModel.js')
-                    .create(
-                    $timeout,
-                    $activeDatabase,
-                    $redisRepositoryFactory,
-                    $redisScannerFactory,
-                    $dataTablePresenter,
-                    $actionBarItems,
-                    $dialogViewModel,
-                    $confirmViewModel,
-                    $notifyViewModel,
-                    $redisSettings,
-                    $busyIndicator,
-                    $messageBus,
-                    $validator);
-            }
-        ])
-        .config(function ($stateProvider, $urlRouterProvider) {
-            $stateProvider
-                .state('redis', {
-                    url: "/redis",
-                    templateUrl: "redis/view/index.html",
-                    controller: 'RedisController',
-                    params: {
-                        seq: {}
-                    }
-                });
-        });
-
-    angular
-        .module('tiles', [angularRoute, 'actionBar'])
-        .controller('TilesController', [
-            '$scope', '$state', '$actionBarItems', function ($scope, $state, $actionBarItems) {
-                $scope.TilesViewModel = require('./tiles/viewModel/tilesViewModel.js')
-                    .create($state, $actionBarItems);
-            }
-        ])
-        .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-            $stateProvider
-                .state('tiles', {
-                    url: "",
-                    templateUrl: "tiles/view/index.html",
-                    controller: 'TilesController',
-                    params: {
-                        seq: {}
-                    }
-                });
-        });
-
-    angular
-        .module('app', ['exceptionOverride', 'alerts', 'common', 'actionBar', 'dialogs', 'tiles', 'tiles.redis'], function () {
-
-        })
-    .directive('ngEnter', function () {
-        return function (scope, element, attrs) {
-            element.bind("keydown keypress", function (event) {
-                if (event.which === 13) {
-                    scope.$apply(function () {
-                        scope.$eval(attrs.ngEnter);
-                    });
-
-                    event.preventDefault();
-                }
-            });
-        };
-    })
-        .controller('AppController', ['$bugReport', '$state', function ($bugReport, $state) {}])
-        .config(function ($urlRouterProvider) {
-        });
-})();
-},{"./common/busyIndicator.js":164,"./common/dialogs/confirmation.js":165,"./common/dialogs/dialog.js":166,"./common/dialogs/notification.js":167,"./common/errorAlert.js":168,"./common/messageBus.js":169,"./common/utils.js":170,"./common/validator.js":171,"./node_modules/angular-ui-router/release/angular-ui-router.js":172,"./node_modules/angular/index.js":174,"./node_modules/datatables/media/js/jquery.dataTables.js":175,"./node_modules/jquery/dist/jquery.js":"jquery","./node_modules/redisscan/index.js":182,"./redis/model/activeDatabase.js":184,"./redis/model/baseRepository.js":185,"./redis/model/hashRepository.js":186,"./redis/model/redisClientFactory.js":187,"./redis/model/redisDataAccess.js":188,"./redis/model/redisRepositoryFactory.js":189,"./redis/model/redisScannerFactory.js":190,"./redis/model/redisSettings.js":191,"./redis/model/setRepository.js":192,"./redis/model/stringRepository.js":193,"./redis/presenter/redisPresenter.js":194,"./redis/viewModel/redisviewModel.js":195,"./tiles/viewModel/tilesViewModel.js":196}],164:[function(require,module,exports){
-exports.create = function ($rootScope, $timeout) {
-    'use strict';
-
-    return new function() {
-        var self = this;
-        self.IsBusy = false;
-        self.Operations = {};
-        self.CancelCallbacks = {};
-        self.cancel = function () {
-            self.IsBusy = false;
-            for (var key1 in self.Operations) {
-                self.Operations[key1] = false;
-            }
-
-            for (var key2 in self.CancelCallbacks) {
-                self.CancelCallbacks[key2]();
-            }
-        };
-
-        self.setIsBusy = function (operation, value, cancelCb) {
-            self.IsBusy = value;
-            
-            self.Operations[operation] = value;
-            self.CancelCallbacks[operation] = cancelCb;
-
-            $timeout(function() {
-                $rootScope.$apply();
-            });
-        }
-
-        self.getIsBusy = function (operation) {
-            if (self.Operations[operation] === null || self.Operations[operation] === undefined) {
-                self.Operations[operation] = false;
-            }
-
-            return self.Operations[operation];
-        }
-    }
-};
-},{}],165:[function(require,module,exports){
+}
+},{"./dialogs/confirmation.js":167,"./dialogs/dialog.js":168,"./dialogs/notification.js":169}],167:[function(require,module,exports){
 exports.create = function () {
     'use strict';
 
@@ -18661,7 +18459,7 @@ exports.create = function () {
         }
     }
 };
-},{}],166:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -18687,7 +18485,7 @@ exports.create = function() {
         };
     }
 };
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 exports.create = function ($timeout) {
     'use strict';
 
@@ -18717,14 +18515,47 @@ exports.create = function ($timeout) {
         }
     }
 };
-},{}],168:[function(require,module,exports){
-exports.create = function(email) {
+},{}],170:[function(require,module,exports){
+exports.create = function ($rootScope, $timeout) {
     'use strict';
-    var self = this;
-    self.Email = email;
-    return function() {}
+
+    return new function() {
+        var self = this;
+        self.IsBusy = false;
+        self.Operations = {};
+        self.CancelCallbacks = {};
+        self.cancel = function () {
+            self.IsBusy = false;
+            for (var key1 in self.Operations) {
+                self.Operations[key1] = false;
+            }
+
+            for (var key2 in self.CancelCallbacks) {
+                self.CancelCallbacks[key2]();
+            }
+        };
+
+        self.setIsBusy = function (operation, value, cancelCb) {
+            self.IsBusy = value;
+            
+            self.Operations[operation] = value;
+            self.CancelCallbacks[operation] = cancelCb;
+
+            $timeout(function() {
+                $rootScope.$apply();
+            });
+        }
+
+        self.getIsBusy = function (operation) {
+            if (self.Operations[operation] === null || self.Operations[operation] === undefined) {
+                self.Operations[operation] = false;
+            }
+
+            return self.Operations[operation];
+        }
+    }
 };
-},{}],169:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 exports.create = function ($rootScope) {
     'use strict';
     return new function () {
@@ -18747,7 +18578,7 @@ exports.create = function ($rootScope) {
         };
     }
 };
-},{}],170:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 exports.create = function () {
     'use strict';
     return new function() {
@@ -18765,7 +18596,7 @@ exports.create = function () {
         };
     };
 };
-},{}],171:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -18783,7 +18614,57 @@ exports.create = function() {
         };
     }
 };
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
+exports.register = function (module) {
+    'use strict';
+    return module.directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+}
+},{}],175:[function(require,module,exports){
+exports.register = function (angular) {
+    'use strict';
+    var supportEmail = 'azuretools@gmail.com';
+    angular
+    .module('exceptionOverride', [])
+    .factory('$exceptionHandler', [function () {
+        return function (exception, cause) {
+            var data = {
+                type: 'angular',
+                url: window.location.hash,
+                localtime: Date.now()
+            };
+            if (cause) { data.cause = cause; }
+            if (exception) {
+                if (exception.message) { data.message = exception.message; }
+                if (exception.name) { data.name = exception.name; }
+                if (exception.stack) { data.stack = exception.stack; }
+            }
+
+            var el = document.getElementById('sendEmail');
+            var alertArea = document.getElementById('alertArea');
+            if (el && alertArea) {
+                alertArea.style.display = "block";
+                el.href = 'mailto:' + supportEmail + '?subject=' + 'Bug Report' + '&body='
+                    + data.message + '|' + data.name + '|' + data.stack
+                + '|' + data.type + '|' + data.url + '|' + data.localtime;
+            }
+
+            throw exception;
+        };
+    }]);
+}
+},{}],176:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.13
@@ -23016,7 +22897,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],173:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 /**
  * @license AngularJS v1.3.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -49326,11 +49207,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
-},{}],174:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":173}],175:[function(require,module,exports){
+},{"./angular":177}],179:[function(require,module,exports){
 /*! DataTables 1.10.6
  * ©2008-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -64211,7 +64092,7 @@ module.exports = angular;
 }(window, document));
 
 
-},{"jquery":"jquery"}],176:[function(require,module,exports){
+},{"jquery":"jquery"}],180:[function(require,module,exports){
 (function (process,Buffer){
 /*global Buffer require exports console setTimeout */
 
@@ -65499,7 +65380,7 @@ exports.print = function (err, reply) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/commands":177,"./lib/parser/javascript":178,"./lib/queue":179,"./lib/to_array":180,"./lib/util":181,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],177:[function(require,module,exports){
+},{"./lib/commands":181,"./lib/parser/javascript":182,"./lib/queue":183,"./lib/to_array":184,"./lib/util":185,"_process":145,"buffer":2,"crypto":6,"events":142,"net":"net"}],181:[function(require,module,exports){
 // This file was generated by ./generate_commands.js on Wed Apr 23 2014 14:51:21 GMT-0700 (PDT)
 module.exports = [
     "append",
@@ -65664,7 +65545,7 @@ module.exports = [
     "zscan"
 ];
 
-},{}],178:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 (function (Buffer){
 var events = require("events"),
     util   = require("../util");
@@ -65969,7 +65850,7 @@ ReplyParser.prototype.send_reply = function (reply) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../util":181,"buffer":2,"events":142}],179:[function(require,module,exports){
+},{"../util":185,"buffer":2,"events":142}],183:[function(require,module,exports){
 // Queue class adapted from Tim Caswell's pattern library
 // http://github.com/creationix/pattern/blob/master/lib/pattern/queue.js
 
@@ -66030,7 +65911,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = Queue;
 }
 
-},{}],180:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 function to_array(args) {
     var len = args.length,
         arr = new Array(len), i;
@@ -66044,7 +65925,7 @@ function to_array(args) {
 
 module.exports = to_array;
 
-},{}],181:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 // Support for very old versions of node where the module was called "sys".  At some point, we should abandon this.
 
 var util;
@@ -66057,7 +65938,7 @@ try {
 
 module.exports = util;
 
-},{"sys":160,"util":160}],182:[function(require,module,exports){
+},{"sys":160,"util":160}],186:[function(require,module,exports){
 var async = require('async');
 
 function genericScan(redis, cmd, key, pattern, each_callback, done_callback) {
@@ -66172,7 +66053,7 @@ module.exports = function (args) {
 };
 
 
-},{"async":183}],183:[function(require,module,exports){
+},{"async":187}],187:[function(require,module,exports){
 (function (process){
 /*global setImmediate: false, setTimeout: false, console: false */
 (function () {
@@ -67134,7 +67015,7 @@ module.exports = function (args) {
 }());
 
 }).call(this,require('_process'))
-},{"_process":145}],184:[function(require,module,exports){
+},{"_process":145}],188:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -67144,7 +67025,7 @@ exports.create = function() {
         self.Current = 0;
     }
 };
-},{}],185:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 exports.create = function ($redisDataAccess, $utils) {
     'use strict';
 
@@ -67166,7 +67047,7 @@ exports.create = function ($redisDataAccess, $utils) {
         };
     };
 };
-},{}],186:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67191,14 +67072,14 @@ exports.create = function ($redisDataAccess) {
         };
     };
 };
-},{}],187:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 var redis = require("../../node_modules/redis/index.js");
 
 exports.createClient = function (host, port, password) {
     console.log('Creating client ' + host + ' ' + port + ' ' + password);
     return redis.createClient(port, host, { auth_pass: password });
 };
-},{"../../node_modules/redis/index.js":176}],188:[function(require,module,exports){
+},{"../../node_modules/redis/index.js":180}],192:[function(require,module,exports){
 exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
     'use strict';
     return new function () {
@@ -67221,7 +67102,7 @@ exports.create = function ($activeDatabase, $redisClientFactory, $redisSettings,
         }
     }
 };
-},{}],189:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 exports.create = function (stringRepo, setRepo, hashSetRepo) {
     'use strict';
 
@@ -67241,7 +67122,7 @@ exports.create = function (stringRepo, setRepo, hashSetRepo) {
         }
     };
 };
-},{}],190:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 exports.create = function ($redisDataAccess, $redisScanner) {
     'use strict';
 
@@ -67268,7 +67149,7 @@ exports.create = function ($redisDataAccess, $redisScanner) {
         return client;
     }
 };
-},{}],191:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 exports.create = function() {
     'use strict';
 
@@ -67290,7 +67171,7 @@ exports.create = function() {
         };
     }
 };
-},{}],192:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67318,7 +67199,7 @@ exports.create = function ($redisDataAccess) {
         };
     };
 };
-},{}],193:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 exports.create = function ($redisDataAccess) {
     'use strict';
 
@@ -67337,7 +67218,7 @@ exports.create = function ($redisDataAccess) {
         };
     };
 };
-},{}],194:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 exports.create = function (redisClientFactory, $redisSettings) {
     'use strict';
 
@@ -67445,294 +67326,425 @@ exports.create = function (redisClientFactory, $redisSettings) {
         }
     }
 }
-},{}],195:[function(require,module,exports){
-exports.create = function (
-    $timeout,
-    $activeDatabase,
-    $redisRepositoryFactory,
-    $redisScannerFactory,
-    $dataTablePresenter,
-    $actionBarItems,
-    $dialogViewModel,
-    $confirmViewModel,
-    $notifyViewModel,
-    $redisSettings,
-    $busyIndicator,
-    $messageBus,
-    $validator) {
+},{}],199:[function(require,module,exports){
+exports.register = function (angular, angularRoute) {
     'use strict';
 
-    return new function () {
-        var self = this;
-
-        var loadKeysOperation = 'loadKeys';
-
-        self.Keys = [];
-        var searchViewModel = {
-            search: function () {
-                self.loadKeys(this.Pattern);
-            },
-            Pattern: '',
-            clear: function () {
-                this.Pattern = '';
-                this.IsClearVisible = false;
-                searchViewModel.search();
-            },
-            IsClearVisible: false,
-            onChange: function () {
-                this.IsClearVisible = this.Pattern !== '';
-            }
-        };
-
-        var databaseViewModel = {
-            setCurrent: function (n) {
-                $activeDatabase.Current = n;
-                this.Current = n;
-                searchViewModel.search();
-            },
-            Current: $activeDatabase.Current
-        };
-        // redis action bar
-        $actionBarItems.ModuleName = ': Redis';
-        $actionBarItems.IsActionBarVisible = true;
-        $actionBarItems.IsAddKeyVisible = true;
-        $actionBarItems.IsRefreshVisible = true;
-        $actionBarItems.IsSettingsVisible = true;
-        $actionBarItems.IsSearchVisible = true;
-        $actionBarItems.IsDatabaseSelectVisible = true;
-
-        $actionBarItems.addKey = function () {
-            $dialogViewModel.WithOption = true;
-            $dialogViewModel.IsChecked = true;
-            $dialogViewModel.OptionText = 'Close dialog on save';
-            $dialogViewModel.IsVisible = true;
-            $dialogViewModel.BodyViewModel = {
-                Key: '',
-                Value: '',
-                Types: ['string', 'set', 'hash set'],
-                SelectedType: 'string',
-                selectType: function (value) {
-                    this.SelectedType = value;
-                    var example = '';
-                    switch (this.SelectedType) {
-                        case 'string':
-                            example = 'any string';
-                            break;
-                        case 'set':
-                            example = '["set value 1", "set value 2"]';
-                            break;
-                        case 'hash set':
-                            example = '[ ["name 1", "value 1"], ["name 2, "value 2"] ]';
-                            break;
-                    }
-
-                    this.ValueExample = 'Example: ' + example;
-                },
-                ValueExample: 'Example: any string'
-            };
-            $dialogViewModel.Body = 'createKeyTemplate';
-            $dialogViewModel.Header = 'Add Key';
-
-            $dialogViewModel.save = function () {
-                var type = $dialogViewModel.BodyViewModel.SelectedType;
-                var repo = $redisRepositoryFactory(type);
-
-                try {
-                    repo.create($dialogViewModel.BodyViewModel.Key, $dialogViewModel.BodyViewModel.Value, function () { });
-                } catch (e) {
-                    if (e.name && e.name === 'Json Parse Error') {
-                        console.log(e.details);
-                        showError(e.message + ' ' + $dialogViewModel.BodyViewModel.ValueExample);
-                        return;
-                    }
-
-                    throw e;
-                }
-                $dialogViewModel.BodyViewModel.Key = '';
-                $dialogViewModel.BodyViewModel.Value = '';
-
-                if ($dialogViewModel.IsChecked) {
-                    $dialogViewModel.IsVisible = false;
-                    searchViewModel.search();
-                }
-            };
-        };
-
-        $actionBarItems.refresh = function () {
-            searchViewModel.search();
-        };
-
-        $actionBarItems.changeSettings = function () {
-            $dialogViewModel.WithOption = true;
-            $dialogViewModel.OptionText = 'Use demo credentials';
-            $dialogViewModel.IsChecked = false;
-            $dialogViewModel.onChecked = function () {
-                if ($dialogViewModel.IsChecked) {
-                    $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
-                    $dialogViewModel.BodyViewModel.Port = 6379;
-                    $dialogViewModel.BodyViewModel.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
-                } else {
-                    $dialogViewModel.BodyViewModel.Host = $redisSettings.Host;
-                    $dialogViewModel.BodyViewModel.Port = $redisSettings.Port;
-                    $dialogViewModel.BodyViewModel.Password = $redisSettings.Password;
-                }
-            };
-            $dialogViewModel.IsVisible = true;
-            $dialogViewModel.BodyViewModel = {
-                Host: $redisSettings.Host,
-                Port: $redisSettings.Port,
-                Password: $redisSettings.Password,
-            }
-            $dialogViewModel.Body = 'changeSettingsTemplate';
-            $dialogViewModel.Header = 'Settings';
-            $dialogViewModel.save = function () {
-                if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
-                    showError('Port value is wrong. Port must be in range [1;65535]');
-                    return;
-                };
-
-                $redisSettings.Host = $dialogViewModel.BodyViewModel.Host;
-                $redisSettings.Port = +$dialogViewModel.BodyViewModel.Port;
-                $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
-                $dialogViewModel.IsVisible = false;
-                searchViewModel.search();
-            };
-        };
-
-        $actionBarItems.SearchViewModel = searchViewModel;
-        $actionBarItems.DatabaseViewModel = databaseViewModel;
-
-        var groupByKey = function (type, key, value) {
-            var existing = self.Keys.filter(function (item) {
-                return item.Key == key;
-            });
-
-            if (existing !== null && existing[0] !== undefined) {
-                var values = JSON.parse(existing[0].Value);
-                values.push(value);
-                existing[0].Value = JSON.stringify(values);
-            } else {
-                self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
-            }
-        }
-        // load redis data
-        var maxItemsToLoad = 100;
-
-        self.loadKeys = function (pattern) {
-            $notifyViewModel.close();
-            if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
-                self.Keys.length = 0;
-                var loadedNumber = 0;
-                var client = $redisScannerFactory({
-                    pattern: pattern,
-                    each_callback: function (type, key, subkey, p, value, cb) {
-                        if (type === 'set') {
-                            groupByKey(type, key, value);
-                        }
-                        else if (type == 'hash') {
-                            groupByKey(type, key, [subkey, value]);
-                        }
-                        else {
-                            self.Keys.push({ Key: key, Type: type, Value: value });
-                        }
-                        loadedNumber++;
-                        if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
-                            showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
-                            cb(true);
-                        } else {
-                            cb(false);
-                        }
-                    },
-                    done_callback: function (err) {
-                        $busyIndicator.setIsBusy(loadKeysOperation, false);
-                        if (err) {
-                            $messageBus.publish('redis-communication-error', err);
-                        }
-
-                        $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
-                    }
-                });
-                $busyIndicator.setIsBusy(loadKeysOperation, true, function () {
-                    client.end();
-                });
-            }
-        };
-
-        self.updateKey = function (keyData, newValue) {
-            var type = keyData.Type;
-            var repo = $redisRepositoryFactory(type);
-            repo.update(keyData, newValue);
-        };
-
-        self.removeKey = function (keyData) {
-            $confirmViewModel.scope().$apply(function () {
-                $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
-                $confirmViewModel.show(function () {
-                    var type = keyData.Type;
-                    var repo = $redisRepositoryFactory(type);
-                    repo.delete(keyData);
-                    searchViewModel.search();
-                });
-            });
-        };
-
-        // init
-        if ($redisSettings.isEmpty()) {
-            $actionBarItems.changeSettings();
-        } else {
-            self.loadKeys(searchViewModel.Pattern);
-        }
-
-        var showError = function (data) {
-            if (data !== undefined && data !== null) {
-                if (data.name && data.name === 'Error') {
-                    $timeout(function () {
-                        $notifyViewModel.scope().$apply(function () {
-                            $notifyViewModel.showWarning(data.message);
-                        });
-                    });
-                } else {
-                    $timeout(function () {
-                        $notifyViewModel.scope().$apply(function () {
-                            $notifyViewModel.showWarning(data);
-                        });
-                    });
-                }
-            }
-        }
-
-        var showInfo = function (msg) {
-            if (msg !== undefined && msg !== null) {
-                $timeout(function () {
-                    $notifyViewModel.scope().$apply(function () {
-                        $notifyViewModel.showInfo(msg);
-                    });
-                });
-            }
-        }
-
-        $messageBus.subscribe(
-            ['redis-communication-error'], function (event, data) {
-                console.log('Received data: ' + data);
-                showError(data);
-            });
-    }
+    var redisModule = angular
+        .module('tiles.redis', [angularRoute]);
+    require('./services/redisServices.js').register(redisModule);
+    require('./viewModel/redisViewModel.js').register(redisModule);
+    redisModule
+       .config(function ($stateProvider, $urlRouterProvider) {
+           $stateProvider
+               .state('redis', {
+                   url: "/redis",
+                   templateUrl: "redis/view/index.html",
+                   controller: 'RedisController',
+                   params: {
+                       seq: {}
+                   }
+               });
+       });
 }
-},{}],196:[function(require,module,exports){
-exports.create = function ($state, $actionBarItems) {
+},{"./services/redisServices.js":200,"./viewModel/redisViewModel.js":201}],200:[function(require,module,exports){
+exports.register = function (module) {
+    'use strict';
+    module
+        .factory('$redisClientFactory', function () {
+            var clientFactory =
+                require('../model/redisClientFactory.js').createClient;
+            return clientFactory;
+        })
+        .factory('$redisScanner', function () {
+            return require('../../node_modules/redisscan/index.js');
+        })
+        .factory('$redisSettings', function () {
+            return require('../model/redisSettings.js').create();
+        })
+        .factory('$dataTablePresenter', [
+            '$redisClientFactory', '$redisSettings', function ($redisClientFactory, $redisSettings) {
+                return require('../presenter/redisPresenter.js').create($redisClientFactory, $redisSettings);
+            }
+        ])
+        .factory('$redisDataAccess', [
+            '$activeDatabase', '$redisClientFactory', '$redisSettings', '$messageBus', function ($activeDatabase, $redisClientFactory, $redisSettings, $messageBus) {
+                return require('../model/redisDataAccess.js').create($activeDatabase, $redisClientFactory, $redisSettings, $messageBus);
+            }
+        ])
+        .factory('$activeDatabase', [
+            function () {
+                return require('../model/activeDatabase.js').create();
+            }
+        ])
+        .factory('$baseRepo', [
+            '$redisDataAccess', '$utils', function ($redisDataAccess, $utils) {
+                return require('../model/baseRepository.js').create($redisDataAccess, $utils);
+            }
+        ])
+        .factory('$stringRepo', [
+            '$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+                var stringRepo = require('../model/stringRepository.js').create($redisDataAccess);
+                angular.extend(stringRepo, $baseRepo);
+                return stringRepo;
+            }
+        ])
+        .factory('$setRepo', [
+            '$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+                var setRepo = require('../model/setRepository.js').create($redisDataAccess);
+                angular.extend(setRepo, $baseRepo);
+                return setRepo;
+            }
+        ])
+        .factory('$hashSetRepo', [
+            '$baseRepo', '$redisDataAccess', function ($baseRepo, $redisDataAccess) {
+                var hashRepo = require('../model/hashRepository.js').create($redisDataAccess);
+                angular.extend(hashRepo, $baseRepo);
+                return hashRepo;
+            }
+        ])
+        .factory('$redisRepositoryFactory', [
+            '$stringRepo', '$setRepo', '$hashSetRepo', function ($stringRepo, $setRepo, $hashSetRepo) {
+                return require('../model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
+            }
+        ])
+        .factory('$redisScannerFactory', [
+            '$redisDataAccess', '$redisScanner',
+            function ($redisDataAccess, $redisScanner) {
+                return require('../model/redisScannerFactory.js').create($redisDataAccess, $redisScanner);
+            }
+        ]);
+}
+},{"../../node_modules/redisscan/index.js":186,"../model/activeDatabase.js":188,"../model/baseRepository.js":189,"../model/hashRepository.js":190,"../model/redisClientFactory.js":191,"../model/redisDataAccess.js":192,"../model/redisRepositoryFactory.js":193,"../model/redisScannerFactory.js":194,"../model/redisSettings.js":195,"../model/setRepository.js":196,"../model/stringRepository.js":197,"../presenter/redisPresenter.js":198}],201:[function(require,module,exports){
+exports.register = function(module) {
+    module
+        .controller('RedisController', [
+            '$scope',
+            '$timeout',
+            '$activeDatabase',
+            '$redisRepositoryFactory',
+            '$redisScannerFactory',
+            '$dataTablePresenter',
+            '$actionBarItems',
+            '$dialogViewModel',
+            '$confirmViewModel',
+            '$notifyViewModel',
+            '$redisSettings',
+            '$busyIndicator',
+            '$messageBus',
+            '$validator',
+            function(
+                $scope,
+                $timeout,
+                $activeDatabase,
+                $redisRepositoryFactory,
+                $redisScannerFactory,
+                $dataTablePresenter,
+                $actionBarItems,
+                $dialogViewModel,
+                $confirmViewModel,
+                $notifyViewModel,
+                $redisSettings,
+                $busyIndicator,
+                $messageBus,
+                $validator) {
+
+                $scope.RedisViewModel = new function() {
+                    var self = this;
+
+                    var loadKeysOperation = 'loadKeys';
+
+                    self.Keys = [];
+                    var searchViewModel = {
+                        search: function() {
+                            self.loadKeys(this.Pattern);
+                        },
+                        Pattern: '',
+                        clear: function() {
+                            this.Pattern = '';
+                            this.IsClearVisible = false;
+                            searchViewModel.search();
+                        },
+                        IsClearVisible: false,
+                        onChange: function() {
+                            this.IsClearVisible = this.Pattern !== '';
+                        }
+                    };
+
+                    var databaseViewModel = {
+                        setCurrent: function(n) {
+                            $activeDatabase.Current = n;
+                            this.Current = n;
+                            searchViewModel.search();
+                        },
+                        Current: $activeDatabase.Current
+                    };
+                    // redis action bar
+                    $actionBarItems.ModuleName = ': Redis';
+                    $actionBarItems.IsActionBarVisible = true;
+                    $actionBarItems.IsAddKeyVisible = true;
+                    $actionBarItems.IsRefreshVisible = true;
+                    $actionBarItems.IsSettingsVisible = true;
+                    $actionBarItems.IsSearchVisible = true;
+                    $actionBarItems.IsDatabaseSelectVisible = true;
+
+                    $actionBarItems.addKey = function() {
+                        $dialogViewModel.WithOption = true;
+                        $dialogViewModel.IsChecked = true;
+                        $dialogViewModel.OptionText = 'Close dialog on save';
+                        $dialogViewModel.IsVisible = true;
+                        $dialogViewModel.BodyViewModel = {
+                            Key: '',
+                            Value: '',
+                            Types: ['string', 'set', 'hash set'],
+                            SelectedType: 'string',
+                            selectType: function(value) {
+                                this.SelectedType = value;
+                                var example = '';
+                                switch (this.SelectedType) {
+                                case 'string':
+                                    example = 'any string';
+                                    break;
+                                case 'set':
+                                    example = '["set value 1", "set value 2"]';
+                                    break;
+                                case 'hash set':
+                                    example = '[ ["name 1", "value 1"], ["name 2, "value 2"] ]';
+                                    break;
+                                }
+
+                                this.ValueExample = 'Example: ' + example;
+                            },
+                            ValueExample: 'Example: any string'
+                        };
+                        $dialogViewModel.Body = 'createKeyTemplate';
+                        $dialogViewModel.Header = 'Add Key';
+
+                        $dialogViewModel.save = function() {
+                            var type = $dialogViewModel.BodyViewModel.SelectedType;
+                            var repo = $redisRepositoryFactory(type);
+                            try {
+                                repo.create(
+                                    $dialogViewModel.BodyViewModel.Key,
+                                    $dialogViewModel.BodyViewModel.Value,
+                                    function () {
+                                        $dialogViewModel.BodyViewModel.Key = '';
+                                        $dialogViewModel.BodyViewModel.Value = '';
+
+                                        if ($dialogViewModel.IsChecked) {
+                                            $dialogViewModel.IsVisible = false;
+                                            searchViewModel.search();
+                                        }
+                                });
+                            } catch (e) {
+                                if (e.name && e.name === 'Json Parse Error') {
+                                    console.log(e.details);
+                                    showError(e.message + ' ' + $dialogViewModel.BodyViewModel.ValueExample);
+                                    return;
+                                }
+
+                                throw e;
+                            }
+                        };
+                    };
+
+                    $actionBarItems.refresh = function() {
+                        searchViewModel.search();
+                    };
+
+                    $actionBarItems.changeSettings = function() {
+                        $dialogViewModel.WithOption = true;
+                        $dialogViewModel.OptionText = 'Use demo credentials';
+                        $dialogViewModel.IsChecked = false;
+                        $dialogViewModel.onChecked = function() {
+                            if ($dialogViewModel.IsChecked) {
+                                $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
+                                $dialogViewModel.BodyViewModel.Port = 6379;
+                                $dialogViewModel.BodyViewModel.Password = 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=';
+                            } else {
+                                $dialogViewModel.BodyViewModel.Host = $redisSettings.Host;
+                                $dialogViewModel.BodyViewModel.Port = $redisSettings.Port;
+                                $dialogViewModel.BodyViewModel.Password = $redisSettings.Password;
+                            }
+                        };
+                        $dialogViewModel.IsVisible = true;
+                        $dialogViewModel.BodyViewModel = {
+                            Host: $redisSettings.Host,
+                            Port: $redisSettings.Port,
+                            Password: $redisSettings.Password,
+                        }
+                        $dialogViewModel.Body = 'changeSettingsTemplate';
+                        $dialogViewModel.Header = 'Settings';
+                        $dialogViewModel.save = function() {
+                            if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
+                                showError('Port value is wrong. Port must be in range [1;65535]');
+                                return;
+                            };
+
+                            $redisSettings.Host = $dialogViewModel.BodyViewModel.Host;
+                            $redisSettings.Port = +$dialogViewModel.BodyViewModel.Port;
+                            $redisSettings.Password = $dialogViewModel.BodyViewModel.Password;
+                            $dialogViewModel.IsVisible = false;
+                            searchViewModel.search();
+                        };
+                    };
+
+                    $actionBarItems.SearchViewModel = searchViewModel;
+                    $actionBarItems.DatabaseViewModel = databaseViewModel;
+
+                    var groupByKey = function(type, key, value) {
+                        var existing = self.Keys.filter(function(item) {
+                            return item.Key == key;
+                        });
+
+                        if (existing !== null && existing[0] !== undefined) {
+                            var values = JSON.parse(existing[0].Value);
+                            values.push(value);
+                            existing[0].Value = JSON.stringify(values);
+                        } else {
+                            self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
+                        }
+                    }
+
+                    // load redis data
+                    var maxItemsToLoad = 100;
+
+                    self.loadKeys = function(pattern) {
+                        $notifyViewModel.close();
+                        if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
+                            self.Keys.length = 0;
+                            var loadedNumber = 0;
+                            var client = $redisScannerFactory({
+                                pattern: pattern,
+                                each_callback: function(type, key, subkey, p, value, cb) {
+                                    if (type === 'set') {
+                                        groupByKey(type, key, value);
+                                    } else if (type == 'hash') {
+                                        groupByKey(type, key, [subkey, value]);
+                                    } else {
+                                        self.Keys.push({ Key: key, Type: type, Value: value });
+                                    }
+                                    loadedNumber++;
+                                    if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
+                                        showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
+                                        cb(true);
+                                    } else {
+                                        cb(false);
+                                    }
+                                },
+                                done_callback: function(err) {
+                                    $busyIndicator.setIsBusy(loadKeysOperation, false);
+                                    if (err) {
+                                        $messageBus.publish('redis-communication-error', err);
+                                    }
+
+                                    $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
+                                }
+                            });
+                            $busyIndicator.setIsBusy(loadKeysOperation, true, function() {
+                                client.end();
+                            });
+                        }
+                    };
+
+                    self.updateKey = function(keyData, newValue) {
+                        var type = keyData.Type;
+                        var repo = $redisRepositoryFactory(type);
+                        repo.update(keyData, newValue);
+                    };
+
+                    self.removeKey = function(keyData) {
+                        $confirmViewModel.scope().$apply(function() {
+                            $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
+                            $confirmViewModel.show(function() {
+                                var type = keyData.Type;
+                                var repo = $redisRepositoryFactory(type);
+                                repo.delete(keyData);
+                                searchViewModel.search();
+                            });
+                        });
+                    };
+
+                    // init
+                    if ($redisSettings.isEmpty()) {
+                        $actionBarItems.changeSettings();
+                    } else {
+                        self.loadKeys(searchViewModel.Pattern);
+                    }
+
+                    var showError = function(data) {
+                        if (data !== undefined && data !== null) {
+                            if (data.name && data.name === 'Error') {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
+                                        $notifyViewModel.showWarning(data.message);
+                                    });
+                                });
+                            } else {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
+                                        $notifyViewModel.showWarning(data);
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                    var showInfo = function(msg) {
+                        if (msg !== undefined && msg !== null) {
+                            $timeout(function() {
+                                $notifyViewModel.scope().$apply(function() {
+                                    $notifyViewModel.showInfo(msg);
+                                });
+                            });
+                        }
+                    }
+
+                    $messageBus.subscribe(
+                    ['redis-communication-error'], function(event, data) {
+                        console.log('Received data: ' + data);
+                        showError(data);
+                    });
+                };
+            }
+        ]);
+};
+},{}],202:[function(require,module,exports){
+exports.register = function (angular, angularRoute) {
     'use strict';
 
-    return new function() {
-        var self = this;
-        $actionBarItems.IsActionBarVisible = false;
-        self.IsRedisVisible = false;
+    var tilesModule = angular.module('tiles', [angularRoute, 'actionBar']);
+    require('./viewModel/tilesViewModel.js').register(tilesModule);
+    tilesModule.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+        $stateProvider
+            .state('tiles', {
+                url: "",
+                templateUrl: "tiles/view/index.html",
+                controller: 'TilesController',
+                params: {
+                    seq: {}
+                }
+            });
+    });
+}
+},{"./viewModel/tilesViewModel.js":203}],203:[function(require,module,exports){
+exports.register = function (module) {
+    'use strict';
+    module.controller('TilesController', [
+        '$scope', '$state', '$actionBarItems', function ($scope, $state, $actionBarItems) {
+            $scope.TilesViewModel = new function () {
+                var self = this;
+                $actionBarItems.IsActionBarVisible = false;
+                self.IsRedisVisible = false;
 
-        self.openRedis = function() {
-            $state.go('redis', {});
+                self.openRedis = function () {
+                    $state.go('redis', {});
+                }
+
+                self.openRedis();
+            }
         }
-
-        self.openRedis();
-    }
+    ]);
 }
 },{}],"jquery":[function(require,module,exports){
 /*!

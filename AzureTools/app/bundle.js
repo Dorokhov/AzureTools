@@ -67037,7 +67037,6 @@ exports.create = function ($redisDataAccess, $utils) {
             try {
                 cb(client);
             } finally {
-                client.quit();
             }
         };
         self.delete = function (keyData) {
@@ -67129,7 +67128,6 @@ exports.create = function ($redisDataAccess, $redisScanner) {
     return function (args) {
         var client = $redisDataAccess.createClient();
         var doneCb = function (err) {
-            client.quit();
             args.done_callback(err);
         };
         $redisScanner({
@@ -67187,13 +67185,13 @@ exports.create = function ($redisDataAccess) {
             }
         };
 
-        self.update = function (keyData, newValue) {
+        self.update = function (keyData, newValue, cb) {
             var updatedMembers = self.Utils.safeJsonParse(newValue);
             if (updatedMembers != null) {
                 // TODO: Replace with transaction
                 self.safeRedisCmd(function (client) {
                     client.del(keyData.Key);
-                    client.sadd(keyData.Key, updatedMembers);
+                    client.sadd(keyData.Key, updatedMembers, cb);
                 });
             }
         };
@@ -67211,9 +67209,9 @@ exports.create = function ($redisDataAccess) {
             });
         };
 
-        self.update = function (keyData, newValue) {
+        self.update = function (keyData, newValue, cb) {
             self.safeRedisCmd(function (client) {
-                client.set(keyData.Key, newValue);
+                client.set(keyData.Key, newValue, cb);
             });
         };
     };
@@ -67526,16 +67524,7 @@ exports.register = function(module) {
                             try {
                                 repo.create(
                                     $dialogViewModel.BodyViewModel.Key,
-                                    $dialogViewModel.BodyViewModel.Value,
-                                    function () {
-                                        $dialogViewModel.BodyViewModel.Key = '';
-                                        $dialogViewModel.BodyViewModel.Value = '';
-
-                                        if ($dialogViewModel.IsChecked) {
-                                            $dialogViewModel.IsVisible = false;
-                                            searchViewModel.search();
-                                        }
-                                });
+                                    $dialogViewModel.BodyViewModel.Value);
                             } catch (e) {
                                 if (e.name && e.name === 'Json Parse Error') {
                                     console.log(e.details);
@@ -67544,6 +67533,14 @@ exports.register = function(module) {
                                 }
 
                                 throw e;
+                            }
+
+                            $dialogViewModel.BodyViewModel.Key = '';
+                            $dialogViewModel.BodyViewModel.Value = '';
+
+                            if ($dialogViewModel.IsChecked) {
+                                $dialogViewModel.IsVisible = false;
+                                searchViewModel.search();
                             }
                         };
                     };

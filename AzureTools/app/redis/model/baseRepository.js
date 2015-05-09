@@ -9,7 +9,6 @@
             try {
                 cb(client);
             } finally {
-                client.quit();
             }
         };
         self.delete = function (keyData) {

@@ -108,16 +108,7 @@
                             try {
                                 repo.create(
                                     $dialogViewModel.BodyViewModel.Key,
-                                    $dialogViewModel.BodyViewModel.Value,
-                                    function () {
-                                        $dialogViewModel.BodyViewModel.Key = '';
-                                        $dialogViewModel.BodyViewModel.Value = '';
-
-                                        if ($dialogViewModel.IsChecked) {
-                                            $dialogViewModel.IsVisible = false;
-                                            searchViewModel.search();
-                                        }
-                                });
+                                    $dialogViewModel.BodyViewModel.Value);
                             } catch (e) {
                                 if (e.name && e.name === 'Json Parse Error') {
                                     console.log(e.details);
@@ -126,6 +117,14 @@
                                 }
 
                                 throw e;
+                            }
+
+                            $dialogViewModel.BodyViewModel.Key = '';
+                            $dialogViewModel.BodyViewModel.Value = '';
+
+                            if ($dialogViewModel.IsChecked) {
+                                $dialogViewModel.IsVisible = false;
+                                searchViewModel.search();
                             }
                         };
                     };

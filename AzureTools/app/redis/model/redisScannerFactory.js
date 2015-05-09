@@ -4,7 +4,6 @@
     return function (args) {
         var client = $redisDataAccess.createClient();
         var doneCb = function (err) {
-            client.quit();
             args.done_callback(err);
         };
         $redisScanner({

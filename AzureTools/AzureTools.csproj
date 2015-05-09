@@ -49,7 +49,6 @@
     <Content Include="app\common\dialogs\dialog.js" />
     <Content Include="app\common\utils.js" />
     <Content Include="app\content\css\angular-csp.css" />
-    <Content Include="app\content\css\fonts\fontawesome-webfont.svg" />
     <Content Include="app\content\css\metro-ui-css\font-awesome.css" />
     <Content Include="app\content\css\styles.css" />
     <Content Include="app\content\css\grid.css" />
@@ -3389,9 +3388,7 @@
     <Content Include="app\node_modules\jquery-browserify\package.json" />
     <Content Include="app\node_modules\jquery-browserify\README.md" />
     <Content Include="packages.config" />
-    <Content Include="app\content\css\metro-ui-css\iconFont.ttf" />
     <Content Include="app\content\css\metro-ui-css\metroSysIcons.ttf" />
-    <Content Include="app\content\css\metro-ui-css\iconFont.eot" />
     <Content Include="app\content\css\metro-ui-css\iconFont.woff" />
     <Content Include="app\content\css\metro-ui-css\metroSysIcons.woff" />
     <Content Include="app\content\css\metro-ui-css\OpenSans-Bold.woff" />
@@ -3493,11 +3490,11 @@
     <Content Include="app\node_modules\redisscan\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\content\css\fonts\fontawesome-webfont.eot" />
-    <Content Include="app\content\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="app\content\css\fonts\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="app\content\css\fonts\fontawesome-webfont.woff" />
     <Content Include="app\content\css\fonts\fontawesome-webfont.woff2" />
-    <Content Include="app\content\css\fonts\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <LigerSharkChromeTargetsPath>$(BuildFolder)\ligershark.chrome.targets</LigerSharkChromeTargetsPath>

@@ -2290,7 +2290,7 @@
     <Content Include="app\redis\model\setRepository.js" />
     <Content Include="app\redis\model\hashRepository.js" />
     <Content Include="app\redis\model\stringRepository.js" />
-    <Content Include="app\redis\model\redisScannerMock.js" />
+    <Content Include="app\redis\model\mocks\redisScannerMock.js" />
     <Content Include="app\redis\model\redisRepositoryFactory.js" />
     <Content Include="app\redis\model\redisSettings.js" />
     <Content Include="app\redis\presenter\redisPresenter.js" />
@@ -2298,7 +2298,7 @@
     <Content Include="app\common\commonModule.js" />
     <Content Include="app\redis\services\redisServices.js" />
     <Content Include="app\exceptionHandling\exceptionHandlingModule.js" />
-    <Content Include="app\redis\model\redisClientFactoryMock.js" />
+    <Content Include="app\redis\model\mocks\redisClientFactoryMock.js" />
     <Content Include="app\redis\model\redisClientFactory.js" />
     <Content Include="app\redis\viewModel\redisViewModel.js" />
     <Content Include="app\startup.js" />
@@ -2306,6 +2306,7 @@
     <Content Include="app\tiles\tilesModule.js" />
     <Content Include="app\tiles\viewModel\tilesViewModel.js" />
     <Content Include="app\tiles\view\index.html" />
+    <Content Include="karma.config.js" />
     <Content Include="Properties\build\lib\Ionic.Zip.DLL" />
     <Content Include="Properties\build\lib\MSBuild.ExtensionPack.dll" />
     <Content Include="Properties\build\ligershark.chrome.targets" />
@@ -3402,6 +3403,7 @@
     <Content Include="app\content\css\metro-ui-css\OpenSans-Light.woff" />
     <Content Include="app\content\css\metro-ui-css\OpenSans.woff" />
     <Content Include="app\content\css\metro-ui-css\PTSerif-Caption.woff" />
+    <Content Include="tests\redisTests.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\manifest.json" />

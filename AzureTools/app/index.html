@@ -96,8 +96,7 @@
         </div>
 
         <div class="loading" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
-
-            <span>Loading...</span>
+            <span>{{BusyIndicator.Text}}</span>
             <a ng-click="BusyIndicator.cancel()" style="cursor: pointer;">Cancel</a>
         </div>
 

@@ -8,11 +8,12 @@
 }
 
 .loading {
-    width: 800px;
+    width: 200px;
     margin: 30px auto 0;
     position: absolute;
     left: 50%;
     top: 30%;
+    background: white;
 }
 
 .leftOffset {

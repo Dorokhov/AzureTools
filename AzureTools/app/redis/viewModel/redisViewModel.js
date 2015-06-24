@@ -1,4 +1,4 @@
-﻿exports.register = function(module) {
+﻿exports.register = function (module) {
     module
         .controller('RedisController', [
             '$scope',
@@ -15,7 +15,7 @@
             '$busyIndicator',
             '$messageBus',
             '$validator',
-            function(
+            function (
                 $scope,
                 $timeout,
                 $activeDatabase,
@@ -31,30 +31,30 @@
                 $messageBus,
                 $validator) {
 
-                $scope.RedisViewModel = new function() {
+                $scope.RedisViewModel = new function () {
                     var self = this;
 
                     var loadKeysOperation = 'loadKeys';
 
                     self.Keys = [];
                     var searchViewModel = {
-                        search: function() {
+                        search: function () {
                             self.loadKeys(this.Pattern);
                         },
                         Pattern: '',
-                        clear: function() {
+                        clear: function () {
                             this.Pattern = '';
                             this.IsClearVisible = false;
                             searchViewModel.search();
                         },
                         IsClearVisible: false,
-                        onChange: function() {
+                        onChange: function () {
                             this.IsClearVisible = this.Pattern !== '';
                         }
                     };
 
                     var databaseViewModel = {
-                        setCurrent: function(n) {
+                        setCurrent: function (n) {
                             $activeDatabase.Current = n;
                             this.Current = n;
                             searchViewModel.search();
@@ -70,7 +70,7 @@
                     $actionBarItems.IsSearchVisible = true;
                     $actionBarItems.IsDatabaseSelectVisible = true;
 
-                    $actionBarItems.addKey = function() {
+                    $actionBarItems.addKey = function () {
                         $dialogViewModel.WithOption = true;
                         $dialogViewModel.IsChecked = true;
                         $dialogViewModel.OptionText = 'Close dialog on save';
@@ -80,19 +80,19 @@
                             Value: '',
                             Types: ['string', 'set', 'hash set'],
                             SelectedType: 'string',
-                            selectType: function(value) {
+                            selectType: function (value) {
                                 this.SelectedType = value;
                                 var example = '';
                                 switch (this.SelectedType) {
-                                case 'string':
-                                    example = 'any string';
-                                    break;
-                                case 'set':
-                                    example = '["set value 1", "set value 2"]';
-                                    break;
-                                case 'hash set':
-                                    example = '[ ["name 1", "value 1"], ["name 2, "value 2"] ]';
-                                    break;
+                                    case 'string':
+                                        example = 'any string';
+                                        break;
+                                    case 'set':
+                                        example = '["set value 1", "set value 2"]';
+                                        break;
+                                    case 'hash set':
+                                        example = '[ ["name 1", "value 1"], ["name 2, "value 2"] ]';
+                                        break;
                                 }
 
                                 this.ValueExample = 'Example: ' + example;
@@ -102,7 +102,7 @@
                         $dialogViewModel.Body = 'createKeyTemplate';
                         $dialogViewModel.Header = 'Add Key';
 
-                        $dialogViewModel.save = function() {
+                        $dialogViewModel.save = function () {
                             var type = $dialogViewModel.BodyViewModel.SelectedType;
                             var repo = $redisRepositoryFactory(type);
                             try {
@@ -129,15 +129,15 @@
                         };
                     };
 
-                    $actionBarItems.refresh = function() {
+                    $actionBarItems.refresh = function () {
                         searchViewModel.search();
                     };
 
-                    $actionBarItems.changeSettings = function() {
+                    $actionBarItems.changeSettings = function () {
                         $dialogViewModel.WithOption = true;
                         $dialogViewModel.OptionText = 'Use demo credentials';
                         $dialogViewModel.IsChecked = false;
-                        $dialogViewModel.onChecked = function() {
+                        $dialogViewModel.onChecked = function () {
                             if ($dialogViewModel.IsChecked) {
                                 $dialogViewModel.BodyViewModel.Host = 'redisdor.redis.cache.windows.net';
                                 $dialogViewModel.BodyViewModel.Port = 6379;
@@ -156,7 +156,7 @@
                         }
                         $dialogViewModel.Body = 'changeSettingsTemplate';
                         $dialogViewModel.Header = 'Settings';
-                        $dialogViewModel.save = function() {
+                        $dialogViewModel.save = function () {
                             if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
                                 showError('Port value is wrong. Port must be in range [1;65535]');
                                 return;
@@ -173,8 +173,8 @@
                     $actionBarItems.SearchViewModel = searchViewModel;
                     $actionBarItems.DatabaseViewModel = databaseViewModel;
 
-                    var groupByKey = function(type, key, value) {
-                        var existing = self.Keys.filter(function(item) {
+                    var groupByKey = function (type, key, value) {
+                        var existing = self.Keys.filter(function (item) {
                             return item.Key == key;
                         });
 
@@ -184,28 +184,36 @@
                             existing[0].Value = JSON.stringify(values);
                         } else {
                             self.Keys.push({ Key: key, Type: type, Value: JSON.stringify([value]) });
+                            return true;
                         }
+
+                        return false;
                     }
 
                     // load redis data
                     var maxItemsToLoad = 100;
 
-                    self.loadKeys = function(pattern) {
+                    self.loadKeys = function (pattern) {
                         $notifyViewModel.close();
                         if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
                             self.Keys.length = 0;
                             var loadedNumber = 0;
+                            $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
                             var client = $redisScannerFactory({
                                 pattern: pattern,
-                                each_callback: function(type, key, subkey, p, value, cb) {
+                                each_callback: function (type, key, subkey, p, value, cb) {
+                                    var added = true;
                                     if (type === 'set') {
-                                        groupByKey(type, key, value);
-                                    } else if (type == 'hash') {
-                                        groupByKey(type, key, [subkey, value]);
+                                        added = groupByKey(type, key, value);
+                                    } else if (type === 'hash') {
+                                        added = groupByKey(type, key, [subkey, value]);
                                     } else {
                                         self.Keys.push({ Key: key, Type: type, Value: value });
                                     }
-                                    loadedNumber++;
+                                    loadedNumber = added === true ? loadedNumber + 1 : loadedNumber;
+
+                                    $scope.$apply(function () { $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items' });
+
                                     if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
                                         showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
                                         cb(true);
@@ -213,31 +221,32 @@
                                         cb(false);
                                     }
                                 },
-                                done_callback: function(err) {
+                                done_callback: function (err) {
                                     $busyIndicator.setIsBusy(loadKeysOperation, false);
                                     if (err) {
                                         $messageBus.publish('redis-communication-error', err);
+                                        self.loadKeys(pattern);
                                     }
 
                                     $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
                                 }
                             });
-                            $busyIndicator.setIsBusy(loadKeysOperation, true, function() {
+                            $busyIndicator.setIsBusy(loadKeysOperation, true, function () {
                                 client.end();
                             });
                         }
                     };
 
-                    self.updateKey = function(keyData, newValue) {
+                    self.updateKey = function (keyData, newValue) {
                         var type = keyData.Type;
                         var repo = $redisRepositoryFactory(type);
                         repo.update(keyData, newValue);
                     };
 
-                    self.removeKey = function(keyData) {
-                        $confirmViewModel.scope().$apply(function() {
+                    self.removeKey = function (keyData) {
+                        $confirmViewModel.scope().$apply(function () {
                             $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
-                            $confirmViewModel.show(function() {
+                            $confirmViewModel.show(function () {
                                 var type = keyData.Type;
                                 var repo = $redisRepositoryFactory(type);
                                 repo.delete(keyData);
@@ -253,17 +262,17 @@
                         self.loadKeys(searchViewModel.Pattern);
                     }
 
-                    var showError = function(data) {
+                    var showError = function (data) {
                         if (data !== undefined && data !== null) {
                             if (data.name && data.name === 'Error') {
-                                $timeout(function() {
-                                    $notifyViewModel.scope().$apply(function() {
+                                $timeout(function () {
+                                    $notifyViewModel.scope().$apply(function () {
                                         $notifyViewModel.showWarning(data.message);
                                     });
                                 });
                             } else {
-                                $timeout(function() {
-                                    $notifyViewModel.scope().$apply(function() {
+                                $timeout(function () {
+                                    $notifyViewModel.scope().$apply(function () {
                                         $notifyViewModel.showWarning(data);
                                     });
                                 });
@@ -271,10 +280,10 @@
                         }
                     }
 
-                    var showInfo = function(msg) {
+                    var showInfo = function (msg) {
                         if (msg !== undefined && msg !== null) {
-                            $timeout(function() {
-                                $notifyViewModel.scope().$apply(function() {
+                            $timeout(function () {
+                                $notifyViewModel.scope().$apply(function () {
                                     $notifyViewModel.showInfo(msg);
                                 });
                             });
@@ -282,7 +291,7 @@
                     }
 
                     $messageBus.subscribe(
-                    ['redis-communication-error'], function(event, data) {
+                    ['redis-communication-error'], function (event, data) {
                         console.log('Received data: ' + data);
                         showError(data);
                     });

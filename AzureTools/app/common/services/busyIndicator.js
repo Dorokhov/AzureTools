@@ -4,6 +4,7 @@
     return new function() {
         var self = this;
         self.IsBusy = false;
+        self.Text = 'Loading...';
         self.Operations = {};
         self.CancelCallbacks = {};
         self.cancel = function () {

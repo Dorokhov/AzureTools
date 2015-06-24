@@ -3,7 +3,7 @@
 
     "name": "Azure Tools",
     "description": "Tools to improve your Microsoft Azure expirience.",
-    "version": "0.1",
+    "version": "0.2",
     "author": "Vladimir Dorokhov",
     "short_name" :  "Azure Tools",
     "permissions": [

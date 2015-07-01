@@ -1,0 +1,25 @@
+{
+    "name" : "string_decoder-chromify",
+    "version" : "0.0.1",
+    "description" : "Node's string_decoder module as a browserify-able module for http-chromify",
+    "main" : "index.js",
+    "repository" : {
+        "type" : "git",
+        "url" : "http://github.com/iceddev/string_decoder-chromify.git"
+    },
+    "keywords" : [
+        "string_decoder",
+        "browser",
+        "eval"
+    ],
+    "devDependencies" : {
+        "browserify" : "1.16.x"
+    },
+    "author" : {
+        "name" : "Blaine Bublitz",
+        "email" : "blaine@iceddev.com",
+        "url" : "http://iceddev.com"
+    },
+    "license" : "Apache2",
+    "engine" : { "node" : ">=0.8.0" }
+}

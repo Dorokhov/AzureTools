@@ -5,13 +5,16 @@
             $scope.TilesViewModel = new function () {
                 var self = this;
                 $actionBarItems.IsActionBarVisible = false;
-                self.IsRedisVisible = false;
+                self.IsRedisVisible = true;
 
                 self.openRedis = function () {
                     $state.go('redis', {});
                 }
 
-                self.openRedis();
+                self.openTables = function () {
+                    $state.go('tables', {});
+                }
+              //  self.openTables();
             }
         }
     ]);

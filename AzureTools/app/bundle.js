@@ -33,7 +33,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
         .register(app)
         .controller('AppController', ['$state', function ($state) { }]);
 })();
-},{"./common/actionBarModule.js":2,"./common/commonModule.js":3,"./common/dialogsModule.js":4,"./directives/appDirectives.js":12,"./exceptionHandling/exceptionHandlingModule.js":13,"./node_modules/angular-ui-router/release/angular-ui-router.js":14,"./node_modules/angular/index.js":16,"./node_modules/datatables/media/js/jquery.dataTables.js":173,"./node_modules/jquery/dist/jquery.js":204,"./redis/redisModule.js":229,"./tables/tablesModule.js":233,"./tiles/tilesModule.js":235}],2:[function(require,module,exports){
+},{"./common/actionBarModule.js":2,"./common/commonModule.js":3,"./common/dialogsModule.js":4,"./directives/appDirectives.js":12,"./exceptionHandling/exceptionHandlingModule.js":13,"./node_modules/angular-ui-router/release/angular-ui-router.js":14,"./node_modules/angular/index.js":16,"./node_modules/datatables/media/js/jquery.dataTables.js":173,"./node_modules/jquery/dist/jquery.js":204,"./redis/redisModule.js":229,"./tables/tablesModule.js":234,"./tiles/tilesModule.js":236}],2:[function(require,module,exports){
 exports.register = function (angular) {
     'use strict';
 
@@ -31361,7 +31361,6 @@ var Client = {
       var self = this;
       this._retryLogic(options, function(filterCb) {
           var normilized = self._normalizeCallback.bind(self, function(err, resp) {
-              console.log('retrying ' + err);
               filterCb(err, resp, function(err, resp) {
                   cb(err, resp);
               });
@@ -88797,6 +88796,114 @@ exports.register = function (module) {
         ]);
 };
 },{}],232:[function(require,module,exports){
+exports.create = function () {
+    'use strict';
+
+    return new function () {
+        var self = this;
+        self.oTable = null;
+        self.Keys = null;
+        self.cleanUp = function() {
+            if (self.oTable) {
+                self.oTable.destroy();
+            }
+
+        };
+
+        self.showTables = function (data, updateCallback, removeCallback) {
+            self.Data = data;
+
+            var calcDataTableHeight = function () {
+                return ($(window).height() - 150);
+            };
+
+            self.cleanUp();
+
+            $(window).unbind('resize');
+            $(window).bind('resize',function () {
+                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.oTable.columns.adjust().draw();
+            });
+
+            self.oTable = $('#tables').DataTable({
+                bFilter: false,
+                bInfo: false,
+                bPaginate: false,
+                scrollY: calcDataTableHeight(),
+                //scrollCollapse: true,
+                data: self.Data,
+                autoWidth: false,
+                columns: [
+                    {
+                        "title": "Table",
+                        "data": "Name"
+                    },
+                    //{
+                    //    "title": "Type",
+                    //    "data": "Type",
+                    //},
+                    {
+                        "title": "",
+                        "render": function() {
+                            return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
+                        },
+                    },
+                ]
+            });
+            
+            function format(type, value) {
+                return '<div>' +
+                    '<textarea class="details-textarea">' + value + '</textarea>' +
+                    '<button type="button" class="btn btn-default updateButton">Update</button>' +
+                    '</div>';
+            }
+
+            // open/close details
+            //$('#data tbody').off('click', 'tr.even,tr.odd');
+            //$('#data tbody').on('click', 'tr.even,tr.odd', function () {
+            //    var tr = $(this).closest('tr');
+            //    var row = self.oTable.row(tr);
+
+            //    if (row.child.isShown()) {
+            //        // This row is already open - close it
+            //        row.child.hide();
+            //        tr.removeClass('shown');
+            //    } else {
+            //        // Open this row
+            //        row.child(format(row.data().Type, row.data().Value)).show();
+                    
+            //        // fit text area to content
+            //        var detailsTr = tr.next();
+            //        var textarea = detailsTr.find("textarea");
+            //        textarea.height((textarea.prop("scrollHeight")));
+
+            //        detailsTr.addClass('shown');
+            //        tr.addClass('shown');
+            //    }
+            //});
+
+            // handle update
+            $('#tables tbody').off('click', 'button.btn.btn-default.updateButton');
+            $('#tables tbody').on('click', 'button.btn.btn-default.updateButton', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var newValue = $(currentRow).find('textarea').val();
+                var row = self.oTable.row(tr);
+                updateCallback(row.data(), newValue);
+            });
+
+            // handle remove 
+            $('#tables tbody').off('click', 'a.remove');
+            $('#tables tbody').on('click', 'a.remove', function (event) {
+                var tr = $(this).closest('tr');
+                var row = self.oTable.row(tr);
+                removeCallback(row.data());
+                return false;
+            });
+        }
+    }
+}
+},{}],233:[function(require,module,exports){
 exports.register = function (module) {
     'use strict';
     module
@@ -88804,13 +88911,21 @@ exports.register = function (module) {
             return require('../../node_modules/azure-table-node/index.js');
         });
 }
-},{"../../node_modules/azure-table-node/index.js":17}],233:[function(require,module,exports){
+},{"../../node_modules/azure-table-node/index.js":17}],234:[function(require,module,exports){
 exports.register = function (angular, angularRoute) {
     'use strict';
 
     var tablesModule = angular.module('tiles.tables', [angularRoute]);
     require('./services/tablesServices.js').register(tablesModule);
+
+    tablesModule.factory('tablesPresenter', [
+        function () {
+            return require('./presenter/tablesPresenter.js').create();
+        }
+    ]);
+
     require('./viewModel/tablesViewModel.js').register(tablesModule);
+
     tablesModule
        .config(function ($stateProvider, $urlRouterProvider) {
            $stateProvider
@@ -88824,17 +88939,20 @@ exports.register = function (angular, angularRoute) {
                });
        });
 }
-},{"./services/tablesServices.js":232,"./viewModel/tablesViewModel.js":234}],234:[function(require,module,exports){
+},{"./presenter/tablesPresenter.js":232,"./services/tablesServices.js":233,"./viewModel/tablesViewModel.js":235}],235:[function(require,module,exports){
 exports.register = function (module) {
     module
         .controller('TablesController', [
             '$scope',
             '$timeout',
             'tablesClient',
+            'tablesPresenter',
             function (
                 $scope,
                 $timeout,
-                tablesClient) {
+                tablesClient,
+                tablesPresenter) {
+
                 tablesClient.setDefaultClient({
                     accountUrl: 'http://dorphoenixtest.table.core.windows.net/',
                     accountName: 'dorphoenixtest',
@@ -88842,7 +88960,7 @@ exports.register = function (module) {
                 });
 
                 var defaultClient = tablesClient.getDefaultClient();
-                //defaultClient.createTable('tableName', true, function(e) {
+                //defaultClient.createTable('tableName2', true, function(e) {
                 //    console.log('SMth'+e);
                 //});
 
@@ -88850,11 +88968,18 @@ exports.register = function (module) {
                 defaultClient.listTables(function (err, data) {
                     console.log(err);
                     console.log(data);
+
+                    var viewModel = data.map(function(el) {
+                        return {
+                            Name: el
+                    }; });
+
+                    tablesPresenter.showTables(viewModel );
                 });
             }
         ]);
 };
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 exports.register = function (angular, angularRoute) {
     'use strict';
 
@@ -88872,7 +88997,7 @@ exports.register = function (angular, angularRoute) {
             });
     });
 }
-},{"./viewModel/tilesViewModel.js":236}],236:[function(require,module,exports){
+},{"./viewModel/tilesViewModel.js":237}],237:[function(require,module,exports){
 exports.register = function (module) {
     'use strict';
     module.controller('TilesController', [
@@ -92395,7 +92520,19 @@ Agent.prototype.addRequest = function(req, host, port, localAddress) {
   }
   if (this.sockets[name].length < this.maxSockets) {
     // If we are under maxSockets create a new one.
-    req.onSocket(this.createSocket(name, host, port, localAddress, req));
+      // req.onSocket(this.createSocket(name, host, port, localAddress, req));
+      var sct = this.createSocket(name, host, port, localAddress, req)
+     
+      if (sct._socketInfo.socketId == undefined) {
+          console.log('undef')
+          sct.on('connect', function () {
+              req.onSocket(sct)
+          });
+      } else {
+          console.log('def')
+          req.onSocket(sct)
+      }
+
   } else {
     // We are over limit so we'll add it to the queue.
     if (!this.requests[name]) {
@@ -102725,14 +102862,14 @@ net.Socket = function(options, cb) {
   this._socketInfo = 0;
   this._encoding;
 
-  if(createNew){
+  if (createNew) {
       chrome.socket.create("tcp", {}, function (createInfo) {
-      self._socketInfo = createInfo;
+          self._socketInfo = createInfo;
       self.emit("_created"); // This event doesn't exist in the API, it is here because Chrome is async
       self.cb(createInfo);
       // start trying to read
        self._read();
-    });
+      });
   }
 };
 
@@ -102847,8 +102984,13 @@ net.Socket.prototype.write = function(data, encoding, callback) {
   var self = this;
 
   encoding = encoding || "UTF8";
-  callback = callback || function() {};
-
+  callback = callback || function () { };
+  console.log('create info');
+  var sId = self._socketInfo['socketId'];
+    
+    if (sId == undefined) {
+        return false;
+    }
   if(typeof data === 'string') {
     buffer = stringToArrayBuffer(data);
   }
@@ -102860,9 +103002,9 @@ net.Socket.prototype.write = function(data, encoding, callback) {
       buffer = data.toArrayBuffer();
   }
 
-  self._resetTimeout();
-    var id = self._socketInfo.socketId;
-  chrome.socket.write(id, buffer, function(writeInfo) {
+ // self._resetTimeout();
+  console.log('sid ' + sId + ' buffer ' + buffer.byteLength);
+  chrome.socket.write(self._socketInfo['socketId'], buffer, function (writeInfo) {
     callback();
   });
 

@@ -59,6 +59,7 @@
     <Content Include="app\content\css\metro-ui-css\metro-bootstrap-responsive.css" />
     <Content Include="app\content\css\metro-ui-css\metro-bootstrap.css" />
     <Content Include="app\content\img\redis.png" />
+    <Content Include="app\content\img\azure-tables.png" />
     <Content Include="app\content\img\windows-azure.png" />
     <Content Include="app\content\js\bootstrap.js" />
     <Content Include="app\content\js\bootstrap.min.js" />
@@ -3445,6 +3446,7 @@
     <Content Include="app\redis\viewModel\redisViewModel.js" />
     <Content Include="app\startup.js" />
     <Content Include="app\redis\view\index.html" />
+    <Content Include="app\tables\presenter\tablesPresenter.js" />
     <Content Include="app\tables\services\tablesServices.js" />
     <Content Include="app\tables\tablesModule.js" />
     <Content Include="app\tables\viewModel\tablesViewModel.js" />

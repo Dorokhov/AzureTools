@@ -4,10 +4,13 @@
             '$scope',
             '$timeout',
             'tablesClient',
+            'tablesPresenter',
             function (
                 $scope,
                 $timeout,
-                tablesClient) {
+                tablesClient,
+                tablesPresenter) {
+
                 tablesClient.setDefaultClient({
                     accountUrl: 'http://dorphoenixtest.table.core.windows.net/',
                     accountName: 'dorphoenixtest',
@@ -15,7 +18,7 @@
                 });
 
                 var defaultClient = tablesClient.getDefaultClient();
-                //defaultClient.createTable('tableName', true, function(e) {
+                //defaultClient.createTable('tableName2', true, function(e) {
                 //    console.log('SMth'+e);
                 //});
 
@@ -23,6 +26,13 @@
                 defaultClient.listTables(function (err, data) {
                     console.log(err);
                     console.log(data);
+
+                    var viewModel = data.map(function(el) {
+                        return {
+                            Name: el
+                    }; });
+
+                    tablesPresenter.showTables(viewModel );
                 });
             }
         ]);

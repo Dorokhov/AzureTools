@@ -40,7 +40,6 @@ module.exports = function (grunt) {
                        // 'timers': './node_modules/chromify/builtins/timers',
                         'string_decoder': './node_modules/string_decoder-chromify/index.js',
 
-
                         //'freelist': 'freelist-chromify',
                         //'net': 'net-chromify',
                         //'http_parser': 'http-parser-js',

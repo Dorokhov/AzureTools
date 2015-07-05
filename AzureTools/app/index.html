@@ -33,8 +33,8 @@
 <body ng-controller="AppController">
     <div>
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div class="margin-to-align" ng-controller="ActionBarController">
-                <div class="navbar-header" style="margin-left: auto; margin-right:auto;">
+            <div ng-controller="ActionBarController" ng-class="{'margin-to-align': state.current.name !== 'tables'}">
+                <div class="navbar-header" ng-style="{ 'margin-left: auto; margin-right:auto;': state.current.name !== 'tables'}">
                     <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
                         <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
                         <span>Azure Tools</span>
@@ -64,7 +64,7 @@
                             <input ng-model="ActionBarItems.SearchViewModel.Pattern"
                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
                                    ng-enter="ActionBarItems.SearchViewModel.search()"
-                                   type="text" class="form-control" style="margin-top: 8px; width: 400px; float: left;" autofocus/>
+                                   type="text" class="form-control" style="margin-top: 8px; float: left;" autofocus />
                             <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
 
                             <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
@@ -75,13 +75,20 @@
 
                     <!--Tables Action Bar-->
                     <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                        <li ng-show="ActionBarItems.IsTablesSelectVisible">
+                            <select ng-model="ActionBarItems.TableSelectViewModel.SelectedTable"
+                                    ng-options="item as item for item in ActionBarItems.TableSelectViewModel.Tables"
+                                    ng-change="ActionBarItems.TableSelectViewModel.onSelectedTableChanged()"
+                                    style="margin-top: 14px; min-width: 200px; max-width: 400px;"></select>
+                        </li>
                         <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right: 5px;"></span><span>Refresh</span></a></li>
                         <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right: 5px;"></span><span>Settings</span></a></li>
+
                         <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible">
                             <input ng-model="ActionBarItems.SearchViewModel.Pattern"
                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
                                    ng-enter="ActionBarItems.SearchViewModel.search()"
-                                   type="text" class="form-control" style="margin-top: 8px; width: 400px; float: left;" autofocus/>
+                                   type="text" class="form-control" style="margin-top: 8px; width: 800px; float: left;" autofocus />
                             <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
 
                             <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">

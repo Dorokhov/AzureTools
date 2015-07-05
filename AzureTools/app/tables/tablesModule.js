@@ -11,7 +11,9 @@
     ]);
 
     require('./viewModel/tablesViewModel.js').register(tablesModule);
-
+    tablesModule.factory('tablesSettings', function() {
+        return require('./model/tablesSettings.js').create();
+    });
     tablesModule
        .config(function ($stateProvider, $urlRouterProvider) {
            $stateProvider

@@ -13,7 +13,8 @@
         };
 
         var calcDataTableHeight = function () {
-            return ($(window).height() - 150);
+            var headerHeight = $('nav[role="navigation"]').height() + 52 + 20 + 5;
+            return ($(window).height() - headerHeight);
         };
 
         self.showTables = function (data, onSelect, removeCallback) {
@@ -112,12 +113,11 @@
 
             var columns = [];
             for (var col in columnsDictionary) {
-                console.log(col);
                 columns.push({
                     title: col,
                     data: col,
                     render: function (data) {
-                        return '<span style="max-width: 400px;display: block;overflow: hidden;white-space:nowrap;">' + data + '</span>';
+                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (data == undefined ? '' : data._) + '</span>';
                     },
                 });
             }

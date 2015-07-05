@@ -43,10 +43,11 @@
                 </div>
 
                 <div ng-controller="ActionBarController" class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible">
+                    <!--Redis Action Bar-->
+                    <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'redis'">
                         <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
-                            <span style="color:white;float:left;" class="on-left-more">Database</span>
-                            <div class="dropdown" style="float:left; margin-left: 5px; margin-top:-2px;">
+                            <span style="color: white; float: left;" class="on-left-more">Database</span>
+                            <div class="dropdown" style="float: left; margin-left: 5px; margin-top: -2px;">
                                 <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ActionBarItems.DatabaseViewModel.Current}}
                                     <span class="caret"></span>
@@ -56,17 +57,34 @@
                                 </ul>
                             </div>
                         </li>
-                        <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right:5px;"></span><span>Add Key</span></a></li>
-                        <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right:5px;"></span><span>Refresh</span></a></li>
-                        <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor:pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right:5px;"></span><span>Settings</span></a></li>
+                        <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right: 5px;"></span><span>Add Key</span></a></li>
+                        <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right: 5px;"></span><span>Refresh</span></a></li>
+                        <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right: 5px;"></span><span>Settings</span></a></li>
                         <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible">
                             <input ng-model="ActionBarItems.SearchViewModel.Pattern"
                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
                                    ng-enter="ActionBarItems.SearchViewModel.search()"
-                                   type="text" class="form-control" style="margin-top:8px;width:400px;float:left;" autofocus />
+                                   type="text" class="form-control" style="margin-top: 8px; width: 400px; float: left;" autofocus/>
                             <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
 
-                            <a style="cursor:pointer;float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
+                            <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
+                                <span class="icon-search"></span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!--Tables Action Bar-->
+                    <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                        <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right: 5px;"></span><span>Refresh</span></a></li>
+                        <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right: 5px;"></span><span>Settings</span></a></li>
+                        <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible">
+                            <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                   ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                   ng-enter="ActionBarItems.SearchViewModel.search()"
+                                   type="text" class="form-control" style="margin-top: 8px; width: 400px; float: left;" autofocus/>
+                            <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+
+                            <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
                                 <span class="icon-search"></span>
                             </a>
                         </li>

@@ -43,8 +43,9 @@ exports.register = function (angular) {
             return { IsActionBarVisible: false };
         })
         .controller('ActionBarController', [
-            '$scope', '$actionBarItems', function ($scope, $actionBarItems) {
+            '$scope', '$state', '$actionBarItems', function ($scope, $state, $actionBarItems) {
                 $scope.ActionBarItems = $actionBarItems;
+                $scope.state = $state;
             }
         ]);
 }
@@ -88803,24 +88804,25 @@ exports.create = function () {
         var self = this;
         self.oTable = null;
         self.Keys = null;
-        self.cleanUp = function() {
+        self.cleanUp = function () {
             if (self.oTable) {
-                self.oTable.destroy();
+                self.oTable.destroy(false);
             }
 
         };
 
-        self.showTables = function (data, updateCallback, removeCallback) {
+        var calcDataTableHeight = function () {
+            return ($(window).height() - 150);
+        };
+
+        self.showTables = function (data, onSelect, removeCallback) {
             self.Data = data;
 
-            var calcDataTableHeight = function () {
-                return ($(window).height() - 150);
-            };
 
             self.cleanUp();
 
             $(window).unbind('resize');
-            $(window).bind('resize',function () {
+            $(window).bind('resize', function () {
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
@@ -88830,9 +88832,10 @@ exports.create = function () {
                 bInfo: false,
                 bPaginate: false,
                 scrollY: calcDataTableHeight(),
+                scrollX: true,
                 //scrollCollapse: true,
                 data: self.Data,
-                autoWidth: false,
+                autoWidth: true,
                 columns: [
                     {
                         "title": "Table",
@@ -88844,13 +88847,13 @@ exports.create = function () {
                     //},
                     {
                         "title": "",
-                        "render": function() {
+                        "render": function () {
                             return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
                         },
                     },
                 ]
             });
-            
+
             function format(type, value) {
                 return '<div>' +
                     '<textarea class="details-textarea">' + value + '</textarea>' +
@@ -88859,28 +88862,12 @@ exports.create = function () {
             }
 
             // open/close details
-            //$('#data tbody').off('click', 'tr.even,tr.odd');
-            //$('#data tbody').on('click', 'tr.even,tr.odd', function () {
-            //    var tr = $(this).closest('tr');
-            //    var row = self.oTable.row(tr);
-
-            //    if (row.child.isShown()) {
-            //        // This row is already open - close it
-            //        row.child.hide();
-            //        tr.removeClass('shown');
-            //    } else {
-            //        // Open this row
-            //        row.child(format(row.data().Type, row.data().Value)).show();
-                    
-            //        // fit text area to content
-            //        var detailsTr = tr.next();
-            //        var textarea = detailsTr.find("textarea");
-            //        textarea.height((textarea.prop("scrollHeight")));
-
-            //        detailsTr.addClass('shown');
-            //        tr.addClass('shown');
-            //    }
-            //});
+            $('#tables tbody').off('click', 'tr.even,tr.odd');
+            $('#tables tbody').on('click', 'tr.even,tr.odd', function () {
+                var tr = $(this).closest('tr');
+                var row = self.oTable.row(tr);
+                onSelect(row.data());
+            });
 
             // handle update
             $('#tables tbody').off('click', 'button.btn.btn-default.updateButton');
@@ -88899,6 +88886,50 @@ exports.create = function () {
                 var row = self.oTable.row(tr);
                 removeCallback(row.data());
                 return false;
+            });
+        }
+
+        self.showEntities = function (data) {
+
+            self.cleanUp();
+            $('#tables').empty();
+
+            $(window).unbind('resize');
+            $(window).bind('resize', function () {
+                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.oTable.columns.adjust().draw();
+            });
+
+            var columnsDictionary = {};
+            for (var i = 0; i < data.length; i++) {
+                for (var propertyName in data[i]) {
+                    if (columnsDictionary[propertyName] == undefined) {
+                        columnsDictionary[propertyName] = propertyName;
+                    }
+                }
+            }
+
+            var columns = [];
+            for (var col in columnsDictionary) {
+                console.log(col);
+                columns.push({
+                    title: col,
+                    data: col,
+                    render: function (data) {
+                        return '<span style="max-width: 400px;display: block;overflow: hidden;white-space:nowrap;">' + data + '</span>';
+                    },
+                });
+            }
+
+            self.oTable = $('#tables').DataTable({
+                bFilter: false,
+                bInfo: false,
+                bPaginate: false,
+                scrollY: calcDataTableHeight(),
+                scrollX: true,
+                data: data,
+                autoWidth: false,
+                columns: columns
             });
         }
     }
@@ -88945,37 +88976,103 @@ exports.register = function (module) {
         .controller('TablesController', [
             '$scope',
             '$timeout',
+            '$actionBarItems',
+            '$busyIndicator',
             'tablesClient',
             'tablesPresenter',
             function (
                 $scope,
                 $timeout,
+                $actionBarItems,
+                $busyIndicator,
                 tablesClient,
                 tablesPresenter) {
 
-                tablesClient.setDefaultClient({
-                    accountUrl: 'http://dorphoenixtest.table.core.windows.net/',
-                    accountName: 'dorphoenixtest',
-                    accountKey: 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg=='
-                });
+                $scope.TablesViewModel = new function() {
+                    var self = this;
+                    var listTablesOperation = 'listTablesOperation';
+                    var queryEntitiesOperation = 'queryEntitiesOperation';
 
-                var defaultClient = tablesClient.getDefaultClient();
-                //defaultClient.createTable('tableName2', true, function(e) {
-                //    console.log('SMth'+e);
-                //});
+                    var searchViewModel = {
+                        search: function () {
+                            queryTableEntities(this.Pattern);
+                        },
+                        Pattern: '',
+                        clear: function () {
+                            this.Pattern = '';
+                            this.IsClearVisible = false;
+                            searchViewModel.search();
+                        },
+                        IsClearVisible: false,
+                        onChange: function () {
+                            this.IsClearVisible = this.Pattern !== '';
+                        }
+                    };
+
+                    // tables action bar
+                    $actionBarItems.ModuleName = ': Tables';
+                    $actionBarItems.IsActionBarVisible = true;
+                    $actionBarItems.IsRefreshVisible = true;
+                    $actionBarItems.IsSettingsVisible = true;
+                    $actionBarItems.IsSearchVisible = true;
+                    $actionBarItems.refresh = function () {
+                        searchViewModel.search();
+                    };
+                    $actionBarItems.SearchViewModel = searchViewModel;
+
+                    tablesClient.setDefaultClient({
+                        accountUrl: 'http://dorphoenixtest.table.core.windows.net/',
+                        accountName: 'dorphoenixtest',
+                        accountKey: 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg=='
+                    });
+                    var defaultClient = tablesClient.getDefaultClient();
 
 
-                defaultClient.listTables(function (err, data) {
-                    console.log(err);
-                    console.log(data);
+                    var queryTableEntities = function (query) {
+                        $busyIndicator.setIsBusy(queryEntitiesOperation, true);
+                        defaultClient.queryEntities(self.SelectedTable, { query: { _query: query } }, function (error, result, response) {
+                            $busyIndicator.setIsBusy(queryEntitiesOperation, false);
+                            if (error) {
+                                console.log(error);
+                            }
 
-                    var viewModel = data.map(function(el) {
-                        return {
-                            Name: el
-                    }; });
+                            console.log(result);
 
-                    tablesPresenter.showTables(viewModel );
-                });
+                            tablesPresenter.showEntities(result);
+                        });
+                    }
+                    //defaultClient.createTable('tableName2', true, function(e) {
+                    //    console.log('SMth'+e);
+                    //});
+
+                    self.Tables = [];
+                    self.SelectedTable = null;
+
+                    //on selected table changed
+                    self.onSelectedTableChanged = function () {
+                        searchViewModel.search();
+                    }
+
+                    $busyIndicator.setIsBusy(listTablesOperation, true);
+                    defaultClient.listTables(function (err, data) {
+                        $busyIndicator.setIsBusy(listTablesOperation, false);
+
+                        console.log(err);
+                        console.log(data);
+
+                        var viewModel = data.map(function (el) {
+                            return {
+                                Name: el
+                            };
+                        });
+
+                        self.Tables = data;
+                        //tablesPresenter.showTables(viewModel, function (data) {
+                        //    self.SelectedTable = data.Name;
+                        //    onSelectedTableChanged();
+                        //});
+                    });
+                }
             }
         ]);
 };
@@ -89005,6 +89102,7 @@ exports.register = function (module) {
             $scope.TilesViewModel = new function () {
                 var self = this;
                 $actionBarItems.IsActionBarVisible = false;
+                self.IsRedisVisible = true;
                 self.IsRedisVisible = true;
 
                 self.openRedis = function () {
@@ -102915,7 +103013,7 @@ net.Socket.prototype.connect = function() {
   var cb = args[args.length -1];
   cb = (typeof cb === 'function') ? cb : function() {};
   self.on('connect', cb);
-  chrome.socket.connect(self._socketInfo.socketId, options.host, options.port, function (result) {
+  chrome.socket.connect(self._socketInfo.socketId, options.host, parseInt(options.port), function (result) {
     if(result == 0) {
         self.emit('connect');
     }

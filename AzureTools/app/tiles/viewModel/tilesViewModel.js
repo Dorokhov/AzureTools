@@ -6,6 +6,7 @@
                 var self = this;
                 $actionBarItems.IsActionBarVisible = false;
                 self.IsRedisVisible = true;
+                self.IsRedisVisible = true;
 
                 self.openRedis = function () {
                     $state.go('redis', {});

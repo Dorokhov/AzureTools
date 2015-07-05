@@ -1,6 +1,9 @@
 <!--<i class="fa fa-table fa-2x"></i>-->
 <div class="container">
     <div class="metro grid" style="font-weight: normal;">
-        <table id="tables" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+        <select ng-model="TablesViewModel.SelectedTable"
+                ng-options="item as item for item in TablesViewModel.Tables"
+                ng-change="TablesViewModel.onSelectedTableChanged()"></select>
+        <table id="tables" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
     </div>
 </div>

@@ -7,8 +7,9 @@
             return { IsActionBarVisible: false };
         })
         .controller('ActionBarController', [
-            '$scope', '$actionBarItems', function ($scope, $actionBarItems) {
+            '$scope', '$state', '$actionBarItems', function ($scope, $state, $actionBarItems) {
                 $scope.ActionBarItems = $actionBarItems;
+                $scope.state = $state;
             }
         ]);
 }

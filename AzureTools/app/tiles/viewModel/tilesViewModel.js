@@ -15,7 +15,6 @@
                 self.openTables = function () {
                     $state.go('tables', {});
                 }
-              //  self.openTables();
             }
         }
     ]);

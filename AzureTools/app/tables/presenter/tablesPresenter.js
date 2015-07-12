@@ -1,30 +1,29 @@
 ﻿exports.create = function () {
     'use strict';
 
-    return new function () {
+    return new function() {
         var self = this;
         self.oTable = null;
         self.Keys = null;
-        self.cleanUp = function () {
+        self.cleanUp = function() {
             if (self.oTable) {
                 self.oTable.destroy(false);
             }
 
         };
 
-        var calcDataTableHeight = function () {
-            var headerHeight = $('nav[role="navigation"]').height() + 52 + 20 + 5;
+        var calcDataTableHeight = function() {
+            console.log('dsf ' + $('#errorNotification').is(":visible"));
+            var headerHeight = $('nav[role="navigation"]').height() + 50 + 52 + 20 + 5;
             return ($(window).height() - headerHeight);
         };
 
-        self.showTables = function (data, onSelect, removeCallback) {
-            self.Data = data;
-
-
+        self.showTables = function(data, onSelect, removeCallback) {
             self.cleanUp();
+            $('#tables').empty();
 
             $(window).unbind('resize');
-            $(window).bind('resize', function () {
+            $(window).bind('resize', function() {
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
@@ -35,21 +34,16 @@
                 bPaginate: false,
                 scrollY: calcDataTableHeight(),
                 scrollX: true,
-                //scrollCollapse: true,
-                data: self.Data,
+                data: data,
                 autoWidth: true,
                 columns: [
                     {
                         "title": "Table",
                         "data": "Name"
                     },
-                    //{
-                    //    "title": "Type",
-                    //    "data": "Type",
-                    //},
                     {
                         "title": "",
-                        "render": function () {
+                        "render": function() {
                             return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
                         },
                     },
@@ -65,7 +59,7 @@
 
             // open/close details
             $('#tables tbody').off('click', 'tr.even,tr.odd');
-            $('#tables tbody').on('click', 'tr.even,tr.odd', function () {
+            $('#tables tbody').on('click', 'tr.even,tr.odd', function() {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
                 onSelect(row.data());
@@ -73,7 +67,7 @@
 
             // handle update
             $('#tables tbody').off('click', 'button.btn.btn-default.updateButton');
-            $('#tables tbody').on('click', 'button.btn.btn-default.updateButton', function () {
+            $('#tables tbody').on('click', 'button.btn.btn-default.updateButton', function() {
                 var currentRow = $(this).closest('tr');
                 var tr = currentRow.prev();
                 var newValue = $(currentRow).find('textarea').val();
@@ -83,21 +77,24 @@
 
             // handle remove 
             $('#tables tbody').off('click', 'a.remove');
-            $('#tables tbody').on('click', 'a.remove', function (event) {
+            $('#tables tbody').on('click', 'a.remove', function(event) {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
                 removeCallback(row.data());
                 return false;
             });
-        }
+        };
 
         self.showEntities = function (data) {
-
+            if (data == null || (Object.prototype.toString.call(data) === '[object Array]' && data.length === 0)) {
+                $('#tables').empty();
+                 return;
+            }
             self.cleanUp();
             $('#tables').empty();
 
             $(window).unbind('resize');
-            $(window).bind('resize', function () {
+            $(window).bind('resize', function() {
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
@@ -116,8 +113,8 @@
                 columns.push({
                     title: col,
                     data: col,
-                    render: function (data) {
-                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (data == undefined ? '' : data._) + '</span>';
+                    render: function(item) {
+                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (item == undefined ? '' : item._) + '</span>';
                     },
                 });
             }
@@ -132,6 +129,6 @@
                 autoWidth: false,
                 columns: columns
             });
-        }
-    }
+        };
+    };
 }

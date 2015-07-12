@@ -262,33 +262,33 @@
                         self.loadKeys(searchViewModel.Pattern);
                     }
 
-                    var showError = function (data) {
+                    var showError = function(data) {
                         if (data !== undefined && data !== null) {
                             if (data.name && data.name === 'Error') {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data.message);
                                     });
                                 });
                             } else {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data);
                                     });
                                 });
                             }
                         }
-                    }
+                    };
 
-                    var showInfo = function (msg) {
+                    var showInfo = function(msg) {
                         if (msg !== undefined && msg !== null) {
-                            $timeout(function () {
-                                $notifyViewModel.scope().$apply(function () {
+                            $timeout(function() {
+                                $notifyViewModel.scope().$apply(function() {
                                     $notifyViewModel.showInfo(msg);
                                 });
                             });
                         }
-                    }
+                    };
 
                     $messageBus.subscribe(
                     ['redis-communication-error'], function (event, data) {

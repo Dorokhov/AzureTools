@@ -6,6 +6,7 @@
             '$actionBarItems',
             '$busyIndicator',
             '$dialogViewModel',
+            '$notifyViewModel',
             'tablesSettings',
             'azureStorage',
             'tablesPresenter',
@@ -15,11 +16,12 @@
                 $actionBarItems,
                 $busyIndicator,
                 $dialogViewModel,
+                $notifyViewModel,
                 tablesSettings,
                 azureStorage,
                 tablesPresenter) {
 
-                $scope.TablesViewModel = new function() {
+                $scope.TablesViewModel = new function () {
                     var self = this;
                     var listTablesOperation = 'listTablesOperation';
                     var queryEntitiesOperation = 'queryEntitiesOperation';
@@ -40,14 +42,15 @@
                         }
                     };
 
-                    var tableSelectionViewModel = new function() {
-                        var self = this;
-                        self.Tables = null;
-                        self.SelectedTable = null;
-                        self.onSelectedTableChanged = function() {
+                    var tableSelectionViewModel = new function () {
+                        this.Tables = null;
+                        this.SelectedTable = null;
+                        this.onSelectedTableChanged = function () {
                             searchViewModel.search();
-                        }
+                        };
                     };
+
+                    $busyIndicator.Text = 'Loading...';
 
                     // tables action bar
                     $actionBarItems.ModuleName = ': Tables';
@@ -57,6 +60,8 @@
                     $actionBarItems.IsSettingsVisible = true;
                     $actionBarItems.IsSearchVisible = true;
                     $actionBarItems.refresh = function () {
+                        continuation = null;
+                        entries = null;
                         searchViewModel.search();
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
@@ -81,7 +86,8 @@
                             AccountUrl: tablesSettings.AccountUrl,
                             AccountName: tablesSettings.AccountName,
                             AccountKey: tablesSettings.AccountKey,
-                        }
+                        };
+
                         $dialogViewModel.Body = 'tablesSettingsTemplate';
                         $dialogViewModel.Header = 'Settings';
                         $dialogViewModel.save = function () {
@@ -98,65 +104,111 @@
                         };
                     };
 
+                    var showInfo = function (msg) {
+                        if (msg !== undefined && msg !== null) {
+                            $timeout(function () {
+                                $notifyViewModel.scope().$apply(function () {
+                                    $notifyViewModel.showInfo(msg, 'Load More', function () {
+                                        appendTableEntities(searchViewModel.Pattern);
+                                    });
+                                });
+                            });
+                        }
+                    };
+
                     var defaultClient = null;
                     var defaultClientFactory = function () {
                         if (defaultClient == null) {
                             defaultClient = azureStorage.createTableService(tablesSettings.AccountName, tablesSettings.AccountKey, tablesSettings.AccountUrl);
                         }
-                        //defaultClient = tablesClient.setDefaultClient({
-                        //    accountUrl: tablesSettings.AccountUrl,
-                        //    accountName: tablesSettings.AccountName,
-                        //    accountKey: tablesSettings.AccountKey
-                        //});
-
-                        //defaultClient._currRequest
                         return defaultClient;
-                    }
-                    var queryTableEntities = function (query) {
-                        $busyIndicator.setIsBusy(queryEntitiesOperation, true);
-
-                        var tableService = defaultClientFactory();
-                        var azureQuery = new azureStorage.TableQuery().where(query);
-
-                        tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, null, function (error, result, response) {
-                            $busyIndicator.setIsBusy(queryEntitiesOperation, false);
-                            if (error) {
-                                console.log(error);
-                            }
-
-                            console.log(result);
-
-                            tablesPresenter.showEntities(result.entries);
-                        });
-                    }
-
-                    var loadTableList = function() {
-                        $busyIndicator.setIsBusy(listTablesOperation, true);
-                        defaultClientFactory().listTablesSegmented(null,null,function (err, data) {
-                            $busyIndicator.setIsBusy(listTablesOperation, false);
-
-                            console.log(err);
-                            console.log(data);
-
-
-                            tableSelectionViewModel.Tables = data.entries;
-                            //tablesPresenter.showTables(viewModel, function (data) {
-                            //    self.SelectedTable = data.Name;
-                            //    onSelectedTableChanged();
-                            //});
-                        });
                     };
-                    //defaultClient.createTable('tableName2', true, function(e) {
-                    //    console.log('SMth'+e);
-                    //});
-                    
+
+                    var cancelOperation = function () { };
+
+                    var continuation = null;
+                    var entries = null;
+                    var queryTableEntities = function (query) {
+                        if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
+                            var tableService = defaultClientFactory();
+                            var cancelled = false;
+                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
+
+                            var azureQuery = new azureStorage.TableQuery().where(query);
+
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, null, function (error, result, response) {
+                                if (cancelled) return;
+                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
+                                if (error) {
+                                    console.log(error);
+                                }
+
+                                entries = result.entries;
+                                if (result.continuationToken != null) {
+                                    showInfo('First ' + entries.length + ' entries loaded ');
+                                    continuation = result.continuationToken;
+                                } else {
+                                    continuation = null;
+                                    $notifyViewModel.close();
+                                }
+                                tablesPresenter.showEntities(result.entries);
+                            });
+                        }
+                    };
+
+                    var appendTableEntities = function (query) {
+                        if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
+                            var tableService = defaultClientFactory();
+                            var cancelled = false;
+                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
+
+                            var azureQuery = new azureStorage.TableQuery().where(query);
+
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, continuation, function (error, result, response) {
+                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
+                                if (cancelled) return;
+                                if (error) {
+                                    console.log(error);
+                                }
+
+                                entries = entries.concat(result.entries);
+
+                                tablesPresenter.showEntities(entries);
+                                if (result.continuationToken != null) {
+                                    showInfo('First ' + entries.length + ' entries loaded ');
+                                    continuation = result.continuationToken;
+                                } else {
+                                    continuation = null;
+                                    $notifyViewModel.close();
+                                }
+                            });
+                        }
+                    };
+
+                    var loadTableList = function () {
+                        if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
+                            $busyIndicator.setIsBusy(listTablesOperation, true, cancelOperation);
+                            defaultClientFactory().listTablesSegmented(null, null, function (err, data) {
+                                $busyIndicator.setIsBusy(listTablesOperation, false, cancelOperation);
+
+                                console.log(err);
+                                console.log(data);
+
+                                tableSelectionViewModel.Tables = data.entries;
+                                if (tableSelectionViewModel.Tables != null && tableSelectionViewModel.Tables.length > 0) {
+                                    tableSelectionViewModel.SelectedTable = tableSelectionViewModel.Tables[0];
+                                }
+                            });
+                        }
+                    };
+
                     // init
                     if (tablesSettings.isEmpty()) {
                         $actionBarItems.changeSettings();
                     } else {
                         loadTableList();
                     }
-                }
+                };
             }
         ]);
 };

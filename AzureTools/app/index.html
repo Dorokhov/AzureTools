@@ -89,7 +89,10 @@
                             <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
                                       ng-change="ActionBarItems.SearchViewModel.onChange()"
                                       ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                      type="text" class="form-control" style="margin-top: 8px; width: 800px; float: left; max-height: 250px; height:38px" autofocus></textarea>
+                                      type="text" 
+                                      class="form-control" 
+                                      placeholder="PartitionKey eq 'xxx' and RowKey eq 'xxx'"
+                                      style="margin-top: 8px; width: 800px; float: left; max-height: 250px; height:38px" autofocus></textarea>
 
                             <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
 
@@ -107,7 +110,7 @@
             <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
         </div>
 
-        <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible">
+        <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible" style="height: 50px;">
             <div style="float: left;">{{NotifyViewModel.Body}}</div>
             <a style="margin-left: 3px; cursor: pointer;" ng-show="NotifyViewModel.CommandText != null" ng-click="NotifyViewModel.Command()">{{NotifyViewModel.CommandText}}</a>
         </div>

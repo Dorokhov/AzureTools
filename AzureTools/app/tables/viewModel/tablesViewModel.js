@@ -28,6 +28,10 @@
 
                     var searchViewModel = {
                         search: function () {
+                            if (!isConnectionSettingsSpecified()) {
+                                return;
+                            }
+
                             queryTableEntities(this.Pattern);
                         },
                         Pattern: '',
@@ -46,6 +50,7 @@
                         this.Tables = null;
                         this.SelectedTable = null;
                         this.onSelectedTableChanged = function () {
+                            $notifyViewModel.close();
                             searchViewModel.search();
                         };
                     };
@@ -60,9 +65,18 @@
                     $actionBarItems.IsSettingsVisible = true;
                     $actionBarItems.IsSearchVisible = true;
                     $actionBarItems.refresh = function () {
+                        if (!isConnectionSettingsSpecified()) {
+                            return;
+                        }
+
                         continuation = null;
                         entries = null;
-                        searchViewModel.search();
+
+                        if (tableSelectionViewModel.SelectedTable == null) {
+                            loadTableList();
+                        } else {
+                            searchViewModel.search();
+                        }
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
                     $actionBarItems.TableSelectViewModel = tableSelectionViewModel;
@@ -104,6 +118,30 @@
                         };
                     };
 
+                    var isConnectionSettingsSpecified = function () {
+                        return (tablesSettings.AccountUrl !== null && tablesSettings.AccountUrl !== '')
+                            && (tablesSettings.AccountKey !== null && tablesSettings.AccountKey !== '')
+                            && (tablesSettings.AccountName !== null && tablesSettings.AccountName !== '');
+                    };
+
+                    var showError = function (data) {
+                        if (data !== undefined && data !== null) {
+                            if (data.name && data.name === 'Error') {
+                                $timeout(function () {
+                                    $notifyViewModel.scope().$apply(function () {
+                                        $notifyViewModel.showWarning(data.message);
+                                    });
+                                });
+                            } else {
+                                $timeout(function () {
+                                    $notifyViewModel.scope().$apply(function () {
+                                        $notifyViewModel.showWarning(data);
+                                    });
+                                });
+                            }
+                        }
+                    };
+
                     var showInfo = function (msg) {
                         if (msg !== undefined && msg !== null) {
                             $timeout(function () {
@@ -118,7 +156,8 @@
 
                     var defaultClient = null;
                     var defaultClientFactory = function () {
-                        if (defaultClient == null) {
+                        console.log(defaultClient);
+                        if (defaultClient == null || (defaultClient.storageAccount !== tablesSettings.AccountName || defaultClient.storageAccessKey !== tablesSettings.AccountKey)) {
                             defaultClient = azureStorage.createTableService(tablesSettings.AccountName, tablesSettings.AccountKey, tablesSettings.AccountUrl);
                         }
                         return defaultClient;
@@ -140,7 +179,7 @@
                                 if (cancelled) return;
                                 $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
                                 if (error) {
-                                    console.log(error);
+                                    showError(error);
                                 }
 
                                 entries = result.entries;
@@ -168,7 +207,7 @@
                                 $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
                                 if (cancelled) return;
                                 if (error) {
-                                    console.log(error);
+                                    showError(error);
                                 }
 
                                 entries = entries.concat(result.entries);
@@ -187,16 +226,19 @@
 
                     var loadTableList = function () {
                         if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
-                            $busyIndicator.setIsBusy(listTablesOperation, true, cancelOperation);
-                            defaultClientFactory().listTablesSegmented(null, null, function (err, data) {
+                            var cancelled = false;
+                            $busyIndicator.setIsBusy(listTablesOperation, true, function () { cancelled = true; });
+                            defaultClientFactory().listTablesSegmented(null, null, function (error, data) {
+                                if (cancelled) return;
                                 $busyIndicator.setIsBusy(listTablesOperation, false, cancelOperation);
-
-                                console.log(err);
-                                console.log(data);
+                                if (error) {
+                                    showError(error);
+                                }
 
                                 tableSelectionViewModel.Tables = data.entries;
                                 if (tableSelectionViewModel.Tables != null && tableSelectionViewModel.Tables.length > 0) {
                                     tableSelectionViewModel.SelectedTable = tableSelectionViewModel.Tables[0];
+                                    searchViewModel.search();
                                 }
                             });
                         }

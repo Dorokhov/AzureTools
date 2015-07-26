@@ -7,7 +7,6 @@
     "author": "Vladimir Dorokhov",
     "short_name": "Azure Tools",
     "permissions": [
-         "experimental",
         {
             "socket": [
                 "tcp-listen:*:*",

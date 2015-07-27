@@ -19,6 +19,10 @@
                 self.openTables = function() {
                     $state.go('tables', {}); 
                 };
+
+                self.openBlobs = function () {
+                    $state.go('blobs', {});
+                };
             };
         }
     ]);

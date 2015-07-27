@@ -41,6 +41,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
+    <Content Include="app\blobs\blobsModule.js" />
+    <Content Include="app\blobs\model\blobsSettings.js" />
+    <Content Include="app\blobs\presenter\blobsPresenter.js" />
+    <Content Include="app\blobs\services\blobsServices.js" />
+    <Content Include="app\blobs\viewModel\blobsViewModel.js" />
+    <Content Include="app\blobs\view\index.html" />
     <Content Include="app\bundle.js" />
     <Content Include="app\common\dialogsModule.js" />
     <Content Include="app\common\actionBarModule.js" />

@@ -225,7 +225,7 @@
                     //};
                     var containers = null;
 
-                    var loadTableList = function () {
+                    var loadContainerList = function () {
                         if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
                             var cancelled = false;
                             $busyIndicator.setIsBusy(listTablesOperation, true, function () { cancelled = true; });
@@ -245,7 +245,16 @@
                                 containerSelectionViewModel.Containers = data.entries;
                                 if (containerSelectionViewModel.Containers != null && containerSelectionViewModel.Containers.length > 0) {
                                     containerSelectionViewModel.SelectedContainer = containerSelectionViewModel.Containers[0];
-                                   // searchViewModel.search();
+                                    blobsPresenter.showContainers(containerSelectionViewModel.Containers, function(containerResult) {
+                                        defaultClientFactory().listBlobsSegmented(containerResult.name, null, function (e, d) {
+                                            if (e) {
+                                                showError(e);
+                                            }
+                                            console.log(d);
+                                            blobsPresenter.showBlobs(d.entries);
+                                        });
+                                    }, function() {});
+                                    // searchViewModel.search();
                                 }
                             });
                         }
@@ -257,7 +266,7 @@
                     //} else {
                     //    loadTableList();
                     //}
-                    loadTableList();
+                    loadContainerList();
                 };
             }
         ]);

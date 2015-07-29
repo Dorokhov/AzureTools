@@ -29,8 +29,9 @@
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
-
-            self.oTable = $('#tables').DataTable({
+            console.log('CONTAINERS');
+            console.log(data);
+            self.oTable = $('#containers').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
@@ -41,7 +42,7 @@
                 columns: [
                     {
                         "title": "Table",
-                        "data": "Name"
+                        "data": "name"
                     },
                     {
                         "title": "",
@@ -60,16 +61,16 @@
             }
 
             // open/close details
-            $('#tables tbody').off('click', 'tr.even,tr.odd');
-            $('#tables tbody').on('click', 'tr.even,tr.odd', function() {
+            $('#containers tbody').off('click', 'tr.even,tr.odd');
+            $('#containers tbody').on('click', 'tr.even,tr.odd', function () {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
                 onSelect(row.data());
             });
 
             // handle update
-            $('#tables tbody').off('click', 'button.btn.btn-default.updateButton');
-            $('#tables tbody').on('click', 'button.btn.btn-default.updateButton', function() {
+            $('#containers tbody').off('click', 'button.btn.btn-default.updateButton');
+            $('#containers tbody').on('click', 'button.btn.btn-default.updateButton', function () {
                 var currentRow = $(this).closest('tr');
                 var tr = currentRow.prev();
                 var newValue = $(currentRow).find('textarea').val();
@@ -78,8 +79,8 @@
             });
 
             // handle remove 
-            $('#tables tbody').off('click', 'a.remove');
-            $('#tables tbody').on('click', 'a.remove', function(event) {
+            $('#containers tbody').off('click', 'a.remove');
+            $('#containers tbody').on('click', 'a.remove', function (event) {
                 var tr = $(this).closest('tr');
                 var row = self.oTable.row(tr);
                 removeCallback(row.data());
@@ -87,13 +88,13 @@
             });
         };
 
-        self.showEntities = function (data) {
+        self.showBlobs = function (data) {
             if (data == null || (Object.prototype.toString.call(data) === '[object Array]' && data.length === 0)) {
-                $('#tables').empty();
+                $('#blobs').empty();
                  return;
             }
             self.cleanUp();
-            $('#tables').empty();
+            $('#blobs').empty();
 
             $(window).unbind('resize');
             $(window).bind('resize', function() {
@@ -116,12 +117,12 @@
                     title: col,
                     data: col,
                     render: function(item) {
-                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (item == undefined ? '' : item._) + '</span>';
+                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (item == undefined ? '' : item) + '</span>';
                     },
                 });
             }
 
-            self.oTable = $('#tables').DataTable({
+            self.oTable = $('#blobs').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
@@ -129,7 +130,12 @@
                 scrollX: true,
                 data: data,
                 autoWidth: false,
-                columns: columns
+                columns: [
+                    {
+                        "title": "Blob Name",
+                        "data": "name"
+                    }
+                ]
             });
         };
     };

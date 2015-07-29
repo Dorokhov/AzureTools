@@ -1,7 +1,16 @@
 <div class="tablesContainer">
     <div class="metro grid" style="font-weight: normal;">
-        <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
-        <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+
+        <bg-splitter orientation="horizontal">
+            <bg-pane min-size="50" style="margin-top: 50px;">
+                <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+            </bg-pane>
+
+            <bg-pane min-size="50" style="margin-top: 50px;">
+                <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+            </bg-pane>
+        </bg-splitter>
+
     </div>
 </div>
 

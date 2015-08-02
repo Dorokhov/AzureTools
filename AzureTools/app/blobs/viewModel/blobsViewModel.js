@@ -23,8 +23,8 @@
 
                 $scope.BlobsViewModel = new function () {
                     var self = this;
-                    var listTablesOperation = 'listTablesOperation';
-                    var queryEntitiesOperation = 'queryEntitiesOperation';
+                    var listContainersOperation = 'listContainersOperation';
+                    var queryBlobsOperation = 'queryBlobsOperation';
 
                     var searchViewModel = {
                         search: function () {
@@ -226,18 +226,14 @@
                     var containers = null;
 
                     var loadContainerList = function () {
-                        if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
+                        if ($busyIndicator.getIsBusy(listContainersOperation) === false) {
                             var cancelled = false;
-                            $busyIndicator.setIsBusy(listTablesOperation, true, function () { cancelled = true; });
+                            $busyIndicator.setIsBusy(listContainersOperation, true, function () { cancelled = true; });
 
-                            var options = {
-                                'maxResults': 3,
-                                'include': 'metadata',
-                            };
                             var token = null;
-                            defaultClientFactory().listContainersSegmented(token, options, function (error, data) {
+                            defaultClientFactory().listContainersSegmented(token, null, function (error, data) {
                                 if (cancelled) return;
-                                $busyIndicator.setIsBusy(listTablesOperation, false, cancelOperation);
+                                $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
                                 if (error) {
                                     showError(error);
                                 }
@@ -246,26 +242,43 @@
                                 if (containerSelectionViewModel.Containers != null && containerSelectionViewModel.Containers.length > 0) {
                                     containerSelectionViewModel.SelectedContainer = containerSelectionViewModel.Containers[0];
                                     blobsPresenter.showContainers(containerSelectionViewModel.Containers, function(containerResult) {
+                                        $busyIndicator.setIsBusy(listContainersOperation, true, cancelOperation);
                                         defaultClientFactory().listBlobsSegmented(containerResult.name, null, function (e, d) {
+                                            $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
+
                                             if (e) {
                                                 showError(e);
                                             }
-                                            console.log(d);
-                                            blobsPresenter.showBlobs(d.entries);
+
+                                            blobsPresenter.showBlobs(d.entries, null,
+                                                // load image
+                                                function(selectedBlob, showBase64) {
+                                                    var buffer = require('./../../node_modules/net-chromify/node_modules/buffer/index').Buffer;
+                                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                                    var chunks = [];
+                                                    stream.on('data', function(chunk) {chunks.push(chunk);});
+                                                    stream.on('end', function() {
+                                                        var result = buffer.concat(chunks);
+                                                        var img = result.toString('base64');
+                                                        showBase64(img);
+                                                    });
+                                                },
+                                                // load text
+                                                function(selectedBlob, showText) {
+                                                    defaultClientFactory().getBlobToText(
+                                                        containerResult.name,
+                                                        selectedBlob.name,
+                                                        function(ex, text) { showText(text); });
+                                                });
                                         });
                                     }, function() {});
-                                    // searchViewModel.search();
+                                    // searchViewModel.search(); 
                                 }
                             });
                         }
                     };
 
                     // init
-                    //if (blobsSettings.isEmpty()) {
-                    //    $actionBarItems.changeSettings();
-                    //} else {
-                    //    loadTableList();
-                    //}
                     loadContainerList();
                 };
             }

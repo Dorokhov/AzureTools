@@ -88,7 +88,7 @@
             });
         };
 
-        self.showBlobs = function (data) {
+        self.showBlobs = function (data, onSelect, onImageViewSelect, onTextViewSelect) {
             if (data == null || (Object.prototype.toString.call(data) === '[object Array]' && data.length === 0)) {
                 $('#blobs').empty();
                  return;
@@ -136,6 +136,60 @@
                         "data": "name"
                     }
                 ]
+            });
+
+            // open/close details
+            function format(type, value) {
+                return '<div>' +
+                    //'<textarea class="details-textarea">' + value + '</textarea>' +
+                    '<button type="button" class="btn btn-default left image">Image</button>' +
+                    '<button type="button" class="btn btn-default left text">Text</button>' +
+                    '</div>';
+            }
+
+            $('#blobs tbody').off('click', 'tr.even,tr.odd');
+            $('#blobs tbody').on('click', 'tr.even,tr.odd', function () {
+                var tr = $(this).closest('tr');
+                var row = self.oTable.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    // Open this row
+                    row.child(format(row.data().Type, row.data().Value)).show();
+                    var detailsTr = tr.next();
+
+                    // fit text area to content
+                    //var textarea = detailsTr.find("textarea");
+                    //textarea.height((textarea.prop("scrollHeight")));
+
+                    detailsTr.addClass('shown');
+                    tr.addClass('shown');
+                }
+            });
+
+            // handle image click
+            $('#blobs tbody').off('click', 'button.btn.btn-default.left.image');
+            $('#blobs tbody').on('click', 'button.btn.btn-default.left.image', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var row = self.oTable.row(tr);
+                onImageViewSelect(row.data(), function (imageAsBase64) {
+                    row.child('<img src="data:image/png;base64,' + imageAsBase64 + '"/>');
+                });
+            });
+
+            // handle text click
+            $('#blobs tbody').off('click', 'button.btn.btn-default.left.text');
+            $('#blobs tbody').on('click', 'button.btn.btn-default.left.text', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var row = self.oTable.row(tr);
+                onTextViewSelect(row.data(), function (text) {
+                    row.child('<textarea class="details-textarea">' + text + '</textarea>');
+                });
             });
         };
     };

@@ -1,31 +1,31 @@
 ﻿exports.create = function () {
     'use strict';
 
-    return new function() {
+    return new function () {
         var self = this;
 
         self.oTable = null;
         self.Keys = null;
-        
-        self.cleanUp = function() {
+
+        self.cleanUp = function () {
             if (self.oTable) {
                 self.oTable.destroy(false);
             }
 
         };
 
-        var calcDataTableHeight = function() {
+        var calcDataTableHeight = function () {
             console.log('dsf ' + $('#errorNotification').is(":visible"));
             var headerHeight = $('nav[role="navigation"]').height() + 50 + 52 + 20 + 5;
             return ($(window).height() - headerHeight);
         };
 
-        self.showContainers = function(data, onSelect, removeCallback) {
+        self.showContainers = function (data, onSelect, removeCallback) {
             self.cleanUp();
             $('#containers').empty();
 
             $(window).unbind('resize');
-            $(window).bind('resize', function() {
+            $(window).bind('resize', function () {
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
@@ -41,12 +41,12 @@
                 autoWidth: true,
                 columns: [
                     {
-                        "title": "Table",
+                        "title": "Container",
                         "data": "name"
                     },
                     {
                         "title": "",
-                        "render": function() {
+                        "render": function () {
                             return '<a class="remove" style="color:black; cursor:pointer;" placeholder="Delete"><span class="icon-remove"></span></a>';
                         },
                     },
@@ -88,16 +88,16 @@
             });
         };
 
-        self.showBlobs = function (data, onSelect, onImageViewSelect, onTextViewSelect) {
+        self.showBlobs = function (data, onSelect, onImageViewSelect, onTextViewSelect, onDownloadSelect) {
             if (data == null || (Object.prototype.toString.call(data) === '[object Array]' && data.length === 0)) {
                 $('#blobs').empty();
-                 return;
+                return;
             }
             self.cleanUp();
             $('#blobs').empty();
 
             $(window).unbind('resize');
-            $(window).bind('resize', function() {
+            $(window).bind('resize', function () {
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });
@@ -116,11 +116,13 @@
                 columns.push({
                     title: col,
                     data: col,
-                    render: function(item) {
+                    render: function (item) {
                         return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (item == undefined ? '' : item) + '</span>';
                     },
                 });
             }
+
+            $('#blobs .dataTables_scroll').css('margin-top', '-19px');
 
             self.oTable = $('#blobs').DataTable({
                 bFilter: false,
@@ -139,11 +141,17 @@
             });
 
             // open/close details
-            function format(type, value) {
+            function format(imageAsBase64, text) {
+
                 return '<div>' +
-                    //'<textarea class="details-textarea">' + value + '</textarea>' +
+
                     '<button type="button" class="btn btn-default left image">Image</button>' +
-                    '<button type="button" class="btn btn-default left text">Text</button>' +
+                    '<button type="button" class="btn btn-default left text" style="margin-left:3px;">Text</button>' +
+                    '<button type="button" class="btn btn-default left download" style="margin-left:3px;">Download</button>' +
+
+                    (imageAsBase64 ? '<img src="data:image/png;base64,' + imageAsBase64 + '"/>' : '') +
+                    (text ? '<textarea class="details-textarea">' + text + '</textarea>' : '') +
+
                     '</div>';
             }
 
@@ -177,7 +185,7 @@
                 var tr = currentRow.prev();
                 var row = self.oTable.row(tr);
                 onImageViewSelect(row.data(), function (imageAsBase64) {
-                    row.child('<img src="data:image/png;base64,' + imageAsBase64 + '"/>');
+                    row.child(format(imageAsBase64, null));
                 });
             });
 
@@ -188,7 +196,36 @@
                 var tr = currentRow.prev();
                 var row = self.oTable.row(tr);
                 onTextViewSelect(row.data(), function (text) {
-                    row.child('<textarea class="details-textarea">' + text + '</textarea>');
+                    row.child(format(null, text));
+                });
+            });
+
+
+            // handle download click
+            $('#blobs tbody').off('click', 'button.btn.btn-default.left.download');
+            $('#blobs tbody').on('click', 'button.btn.btn-default.left.download', function () {
+                var currentRow = $(this).closest('tr');
+                var tr = currentRow.prev();
+                var row = self.oTable.row(tr);
+
+                var blob = row.data();
+                onDownloadSelect(blob, function (bytes) {
+                    chrome.fileSystem.chooseEntry({
+                        type: 'saveFile',
+                        suggestedName: blob.name
+                    },
+                        function (writableFileEntry) {
+                            writableFileEntry.createWriter(function (writer) {
+                                writer.onwriteend = function (e) {
+
+                                };
+
+                                writer.write(new Blob(bytes,
+                                {
+                                     type: 'text/plain'
+                                })); 
+                            }, function(e) { console.log(e); });
+                        });
                 });
             });
         };

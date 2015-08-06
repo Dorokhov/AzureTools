@@ -13,8 +13,9 @@
                 "tcp-connect",
                 "resolve-host"
             ]
+        },
 
-        }
+        { "fileSystem": [ "write" ] }
     ],
 
     "icons": {

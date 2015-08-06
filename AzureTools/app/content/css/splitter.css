@@ -1,5 +1,6 @@
 .split-panes 
 {
+    margin-top: 52px;
   left: 0px;
   right: 0px;
   top: 0px;
@@ -19,8 +20,7 @@
 .split-panes.horizontal > .split-handler
 {
   width: 4px;
-  top: 0px; 
-  left: 50%;
+    top: 50px;  left: 50%;
   bottom: 0px;
   cursor: ew-resize;
 }
@@ -50,7 +50,7 @@
 .split-panes.vertical > .split-handler
 {
   height: 4px;
-  top: 50%; 
+ top: 50%; 
   left: 0px;
   right: 0px;
   cursor: ns-resize;

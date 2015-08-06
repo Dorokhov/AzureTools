@@ -269,6 +269,18 @@
                                                         containerResult.name,
                                                         selectedBlob.name,
                                                         function(ex, text) { showText(text); });
+                                                },
+                                                 // load bytes
+                                                function(selectedBlob, downloadBytes) {
+                                                    var buffer = require('./../../node_modules/net-chromify/node_modules/buffer/index').Buffer;
+                                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                                    var chunks = [];
+                                                    stream.on('data', function(chunk) {chunks.push(chunk);});
+                                                    stream.on('end', function() {
+                                                        var result = buffer.concat(chunks);
+                                                        console.log(result);
+                                                        downloadBytes([result.buffer]);
+                                                    });
                                                 });
                                         });
                                     }, function() {});

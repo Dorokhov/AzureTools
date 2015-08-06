@@ -58,6 +58,18 @@
                     var pane2Min = pane2.minSize || 0;
                     var drag = false;
 
+                    var pane1Percentage = pane1.initWidthPercentage ? pane1.initWidthPercentage : (pane2.initWidthPercentage ? (100 % -pane2.initWidthPercentage) : 50);
+                    
+                    if (!vertical) {
+                        var b = element[0].getBoundingClientRect();
+                        var w = b.right - b.left;
+                        var p = pane1Percentage * 0.01 * w;
+                        
+                        handler.css('left', p + 'px');
+                        pane1.elem.css('width', p + 'px');
+                        pane2.elem.css('left', p + 'px');
+                    }
+
                     pane1.elem.after(handler);
 
                     element.bind('mousemove', function (ev) {
@@ -110,7 +122,8 @@
                 replace: true,
                 transclude: true,
                 scope: {
-                    minSize: '='
+                    minSize: '=',
+                    initWidthPercentage: '='
                 },
                 template: '<div class="split-pane{{index}}" ng-transclude></div>',
                 link: function (scope, element, attrs, bgSplitterCtrl) {

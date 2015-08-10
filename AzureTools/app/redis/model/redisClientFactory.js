@@ -2,5 +2,5 @@
 
 exports.createClient = function (host, port, password) {
     console.log('Creating client ' + host + ' ' + port + ' ' + password);
-    return redis.createClient(port, host, { auth_pass: password });
+    return redis.createClient(6379, 'redisdor.redis.cache.windows.net', { auth_pass: 'iB1Ku6vN4CJPvirkupbDX0mhH6vUFxkTLpWoJTfc+dM=' });
 };

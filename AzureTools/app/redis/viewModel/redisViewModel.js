@@ -61,6 +61,7 @@
                         },
                         Current: $activeDatabase.Current
                     };
+
                     // redis action bar
                     $actionBarItems.ModuleName = ': Redis';
                     $actionBarItems.IsActionBarVisible = true;
@@ -173,8 +174,8 @@
                     $actionBarItems.SearchViewModel = searchViewModel;
                     $actionBarItems.DatabaseViewModel = databaseViewModel;
 
-                    var groupByKey = function (type, key, value) {
-                        var existing = self.Keys.filter(function (item) {
+                    var groupByKey = function(type, key, value) {
+                        var existing = self.Keys.filter(function(item) {
                             return item.Key == key;
                         });
 
@@ -188,7 +189,7 @@
                         }
 
                         return false;
-                    }
+                    };
 
                     // load redis data
                     var maxItemsToLoad = 100;

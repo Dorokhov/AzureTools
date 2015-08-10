@@ -10,6 +10,7 @@
             'blobsSettings',
             'azureStorage',
             'blobsPresenter',
+            'bufferFactory',
             function (
                 $scope,
                 $timeout,
@@ -19,7 +20,8 @@
                 $notifyViewModel,
                 blobsSettings,
                 azureStorage,
-                blobsPresenter) {
+                blobsPresenter,
+                bufferFactory) {
 
                 $scope.BlobsViewModel = new function () {
                     var self = this;
@@ -32,7 +34,7 @@
                                 return;
                             }
 
-                            queryTableEntities(this.Pattern);
+                            loadBlobs(containerSelectionViewModel.SelectedContainer, this.Pattern);
                         },
                         Pattern: '',
                         clear: function () {
@@ -59,7 +61,6 @@
 
                     // blobs action bar
                     $actionBarItems.ModuleName = ': Blobs';
-                    $actionBarItems.IsTablesSelectVisible = true;
                     $actionBarItems.IsActionBarVisible = true;
                     $actionBarItems.IsRefreshVisible = true;
                     $actionBarItems.IsSettingsVisible = true;
@@ -72,8 +73,8 @@
                         continuation = null;
                         entries = null;
 
-                        if (tableSelectionViewModel.SelectedTable == null) {
-                            loadTableList();
+                        if (containerSelectionViewModel.SelectedContainer == null) {
+                            loadContainerList();
                         } else {
                             searchViewModel.search();
                         }
@@ -86,7 +87,7 @@
                         $dialogViewModel.IsChecked = false;
                         $dialogViewModel.onChecked = function () {
                             if ($dialogViewModel.IsChecked) {
-                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.table.core.windows.net/';
+                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.blobs.core.windows.net/';
                                 $dialogViewModel.BodyViewModel.AccountName = 'dorphoenixtest';
                                 $dialogViewModel.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
                             } else {
@@ -102,19 +103,14 @@
                             AccountKey: blobsSettings.AccountKey,
                         };
 
-                        $dialogViewModel.Body = 'tablesSettingsTemplate';
+                        $dialogViewModel.Body = 'blobsSettingsTemplate';
                         $dialogViewModel.Header = 'Settings';
                         $dialogViewModel.save = function () {
-                            //if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
-                            //    showError('Port value is wrong. Port must be in range [1;65535]');
-                            //    return;
-                            //};
-
                             blobsSettings.AccountUrl = $dialogViewModel.BodyViewModel.AccountUrl;
                             blobsSettings.AccountName = $dialogViewModel.BodyViewModel.AccountName;
                             blobsSettings.AccountKey = $dialogViewModel.BodyViewModel.AccountKey;
                             $dialogViewModel.IsVisible = false;
-                            loadTableList();
+                            loadContainerList();
                         };
                     };
 
@@ -167,63 +163,56 @@
 
                     var continuation = null;
                     var entries = null;
-                    //var queryTableEntities = function (query) {
-                    //    if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
-                    //        var tableService = defaultClientFactory();
-                    //        var cancelled = false;
-                    //        $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
 
-                    //        var azureQuery = new azureStorage.TableQuery().where(query);
+                    var loadBlobs = function (containerResult, pattern) {
+                        if (containerResult == null) return;
 
-                    //        tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, null, function (error, result, response) {
-                    //            if (cancelled) return;
-                    //            $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
-                    //            if (error) {
-                    //                showError(error);
-                    //            }
+                        $busyIndicator.setIsBusy(listContainersOperation, true, cancelOperation);
+                        var proceedBlobs = function(e, d) {
+                            $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
 
-                    //            entries = result.entries;
-                    //            if (result.continuationToken != null) {
-                    //                showInfo('First ' + entries.length + ' entries loaded ');
-                    //                continuation = result.continuationToken;
-                    //            } else {
-                    //                continuation = null;
-                    //                $notifyViewModel.close();
-                    //            }
-                    //            blobsSettings.showEntities(result.entries);
-                    //        });
-                    //    }
-                    //};
+                            if (e) {
+                                showError(e);
+                            }
 
-                    //var appendTableEntities = function (query) {
-                    //    if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
-                    //        var tableService = defaultClientFactory();
-                    //        var cancelled = false;
-                    //        $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
-
-                    //        var azureQuery = new azureStorage.TableQuery().where(query);
-
-                    //        tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, continuation, function (error, result, response) {
-                    //            $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
-                    //            if (cancelled) return;
-                    //            if (error) {
-                    //                showError(error);
-                    //            }
-
-                    //            entries = entries.concat(result.entries);
-
-                    //            blobsSettings.showEntities(entries);
-                    //            if (result.continuationToken != null) {
-                    //                showInfo('First ' + entries.length + ' entries loaded ');
-                    //                continuation = result.continuationToken;
-                    //            } else {
-                    //                continuation = null;
-                    //                $notifyViewModel.close();
-                    //            }
-                    //        });
-                    //    }
-                    //};
-                    var containers = null;
+                            blobsPresenter.showBlobs(d.entries, null,
+                                // load image
+                                function(selectedBlob, showBase64) {
+                                    var buffer = bufferFactory.Buffer;
+                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                    var chunks = [];
+                                    stream.on('data', function(chunk) { chunks.push(chunk); });
+                                    stream.on('end', function() {
+                                        var result = buffer.concat(chunks);
+                                        var img = result.toString('base64');
+                                        showBase64(img);
+                                    });
+                                },
+                                // load text
+                                function(selectedBlob, showText) {
+                                    defaultClientFactory().getBlobToText(
+                                        containerResult.name,
+                                        selectedBlob.name,
+                                        function(ex, text) { showText(text); });
+                                },
+                                // load bytes
+                                function(selectedBlob, downloadBytes) {
+                                    var buffer = bufferFactory.Buffer;
+                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                    var chunks = [];
+                                    stream.on('data', function(chunk) { chunks.push(chunk); });
+                                    stream.on('end', function() {
+                                        var result = buffer.concat(chunks);
+                                        downloadBytes([result.buffer]);
+                                    });
+                                });
+                        };
+                        if (pattern == null) {
+                            defaultClientFactory().listBlobsSegmented(containerResult.name, null, proceedBlobs);
+                        } else {
+                            defaultClientFactory().listBlobsSegmentedWithPrefix(containerResult.name, pattern, null, proceedBlobs);
+                        }
+                    };
 
                     var loadContainerList = function () {
                         if ($busyIndicator.getIsBusy(listContainersOperation) === false) {
@@ -237,54 +226,14 @@
                                 if (error) {
                                     showError(error);
                                 }
-                                console.log(data);
+
                                 containerSelectionViewModel.Containers = data.entries;
                                 if (containerSelectionViewModel.Containers != null && containerSelectionViewModel.Containers.length > 0) {
                                     containerSelectionViewModel.SelectedContainer = containerSelectionViewModel.Containers[0];
-                                    blobsPresenter.showContainers(containerSelectionViewModel.Containers, function(containerResult) {
-                                        $busyIndicator.setIsBusy(listContainersOperation, true, cancelOperation);
-                                        defaultClientFactory().listBlobsSegmented(containerResult.name, null, function (e, d) {
-                                            $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
-
-                                            if (e) {
-                                                showError(e);
-                                            }
-
-                                            blobsPresenter.showBlobs(d.entries, null,
-                                                // load image
-                                                function(selectedBlob, showBase64) {
-                                                    var buffer = require('./../../node_modules/net-chromify/node_modules/buffer/index').Buffer;
-                                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
-                                                    var chunks = [];
-                                                    stream.on('data', function(chunk) {chunks.push(chunk);});
-                                                    stream.on('end', function() {
-                                                        var result = buffer.concat(chunks);
-                                                        var img = result.toString('base64');
-                                                        showBase64(img);
-                                                    });
-                                                },
-                                                // load text
-                                                function(selectedBlob, showText) {
-                                                    defaultClientFactory().getBlobToText(
-                                                        containerResult.name,
-                                                        selectedBlob.name,
-                                                        function(ex, text) { showText(text); });
-                                                },
-                                                 // load bytes
-                                                function(selectedBlob, downloadBytes) {
-                                                    var buffer = require('./../../node_modules/net-chromify/node_modules/buffer/index').Buffer;
-                                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
-                                                    var chunks = [];
-                                                    stream.on('data', function(chunk) {chunks.push(chunk);});
-                                                    stream.on('end', function() {
-                                                        var result = buffer.concat(chunks);
-                                                        console.log(result);
-                                                        downloadBytes([result.buffer]);
-                                                    });
-                                                });
-                                        });
+                                    blobsPresenter.showContainers(containerSelectionViewModel.Containers, function (containerResult) {
+                                        containerSelectionViewModel.SelectedContainer = containerResult;
+                                        loadBlobs(containerResult);
                                     }, function() {});
-                                    // searchViewModel.search(); 
                                 }
                             });
                         }

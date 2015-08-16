@@ -3,15 +3,15 @@
 
     return new function() {
         var self = this;
-        isDebugVersion = true;
+
+        self.AccountUrl = '';
+        self.AccountName = '';
+        self.AccountKey = '';
+
         if (isDebugVersion) {
             self.AccountUrl = 'http://dorphoenixtest.blob.core.windows.net/';
             self.AccountName = 'dorphoenixtest';
             self.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
-        } else {
-            self.AccountUrl = '';
-            self.AccountName = '';
-            self.AccountKey = '';
         }
 
         self.isEmpty = function() {

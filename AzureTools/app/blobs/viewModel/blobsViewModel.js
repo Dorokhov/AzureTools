@@ -27,6 +27,7 @@
                     var self = this;
                     var listContainersOperation = 'listContainersOperation';
                     var queryBlobsOperation = 'queryBlobsOperation';
+                    var loadBlobOperation = 'loadBlobOperation';
 
                     var searchViewModel = {
                         search: function () {
@@ -87,7 +88,7 @@
                         $dialogViewModel.IsChecked = false;
                         $dialogViewModel.onChecked = function () {
                             if ($dialogViewModel.IsChecked) {
-                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.blobs.core.windows.net/';
+                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.blob.core.windows.net/';
                                 $dialogViewModel.BodyViewModel.AccountName = 'dorphoenixtest';
                                 $dialogViewModel.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
                             } else {
@@ -138,23 +139,12 @@
                         }
                     };
 
-                    var showInfo = function (msg) {
-                        if (msg !== undefined && msg !== null) {
-                            $timeout(function () {
-                                $notifyViewModel.scope().$apply(function () {
-                                    $notifyViewModel.showInfo(msg, 'Load More', function () {
-                                        appendTableEntities(searchViewModel.Pattern);
-                                    });
-                                });
-                            });
-                        }
-                    };
-
                     var defaultClient = null;
                     var defaultClientFactory = function () {
                         console.log(defaultClient);
                         if (defaultClient == null || (defaultClient.storageAccount !== blobsSettings.AccountName || defaultClient.storageAccessKey !== blobsSettings.AccountKey)) {
                             defaultClient = azureStorage.createBlobService(blobsSettings.AccountName, blobsSettings.AccountKey, blobsSettings.AccountUrl);
+                            console.log(defaultClient);
                         }
                         return defaultClient;
                     };
@@ -178,33 +168,50 @@
                             blobsPresenter.showBlobs(d.entries, null,
                                 // load image
                                 function(selectedBlob, showBase64) {
-                                    var buffer = bufferFactory.Buffer;
-                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
-                                    var chunks = [];
-                                    stream.on('data', function(chunk) { chunks.push(chunk); });
-                                    stream.on('end', function() {
-                                        var result = buffer.concat(chunks);
-                                        var img = result.toString('base64');
-                                        showBase64(img);
-                                    });
+                                    if ($busyIndicator.getIsBusy(loadBlobOperation) === false) {
+                                        $busyIndicator.setIsBusy(loadBlobOperation, true, cancelOperation);
+
+                                        var buffer = bufferFactory.Buffer;
+                                        var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                        var chunks = [];
+                                        stream.on('data', function(chunk) { chunks.push(chunk); });
+                                        stream.on('end', function () {
+                                            $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
+
+                                            var result = buffer.concat(chunks);
+                                            var img = result.toString('base64');
+                                            showBase64(img);
+                                        });
+                                    }
                                 },
                                 // load text
                                 function(selectedBlob, showText) {
-                                    defaultClientFactory().getBlobToText(
-                                        containerResult.name,
-                                        selectedBlob.name,
-                                        function(ex, text) { showText(text); });
+                                    if ($busyIndicator.getIsBusy(loadBlobOperation) === false) {
+                                        $busyIndicator.setIsBusy(loadBlobOperation, true, cancelOperation);
+                                        defaultClientFactory().getBlobToText(
+                                            containerResult.name,
+                                            selectedBlob.name,
+                                            function (ex, text) {
+                                                $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
+                                                showText(text);
+                                            });
+                                    }
                                 },
                                 // load bytes
-                                function(selectedBlob, downloadBytes) {
-                                    var buffer = bufferFactory.Buffer;
-                                    var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
-                                    var chunks = [];
-                                    stream.on('data', function(chunk) { chunks.push(chunk); });
-                                    stream.on('end', function() {
-                                        var result = buffer.concat(chunks);
-                                        downloadBytes([result.buffer]);
-                                    });
+                                function (selectedBlob, downloadBytes) {
+                                    if ($busyIndicator.getIsBusy(loadBlobOperation) === false) {
+                                        $busyIndicator.setIsBusy(loadBlobOperation, true, cancelOperation);
+
+                                        var buffer = bufferFactory.Buffer;
+                                        var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
+                                        var chunks = [];
+                                        stream.on('data', function(chunk) { chunks.push(chunk); });
+                                        stream.on('end', function () {
+                                            $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
+                                            var result = buffer.concat(chunks);
+                                            downloadBytes([result.buffer]);
+                                        });
+                                    }
                                 });
                         };
                         if (pattern == null) {
@@ -220,27 +227,44 @@
                             $busyIndicator.setIsBusy(listContainersOperation, true, function () { cancelled = true; });
 
                             var token = null;
-                            defaultClientFactory().listContainersSegmented(token, null, function (error, data) {
+                            var containers = [];
+                            var containersLoadedCb = function(error, data) {
                                 if (cancelled) return;
-                                $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
                                 if (error) {
+                                    $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
                                     showError(error);
                                 }
 
-                                containerSelectionViewModel.Containers = data.entries;
+                                containers = containers.concat(data.entries);
+
+                                if (data.continuationToken != null) {
+                                    token = data.continuationToken;
+                                    defaultClientFactory().listContainersSegmented(token, null, containersLoadedCb);
+                                    return;
+                                }
+
+                                $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
+
+                                containerSelectionViewModel.Containers = containers;
                                 if (containerSelectionViewModel.Containers != null && containerSelectionViewModel.Containers.length > 0) {
                                     containerSelectionViewModel.SelectedContainer = containerSelectionViewModel.Containers[0];
-                                    blobsPresenter.showContainers(containerSelectionViewModel.Containers, function (containerResult) {
+                                    blobsPresenter.showContainers(containerSelectionViewModel.Containers, function(containerResult) {
                                         containerSelectionViewModel.SelectedContainer = containerResult;
                                         loadBlobs(containerResult);
                                     }, function() {});
                                 }
-                            });
+                            };
+
+                            defaultClientFactory().listContainersSegmented(token, containersLoadedCb);
                         }
                     };
 
                     // init
-                    loadContainerList();
+                    if (blobsSettings.isEmpty()) {
+                        $actionBarItems.changeSettings();
+                    } else {
+                        loadContainerList();
+                    }
                 };
             }
         ]);

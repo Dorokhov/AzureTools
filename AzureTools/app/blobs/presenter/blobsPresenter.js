@@ -4,14 +4,20 @@
     return new function () {
         var self = this;
 
-        self.oTable = null;
+        self.containersTable = null;
+        self.blobsTable = null;
         self.Keys = null;
 
-        self.cleanUp = function () {
-            if (self.oTable) {
-                self.oTable.destroy(false);
+        self.cleanUpContainers = function () {
+            if (self.containersTable) {
+                self.containersTable.destroy(false);
             }
+        };
 
+        self.cleanUpBlobs = function () {
+            if (self.blobsTable) {
+                self.blobsTable.destroy(false);
+            }
         };
 
         var calcDataTableHeight = function () {
@@ -20,17 +26,17 @@
         };
 
         self.showContainers = function (data, onSelect, removeCallback) {
-            self.cleanUp();
+            self.cleanUpContainers();
             $('#containers').empty();
 
             $(window).unbind('resize');
             $(window).bind('resize', function () {
-                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
-                self.oTable.columns.adjust().draw();
+                $('#containers_wrapper .dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.containersTable.columns.adjust().draw();
             });
             console.log('CONTAINERS');
             console.log(data);
-            self.oTable = $('#containers').DataTable({
+            self.containersTable = $('#containers').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
@@ -48,9 +54,9 @@
 
             // open/close details
             $('#containers tbody').off('click', 'tr.even,tr.odd');
-            $('#containers tbody').on('click', 'tr.even,tr.odd', function () {
+            $('#containers tbody').on('click', 'tr.even,tr.odd', function () {console.log('SELECTED')
                 var tr = $(this).closest('tr');
-                var row = self.oTable.row(tr);
+                var row = self.containersTable.row(tr);
                 onSelect(row.data());
             });
 
@@ -58,7 +64,7 @@
             $('#containers tbody').off('click', 'a.remove');
             $('#containers tbody').on('click', 'a.remove', function (event) {
                 var tr = $(this).closest('tr');
-                var row = self.oTable.row(tr);
+                var row = self.containersTable.row(tr);
                 removeCallback(row.data());
                 return false;
             });
@@ -69,13 +75,13 @@
                 $('#blobs').empty();
                 return;
             }
-            self.cleanUp();
+            self.cleanUpBlobs();
             $('#blobs').empty();
 
             $(window).unbind('resize');
             $(window).bind('resize', function () {
-                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
-                self.oTable.columns.adjust().draw();
+                $('#blobs_wrapper .dataTables_scrollBody').css('height', calcDataTableHeight());
+                self.blobsTable.columns.adjust().draw();
             });
 
             var columnsDictionary = {};
@@ -100,7 +106,7 @@
 
             $('#blobs .dataTables_scroll').css('margin-top', '-19px');
 
-            self.oTable = $('#blobs').DataTable({
+            self.blobsTable = $('#blobs').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
@@ -134,7 +140,7 @@
             $('#blobs tbody').off('click', 'tr.even,tr.odd');
             $('#blobs tbody').on('click', 'tr.even,tr.odd', function () {
                 var tr = $(this).closest('tr');
-                var row = self.oTable.row(tr);
+                var row = self.blobsTable.row(tr);
 
                 if (row.child.isShown()) {
                     // This row is already open - close it
@@ -159,7 +165,7 @@
             $('#blobs tbody').on('click', 'button.btn.btn-default.left.image', function () {
                 var currentRow = $(this).closest('tr');
                 var tr = currentRow.prev();
-                var row = self.oTable.row(tr);
+                var row = self.blobsTable.row(tr);
                 onImageViewSelect(row.data(), function (imageAsBase64) {
                     row.child(format(imageAsBase64, null));
                 });
@@ -170,7 +176,7 @@
             $('#blobs tbody').on('click', 'button.btn.btn-default.left.text', function () {
                 var currentRow = $(this).closest('tr');
                 var tr = currentRow.prev();
-                var row = self.oTable.row(tr);
+                var row = self.blobsTable.row(tr);
                 onTextViewSelect(row.data(), function (text) {
                     row.child(format(null, text));
                 });
@@ -182,7 +188,7 @@
             $('#blobs tbody').on('click', 'button.btn.btn-default.left.download', function () {
                 var currentRow = $(this).closest('tr');
                 var tr = currentRow.prev();
-                var row = self.oTable.row(tr);
+                var row = self.blobsTable.row(tr);
 
                 var blob = row.data();
                 onDownloadSelect(blob, function (bytes) {

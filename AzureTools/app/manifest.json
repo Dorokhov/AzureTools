@@ -10,7 +10,7 @@
         {
             "socket": [
                 "tcp-listen:*:*",
-                "tcp-connect",
+                "tcp-connect:*:*",
                 "resolve-host"
             ]
         },

@@ -8,7 +8,7 @@
     var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
     $.DataTable = dataTable;
 
-    window.isDebugVersion = true;
+    window.isDebugVersion = false;
 
     require('./exceptionHandling/exceptionHandlingModule.js').register(angular);
     require('./common/commonModule.js').register(angular, angularRoute);

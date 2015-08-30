@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+
+    "name": "Azure Tools",
+    "description": "Tools to improve your Microsoft Azure expirience.",
+    "version": "0.4",
+    "author": "Vladimir Dorokhov",
+    "short_name": "Azure Tools",
+    "permissions": [
+        {
+            "socket": [
+                "tcp-listen:*:*",
+                "tcp-connect:*:*",
+                "resolve-host"
+            ]
+        },
+
+        { "fileSystem": [ "write" ] }
+    ],
+
+    "icons": {
+        "128": "content/img/windows-azure.png"
+    },
+
+    "app": {
+        "background": {
+            "scripts": [ "startup.js" ]
+        }
+    }
+}

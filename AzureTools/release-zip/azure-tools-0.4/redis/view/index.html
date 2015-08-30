@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="metro grid" style="font-weight: normal;">
+        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="createKeyTemplate">
+    <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid; width:97px;">Type</span>
+        <div class="dropdown" style="float:left; margin-left: 5px;">
+            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
+                {{DialogViewModel.BodyViewModel.SelectedType}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="width:96px">Key</span>
+        <input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
+    </div>
+    
+    <div class="input-group input-group-sm" style="margin-top:2px">
+        <span class="input-group-addon" style="width:96px">Value</span>
+        <textarea ng-model="DialogViewModel.BodyViewModel.Value"
+                  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
+                  class="form-control"
+                  style="width:372px; height: 100px;" />
+    </div>
+</script>
+
+<script type="text/ng-template" id="changeSettingsTemplate">
+    <div class="input-group input-group-sm">
+        <label>Provide credentials to access your Redis storage</label>
+    </div>
+
+    <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Host</span>
+            <input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
+        </div>
+
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Port</span>
+            <input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
+        </div>
+
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon">Auth Password</span>
+            <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
+        </div>
+    </div>
+</script>

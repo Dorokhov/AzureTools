@@ -156,7 +156,7 @@
 
                     var loadBlobs = function (containerResult, pattern) {
                         if (containerResult == null) return;
-
+                        $notifyViewModel.close();
                         $busyIndicator.setIsBusy(listContainersOperation, true, cancelOperation);
                         var proceedBlobs = function(e, d) {
                             $busyIndicator.setIsBusy(listContainersOperation, false, cancelOperation);
@@ -222,6 +222,7 @@
                     };
 
                     var loadContainerList = function () {
+                        $notifyViewModel.close();
                         if ($busyIndicator.getIsBusy(listContainersOperation) === false) {
                             var cancelled = false;
                             $busyIndicator.setIsBusy(listContainersOperation, true, function () { cancelled = true; });

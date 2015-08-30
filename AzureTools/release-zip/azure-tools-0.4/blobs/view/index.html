@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="metro grid" style="font-weight: normal;">
+
+        <bg-splitter orientation="horizontal">
+            <bg-pane min-size="50" init-width-percentage="30">
+                <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+            </bg-pane>
+
+            <bg-pane min-size="50">
+                <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+            </bg-pane>
+        </bg-splitter>
+
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="blobsSettingsTemplate">
+    <div class="input-group input-group-sm">
+        <label>Provide credentials to access your Blob storage</label>
+    </div>
+
+    <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Account Url</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" style="width:372px" />
+        </div>
+
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Account Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" style="float:left; width:372px" />
+        </div>
+
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Account Key</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" style="float:left;width:372px" />
+        </div>
+    </div>
+</script>

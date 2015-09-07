@@ -1,4 +1,31 @@
-﻿.popup {
+.navbar {
+    min-height: 40px;
+}
+
+.navbar-brand {
+    height: 40px;
+    padding: 10px;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: #DCF2FB;
+    
+}
+
+.icon-cloud {
+    font-size: 38px; 
+    vertical-align: -26%;
+    line-height: 0.8;
+    padding-right: 5px
+
+}
+
+.navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus  {
+    color: #ffffff;
+    
+}
+
+.popup {
     margin: 30px auto 0;
     position: absolute;
     left: 30%;

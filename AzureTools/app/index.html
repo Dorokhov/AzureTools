@@ -34,16 +34,20 @@
 <body ng-controller="AppController">
     <div>
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div ng-controller="ActionBarController" ng-class="{'margin-to-align': state.current.name !== 'tables'}">
-                <div class="navbar-header" ng-style="{ 'margin-left: auto; margin-right:auto;': state.current.name !== 'tables'}">
-                    <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 3px;">
-                        <span class="icon-cloud on-left-more" style="font-size: 35px; vertical-align: -16%"></span>
+            <div ng-controller="ActionBarController" >
+                <div class="navbar-header" >
+                    <a class="row-fluid navbar-brand" ui-sref="tiles" style="padding-top: 2px;">
+                        <span class="icon-cloud"></span>
                         <span>Azure Tools</span>
                         <span>{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
 
-                <div ng-controller="ActionBarController" class="collapse navbar-collapse navbar-ex1-collapse">
+                
+            </div>
+        </nav>
+
+        <div ng-controller="ActionBarController" class="collapse navbar-collapse">
                     <!--Redis Action Bar-->
                     <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'redis'">
                         <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
@@ -121,8 +125,6 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-        </nav>
 
         <div id="alertArea" class="alert alert-danger" style="display:none;">
             Error occured
@@ -141,6 +143,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <div id="content" ui-view>
         </div>

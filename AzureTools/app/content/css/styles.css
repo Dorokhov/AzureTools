@@ -1,3 +1,7 @@
+body {
+  margin: 10px;
+}
+
 .navbar {
     min-height: 40px;
 }
@@ -16,13 +20,77 @@
     font-size: 38px; 
     vertical-align: -26%;
     line-height: 0.8;
-    padding-right: 5px
-
+    padding-right: 5px;
 }
 
 .navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus  {
-    color: #ffffff;
-    
+    color: #ffffff;  
+}
+
+.my-navbar {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+.my-navbar .navbar-nav {
+  margin: 0px;
+  padding: 10px;
+  padding-right: 0px;
+  background: #F8F8F8;
+  border: 1px solid #eaeaea;
+  width: 100%;
+  border-top:0; 
+}
+
+
+
+.my-tile {
+  display: block;
+  cursor: pointer;
+  float: left;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  background-color: #8ACCFF;
+  z-index: 1;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.my-tile:hover {
+  background-color: #67BBFD;
+}
+
+.my-tile:active {
+  transform: perspective(400px) rotateX(0.2rad);
+  transform-origin: 50% bottom;
+
+}
+
+.my-tile a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.my-tile .fa {
+  padding-top: 6px;
+  font-size: 32px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+} 
+
+.my-tile a:hover {
+  text-decoration: none;
+}
+
+.my-tile span {
+  padding-top: 0px;
+  margin-top: 0px;
+  font-size: 15px;
+  line-height: 0px;
 }
 
 .popup {

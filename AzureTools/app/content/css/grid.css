@@ -20,6 +20,10 @@ tr.shown {
     background: #eeeeee;
 }
 
+#tables td {
+	font-size: 12px;
+}
+
 .dataTables_scrollHead {
     background: white;
     top: 20px;

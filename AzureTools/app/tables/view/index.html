@@ -1,8 +1,62 @@
-<div class="tablesContainer">
+<div class="gridTables">
     <div class="metro grid" style="font-weight: normal;">
-        <table id="tables" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+        <bg-splitter orientation="horizontal">
+            <bg-pane min-size="50" init-width-percentage="30">
+                <div class="tablesSelect">
+                    <div class="acoountName">
+                        <i class="fa fa-windows"></i><span>dorphoenixtest</span>
+                    </div>
+                    <ul>
+                        <li><i class="fa fa-table"></i>dorphoenixtest01feb2015at120911563hadoopinstalllog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest01feb2015at120911563hadoopservicelog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest01feb2015at120911563setuplog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest24jan2015at171325187hadoopinstalllog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest24jan2015at171325187hadoopservicelog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest24jan2015at171325187setuplog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest31jan2015at103600640hadoopinstalllog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest31jan2015at103600640hadoopservicelog</li>
+                        <li><i class="fa fa-table"></i>udorphoenixtest31jan2015at103600640setuplog</li>
+                    </ul>
+                 </div>
+            </bg-pane>
+            <bg-pane min-size="50">
+                <div class="tablesContainer">
+                    <div class="metro grid" style="font-weight: normal;">
+                        <table id="tables" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text;"></table>
+                    </div>
+                </div>
+            </bg-pane>
+        </bg-splitter>
     </div>
 </div>
+    
+
+
+    
+
+
+    <!-- <div ng-controller="ActionBarController">
+        <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+            <li ng-show="ActionBarItems.IsTablesSelectVisible">
+                <select ng-model="ActionBarItems.TableSelectViewModel.SelectedTable"
+                ng-options="item as item for item in ActionBarItems.TableSelectViewModel.Tables"
+                ng-change="ActionBarItems.TableSelectViewModel.onSelectedTableChanged()"
+                style="margin-top: 14px; min-width: 200px; max-width: 400px;"></select>
+            </li>
+            <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible" style="display: inline-flex;">
+                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                ng-change="ActionBarItems.SearchViewModel.onChange()"
+                ng-enter="ActionBarItems.SearchViewModel.search()"
+                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                type="text" class="form-control" style="margin-top: 8px; float: left; min-width:450px; " autofocus />
+                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+
+                <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
+                    <span class="icon-search"></span>
+                </a>
+            </li>
+        </ul>
+    </div> -->
 
 
 <script type="text/ng-template" id="tablesSettingsTemplate">

@@ -9,11 +9,11 @@ body {
 .navbar-brand {
     height: 40px;
     padding: 10px;
+    padding-top: 2px;
 }
 
 .navbar-default .navbar-brand:hover {
-    color: #DCF2FB;
-    
+    color: #DCF2FB; 
 }
 
 .icon-cloud {
@@ -35,15 +35,13 @@ body {
 
 .my-navbar .navbar-nav {
   margin: 0px;
-  padding: 10px;
-  padding-right: 0px;
+  padding-top: 10px;
+  padding-left: 10px;
   background: #F8F8F8;
   border: 1px solid #eaeaea;
   width: 100%;
   border-top:0; 
 }
-
-
 
 .my-tile {
   display: block;
@@ -56,6 +54,7 @@ body {
   z-index: 1;
   color: #ffffff;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .my-tile:hover {
@@ -65,7 +64,6 @@ body {
 .my-tile:active {
   transform: perspective(400px) rotateX(0.2rad);
   transform-origin: 50% bottom;
-
 }
 
 .my-tile a {
@@ -132,9 +130,42 @@ body {
     color:#ccc;
 }
 
+/*.gridTables {
+  width: 100%;
+}*/
+
+.tablesSelect {
+  margin: 10px;
+  padding:10px;
+  background: #F8F8F8;
+  border: 1px solid #eaeaea;
+  overflow: auto;
+  /*width: 316px;
+  float: left;
+  outline: 1px solid #FE044B;
+  position: relative;*/
+}
+
+.tablesSelect ul {
+  list-style: none;
+  font-size: 12px;
+  padding: 0;
+}
+
+.tablesSelect ul li {
+  white-space: nowrap;
+}
+
+
+
 .tablesContainer {
-    margin-left: 15px;
-    margin-right: 15px;
+  margin: 10px;
+  padding: 10px;
+  /*float: left;
+  width: 100%;
+  overflow: hidden;
+  margin-left: 400px;
+  position: relative;*/
 }
 
 @media (max-width:992px) {

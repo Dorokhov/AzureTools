@@ -1,6 +1,6 @@
 .split-panes 
 {
-    margin-top: 52px;
+  margin-top: 52px;
   left: 0px;
   right: 0px;
   top: 0px;
@@ -74,3 +74,15 @@
   bottom: 0px;
   border-top: 1px solid #aaa;
 }
+
+/*split-pane for tables*/
+.gridTables .split-panes {
+  left: 0px;
+  right: 0px;
+  top: 132px;
+  bottom: 50px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+

@@ -64,6 +64,7 @@ body {
 .my-tile:active {
   transform: perspective(400px) rotateX(0.2rad);
   transform-origin: 50% bottom;
+  /*transition: all 0.22s;*/
 }
 
 .my-tile a {
@@ -130,43 +131,65 @@ body {
     color:#ccc;
 }
 
-/*.gridTables {
-  width: 100%;
-}*/
+.wrapTablesSelect {
+  margin: 0px 4px 10px 10px;
+  height: 99%;
+}
+
+.headTablesSelect {
+  background: #2e8bcc;
+  color: #ffffff;
+  height: 30px;
+  line-height: 28px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.headTablesSelect .fa {
+  padding: 0 8px;
+  font-size: 18px;
+} 
 
 .tablesSelect {
-  margin: 10px;
-  padding:10px;
   background: #F8F8F8;
   border: 1px solid #eaeaea;
+  border-top: 0;
+  height: 96%;
   overflow: auto;
-  /*width: 316px;
-  float: left;
-  outline: 1px solid #FE044B;
-  position: relative;*/
+  padding: 5px;
 }
 
 .tablesSelect ul {
   list-style: none;
-  font-size: 12px;
+  margin: 0;
   padding: 0;
 }
 
-.tablesSelect ul li {
+.metro .tablesSelect ul li {
   white-space: nowrap;
+  font-size: 12px;
+  line-height: 24px;
+  color: #2A2A2A;
+  letter-spacing: 0;
 }
 
-
+.tablesSelect .fa {
+  padding: 0px 6px 0 2px;
+  font-size: 18px;
+  vertical-align: -10%;
+  color: #515151;
+}
 
 .tablesContainer {
-  margin: 10px;
+  background: #F8F8F8;
+  border: 1px solid #eaeaea;
+  margin: 0px 10px 0px 6px;
   padding: 10px;
-  /*float: left;
-  width: 100%;
-  overflow: hidden;
-  margin-left: 400px;
-  position: relative;*/
+  height: 99%;
+/*  overflow: auto;*/
 }
+
+
 
 @media (max-width:992px) {
     .margin-to-align {

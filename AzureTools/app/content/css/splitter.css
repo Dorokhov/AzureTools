@@ -91,5 +91,13 @@
   border: none;
 }
 
+.gridTables .split-panes.horizontal > .split-handler
+{
+  width: 4px;
+  top: 0px;
+  bottom: 10px;
+  background: url(../img/splitHandler_.png) no-repeat 0 center;  
+}
+
 
 

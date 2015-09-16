@@ -1,5 +1,7 @@
-body {
+#wrapper {
   margin: 10px;
+  font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  height: 100%;
 }
 
 .navbar {
@@ -50,7 +52,7 @@ body {
   width: 60px;
   height: 60px;
   text-align: center;
-  background-color: #8ACCFF;
+  background-color: #7AC5FF;
   z-index: 1;
   color: #ffffff;
   margin-right: 10px;
@@ -58,13 +60,12 @@ body {
 }
 
 .my-tile:hover {
-  background-color: #67BBFD;
+  background-color: #A1D6FF;
 }
 
 .my-tile:active {
   transform: perspective(400px) rotateX(0.2rad);
   transform-origin: 50% bottom;
-  /*transition: all 0.22s;*/
 }
 
 .my-tile a {
@@ -74,6 +75,10 @@ body {
   position: relative;
 }
 
+.my-tile a:hover {
+  text-decoration: none;
+}
+
 .my-tile .fa {
   padding-top: 6px;
   font-size: 32px;
@@ -81,14 +86,10 @@ body {
   margin-bottom: 0px;
 } 
 
-.my-tile a:hover {
-  text-decoration: none;
-}
-
 .my-tile span {
   padding-top: 0px;
   margin-top: 0px;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 0px;
 }
 
@@ -99,6 +100,15 @@ body {
     top: 30%;
     /*margin-left: -400px;
     margin-top: -40px;*/
+}
+
+.progressStripedBar {
+  height: 20px; 
+  position: relative; 
+  z-index: 50; 
+  bottom: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .loading {
@@ -133,7 +143,7 @@ body {
 
 .wrapTablesSelect {
   margin: 0px 3px 10px 10px;
-  height: 99%;
+  height: 100%;
 }
 
 .headTablesSelect {
@@ -154,9 +164,10 @@ body {
   background: #F8F8F8;
   border: 1px solid #eaeaea;
   border-top: 0;
-  height: 96%;
+  height: calc(100% - 30px);
   overflow: auto;
   padding: 5px;
+  padding-bottom: 0; 
 }
 
 .tablesSelect ul {
@@ -185,11 +196,12 @@ body {
   border: 1px solid #eaeaea;
   margin: 0px 10px 0px 6px;
   padding: 10px;
-  height: 99%;
-/*  overflow: auto;*/
+  height: 100%;
 }
 
-
+.input-group-sm>.input-group-addon {
+    padding: 5px 8px;
+}
 
 @media (max-width:992px) {
     .margin-to-align {

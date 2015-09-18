@@ -37,8 +37,7 @@
 
 .my-navbar .navbar-nav {
   margin: 0px;
-  padding-top: 10px;
-  padding-left: 10px;
+  padding-right: 10px;
   background: #F8F8F8;
   border: 1px solid #eaeaea;
   width: 100%;
@@ -55,8 +54,7 @@
   background-color: #7AC5FF;
   z-index: 1;
   color: #ffffff;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0 10px 10px;
 }
 
 .my-tile:hover {
@@ -93,6 +91,12 @@
   line-height: 0px;
 }
 
+.delimiter-tiles {
+  border-left: 1px solid #eaeaea;
+  height: 70px;
+  margin: 5px -1px 5px 9px;
+}
+
 .popup {
     margin: 30px auto 0;
     position: absolute;
@@ -105,7 +109,6 @@
 .progressStripedBar {
   height: 20px; 
   position: relative; 
-  z-index: 50; 
   bottom: 50px;
   margin-left: 10px;
   margin-right: 10px;
@@ -129,24 +132,16 @@
     margin-bottom: 0px;
 }
 
-.searchclear {
-    position:absolute;
-    right:55px;
-    top:0;
-    bottom:0;
-    height:14px;
-    margin:auto;
-    font-size:14px;
-    cursor:pointer;
-    color:#ccc;
+#content {
+  height: 100%;
 }
 
-.wrapTablesSelect {
+.wrapTablesBlock1 {
   margin: 0px 3px 10px 10px;
   height: 100%;
 }
 
-.headTablesSelect {
+.headTablesBlock {
   background: #2e8bcc;
   color: #ffffff;
   height: 30px;
@@ -155,29 +150,34 @@
   white-space: nowrap;
 }
 
-.headTablesSelect .fa {
+.headTablesBlock .fa {
   padding: 0 8px;
   font-size: 18px;
+  vertical-align: -5%;
+}
+
+.wrapTablesBlock2 .headTablesBlock .fa {
+  vertical-align: -10%;
 } 
 
 .tablesSelect {
   background: #F8F8F8;
   border: 1px solid #eaeaea;
-  border-top: 0;
   height: calc(100% - 30px);
-  overflow: auto;
-  padding: 5px;
-  padding-bottom: 0; 
+  padding: 4px 5px 0 5px;
+  -webkit-user-select: text;
 }
 
 .tablesSelect ul {
   list-style: none;
+  height: 100%;
   margin: 0;
   padding: 0;
+  overflow: auto;
 }
 
 .metro .tablesSelect ul li {
-  white-space: nowrap;
+  white-space: pre;
   font-size: 12px;
   line-height: 24px;
   color: #2A2A2A;
@@ -191,13 +191,95 @@
   color: #515151;
 }
 
-.tablesContainer {
-  background: #F8F8F8;
-  border: 1px solid #eaeaea;
-  margin: 0px 10px 0px 6px;
-  padding: 10px;
+.wrapTablesBlock2 {
+  margin: 0px 10px 10px 6px;
   height: 100%;
 }
+
+.tablesBlock2 {
+  background: #F8F8F8;
+  border: 1px solid #eaeaea;
+  padding: 8px;
+  height: calc(100% - 30px);
+}
+
+.searchBar {
+  margin-bottom: 10px;
+}
+
+.searchBar .form-control { 
+  float: none; 
+  max-height: 250px; 
+  height: 36px;
+  border: 1px solid #b4b4b4;
+  padding: 7px 12px;
+  font-size: 13px;
+  width: 100%;
+  max-width: 779px;
+  resize: vertical;
+}
+
+.searchBar .form-control:focus {
+    border-color: #7AC5FF;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px rgba(102,175,233,.6);
+  }
+
+/*      -webkit-appearance: textarea;
+    background-color: white;
+    border: 1px solid;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    flex-direction: column;
+    
+    cursor: auto;
+    padding: 2px;
+    white-space: pre-wrap;
+    word-wrap: break-word;*/
+
+.saerchText {
+  position: relative;
+  width: calc(100% - 45px);
+  float: left;
+  max-width: 779px;
+}
+
+.searchclear {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+    height: 14px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.searchBar .my-tile {
+  width: 36px;
+  height: 36px;
+  margin: 0 0 0 8px;
+}
+
+.searchBar .my-tile .fa {
+  font-size: 22px;
+}
+
+/*.tablesContainer {
+  border: 1px solid #b4b4b4;
+  overflow: hidden;
+  height: calc(100% - 38px);
+}*/
+
+#tables_wrapper {
+  border: 1px solid #b4b4b4;
+  overflow: hidden;
+  height: calc(100% - 38px);
+}
+
 
 .input-group-sm>.input-group-addon {
     padding: 5px 8px;
@@ -234,4 +316,8 @@
       position: relative;
       width: 1140px;
   }
+}
+
+.clearFloat {
+  clear: both;
 }

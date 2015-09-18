@@ -19,6 +19,12 @@ tr.shown {
     background: #eeeeee;
 }
 
+/*Tables*/
+
+#tables {
+	-webkit-user-select: text;
+}
+
 #tables td {
 	font-size: 12px;
 	line-height: 12px;
@@ -30,7 +36,7 @@ tr.shown {
 
 .dataTables_scrollHead {
     background: white;
-    top: 0px;
+    top: 18px;
     z-index: 100;
 }
 

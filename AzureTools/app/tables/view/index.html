@@ -1,11 +1,11 @@
 <div class="gridTables">
     <div class="metro grid" style="font-weight: normal;">
         <bg-splitter orientation="horizontal">
-            <bg-pane min-size="50" init-width-percentage="26">
+            <bg-pane min-size="50" init-width-percentage="26.7">
                 
-                <div class="wrapTablesSelect">
-                    <div class="headTablesSelect">
-                            <i class="fa fa-windows"></i><span>dorphoenixtest</span>
+                <div class="wrapTablesBlock1">
+                    <div class="headTablesBlock">
+                            <i class="fa fa-windows"></i><span id="accoundName">dorphoenixtest</span>
                     </div>
                     <div class="tablesSelect">
                         <ul>
@@ -23,52 +23,47 @@
 
                  </div>
             </bg-pane>
-            <bg-pane min-size="50">
-                
-                <div class="tablesContainer">
-                    <table id="tables" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text;"></table>
+            <bg-pane min-size="150">
+                <div class="wrapTablesBlock2">
+                    <div class="headTablesBlock">
+                        <i class="fa fa-table"></i><span id="tableName">dorphoenixtest01feb2015at120911563hadoopinstalllog</span>
+                    </div>
+                    <div class="tablesBlock2">
+                        <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                            <div ng-show="ActionBarItems.IsSearchVisible">
+                                <div class="saerchText">
+                                    <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                    ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="PartitionKey eq 'xxx' and RowKey eq 'xxx'"
+                                    autofocus></textarea>
+
+                                    <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+                    
+                                </div>
+                                <span class="my-tile">
+                                    <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </span>
+
+                                <div class="clearFloat"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="tablesContainer"> -->
+                            <table id="tables" class="table striped hovered dataTable"></table>
+                        <!-- </div> -->
+                    </div>
                 </div>
-                
             </bg-pane>
         </bg-splitter>
     </div>
 </div>
 
 
-<!--    <div style="height: 20px; position: relative; z-index: 50">
-            <div class="progress progress-striped active noMarginBottom" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                    <span class="sr-only">45% Complete</span>
-                </div>
-            </div>
-</div>  -->
-
-
     
-
-
-    <!-- <div ng-controller="ActionBarController">
-        <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
-            <li ng-show="ActionBarItems.IsTablesSelectVisible">
-                <select ng-model="ActionBarItems.TableSelectViewModel.SelectedTable"
-                ng-options="item as item for item in ActionBarItems.TableSelectViewModel.Tables"
-                ng-change="ActionBarItems.TableSelectViewModel.onSelectedTableChanged()"
-                style="margin-top: 14px; min-width: 200px; max-width: 400px;"></select>
-            </li>
-            <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible" style="display: inline-flex;">
-                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
-                ng-change="ActionBarItems.SearchViewModel.onChange()"
-                ng-enter="ActionBarItems.SearchViewModel.search()"
-                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                type="text" class="form-control" style="margin-top: 8px; float: left; min-width:450px; " autofocus />
-                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-
-                <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
-                    <span class="icon-search"></span>
-                </a>
-            </li>
-        </ul>
-    </div> -->
 
 
 <script type="text/ng-template" id="tablesSettingsTemplate">

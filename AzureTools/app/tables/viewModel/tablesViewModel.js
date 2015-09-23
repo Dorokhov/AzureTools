@@ -20,7 +20,6 @@
                 tablesSettings,
                 azureStorage,
                 tablesPresenter) {
-
                 $scope.TablesViewModel = new function () {
                     var self = this;
                     var listTablesOperation = 'listTablesOperation';
@@ -49,7 +48,8 @@
                     var tableSelectionViewModel = new function () {
                         this.Tables = null;
                         this.SelectedTable = null;
-                        this.onSelectedTableChanged = function () {
+                        this.onSelectedTableChanged = function (selectedTable) {
+                            this.SelectedTable = selectedTable;
                             $notifyViewModel.close();
                             searchViewModel.search();
                         };
@@ -58,6 +58,8 @@
                     $busyIndicator.Text = 'Loading...';
 
                     // tables action bar
+                    self.Settings = tablesSettings;
+
                     $actionBarItems.ModuleName = ': Tables';
                     $actionBarItems.IsTablesSelectVisible = true;
                     $actionBarItems.IsActionBarVisible = true;
@@ -79,7 +81,7 @@
                         }
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
-                    $actionBarItems.TableSelectViewModel = tableSelectionViewModel;
+                    self.TableSelectViewModel = tableSelectionViewModel;
                     $actionBarItems.changeSettings = function () {
                         $dialogViewModel.WithOption = true;
                         $dialogViewModel.OptionText = 'Use demo credentials';

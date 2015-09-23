@@ -13,20 +13,21 @@
         };
 
         var calcDataTableHeight = function() {
-            console.log('dsf ' + $('#errorNotification').is(":visible"));
-            var headerHeight = $('nav[role="navigation"]').height() + 50 + 52 + 20 + 5;
+            var headerHeight = 243 + $('#filterArea').height();
             return ($(window).height() - headerHeight);
         };
+
+        $(window).unbind('resize');
+        $(window).bind('resize', function () {
+            $('.dataTables_scrollBody').css('height', calcDataTableHeight());
+            if (self.oTable != null) {
+                self.oTable.columns.adjust().draw();
+            }
+        });
 
         self.showTables = function(data, onSelect, removeCallback) {
             self.cleanUp();
             $('#tables').empty();
-
-            $(window).unbind('resize');
-            $(window).bind('resize', function() {
-                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
-                self.oTable.columns.adjust().draw();
-            });
 
             self.oTable = $('#tables').DataTable({
                 bFilter: false,
@@ -92,12 +93,6 @@
             }
             self.cleanUp();
             $('#tables').empty();
-
-            $(window).unbind('resize');
-            $(window).bind('resize', function() {
-                $('.dataTables_scrollBody').css('height', calcDataTableHeight());
-                self.oTable.columns.adjust().draw();
-            });
 
             var columnsDictionary = {};
             for (var i = 0; i < data.length; i++) {

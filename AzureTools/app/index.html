@@ -32,20 +32,19 @@
     <script type="text/javascript" src="bundle.js"></script>
 </head>
 <body ng-controller="AppController">
-    <div id="wrapper">
+    <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables'}">
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div ng-controller="ActionBarController">
-                <div class="navbar-header">
+            <div ng-class="{'margin-to-align': state.current.name !== 'tables'}">
+                <div class="navbar-header" ng-style="{'margin-left: auto; margin-right:auto;': state.current.name !== 'tables'}">
                     <a class="row-fluid navbar-brand" ui-sref="tiles">
                         <span class="icon-cloud"></span>
                         <span>Azure Tools</span>
                         <span>{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
-            </div>
-        </nav>
 
-                <div ng-controller="ActionBarController" class="collapse navbar-collapse my-navbar">
+                <div class="collapse navbar-collapse">
+
                     <!--Redis Action Bar-->
                     <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'redis'">
                         <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
@@ -63,40 +62,17 @@
                         <li ng-show="ActionBarItems.IsAddKeyVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.addKey()"><span class="icon-plus on-left-more" style="margin-right: 5px;"></span><span>Add Key</span></a></li>
                         <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right: 5px;"></span><span>Refresh</span></a></li>
                         <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right: 5px;"></span><span>Settings</span></a></li>
-                        
-                    </ul>
+                        <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible" style="display: inline-flex;">
+                            <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                   ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                   ng-enter="ActionBarItems.SearchViewModel.search()"
+                                   ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                   type="text" class="form-control" style="margin-top: 8px; float: left; min-width:450px; " autofocus />
+                            <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
 
-                    <!--Tables Action Bar-->
-                    <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
-                        <li ng-show="ActionBarItems.IsSettingsVisible">
-                            <div class="my-tile">
-                                <a class="fa-links" title="Account storage" ng-click="ActionBarItems.changeSettings()">
-                                    <i class="fa fa-cog"></i><span>Setting</span>
-                                </a>
-                            </div>
-                        </li>
-                        <li ng-show="ActionBarItems.IsRefreshVisible">
-                            <div class="my-tile">
-                                <a class="fa-links" title="Refresh table list" ng-click="ActionBarItems.refresh()">
-                                    <i class="fa fa-refresh"></i><span>Refresh</span>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="delimiter-tiles"></li>
-                        <li>
-                            <div class="my-tile">
-                                <a class="fa-links" title="Create new table">
-                                    <i class="fa fa-table"></i><span>Create</span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="my-tile">
-                                <a class="fa-links" title="Delete selected table">
-                                    <i class="fa fa-trash-o"></i>
-                                    <span>Delete</span>
-                                </a>
-                            </div>
+                            <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
+                                <span class="icon-search"></span>
+                            </a>
                         </li>
                     </ul>
                     
@@ -118,9 +94,48 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+        </nav>
+
+        <div ng-controller="ActionBarController" class="collapse navbar-collapse navbarTables">
+
+            <!--Tables Action Bar-->
+            <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                <li ng-show="ActionBarItems.IsSettingsVisible">
+                    <div class="tileTables">
+                        <a class="fa-links" title="Account storage" ng-click="ActionBarItems.changeSettings()">
+                            <i class="fa fa-cog"></i><span>Setting</span>
+                        </a>
+                    </div>
+                </li>
+                <li ng-show="ActionBarItems.IsRefreshVisible">
+                    <div class="tileTables">
+                        <a class="fa-links" title="Refresh table list" ng-click="ActionBarItems.refresh()">
+                            <i class="fa fa-refresh"></i><span>Refresh</span>
+                        </a>
+                    </div>
+                </li>
+                <li class="delimiter-tiles"></li>
+                <li>
+                    <div class="tileTables">
+                        <a class="fa-links" title="Create new table">
+                            <i class="fa fa-table"></i><span>Create</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="tileTables">
+                        <a class="fa-links" title="Delete selected table">
+                            <i class="fa fa-trash-o"></i>
+                            <span>Delete</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
 
-       <!--  <div id="alertArea" class="alert alert-danger" style="display:none;">
+        <div id="alertArea" class="alert alert-danger" style="display:none;">
             Error occured
             <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
         </div>
@@ -129,16 +144,14 @@
             <div style="float: left;">{{NotifyViewModel.Body}}</div>
             <a style="margin-left: 3px; cursor: pointer;" ng-show="NotifyViewModel.CommandText != null" ng-click="NotifyViewModel.Command()">{{NotifyViewModel.CommandText}}</a>
         </div>
- -->
         
-
-
         <div id="content" ui-view>
         </div>
 
         <div class="loading" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
+            <i class="fa fa-spinner fa-pulse"></i><br>
             <span>{{BusyIndicator.Text}}</span>
-            <a ng-click="BusyIndicator.cancel()" style="cursor: pointer;">Cancel</a>
+            <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
         <div class="panel panel-primary popup" style="display: inline-block; z-index: 100;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
@@ -177,13 +190,7 @@
                 </div>
             </div>
         </div>
-</div>
-
-    <div class="progressStripedBar progress progress-striped active noMarginBottom" ng-controller="BusyIndicatorController" ng-show="BusyIndicator.IsBusy === true">
-        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-            <span class="sr-only">45% Complete</span>
-        </div>
     </div>
-    
+   
 </body>
 </html>

@@ -1,3 +1,4 @@
+.DS_Store
 node_modules
-/AzureTools.v12.suo
-/AzureTools/app/node_modules/grunt-browserify
+AzureTools.v12.suo
+app/node_modules/grunt-browserify

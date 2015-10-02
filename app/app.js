@@ -1,11 +1,11 @@
 ﻿(function () {
     'use strict';
     //require('process');
-    var angular = require('./node_modules/angular/index.js');
-    var angularRoute = require('./node_modules/angular-ui-router/release/angular-ui-router.js');
+    var angular = require('angular');
+    var angularRoute = require('angular-ui-router');
 
-    window.$ = require('./node_modules/jquery/dist/jquery.js');
-    var dataTable = require('./node_modules/datatables/media/js/jquery.dataTables.js');
+    window.$ = require('jquery');
+    var dataTable = require('dataTables');
     $.DataTable = dataTable;
 
     window.isDebugVersion = false;

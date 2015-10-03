@@ -7,7 +7,7 @@
             return clientFactory;
         })
         .factory('$redisScanner', function () {
-            return require('../../node_modules/redisscan/index.js');
+            return require('redisscan');
         })
         .factory('$redisSettings', function () {
             return require('../model/redisSettings.js').create();

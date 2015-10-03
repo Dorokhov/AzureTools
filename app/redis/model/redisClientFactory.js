@@ -1,4 +1,4 @@
-﻿var redis = require("../../node_modules/redis/index.js");
+﻿var redis = require("redis");
 
 exports.createClient = function (host, port, password) {
     console.log('Creating client ' + host + ' ' + port + ' ' + password);

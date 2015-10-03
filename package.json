@@ -4,7 +4,9 @@
   "description": "Free, open source tools which improve developer work with Microsoft Azure services.",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "karma start karma.config.js"
+    "test": "karma start karma.config.js",
+    "lint": "eslint app/**/*.js app/*.js",
+    "build": "grunt browserify"
   },
   "repository": {
     "type": "git",
@@ -50,7 +52,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm test"
+      "pre-commit": "npm run lint && npm test"
     }
   }
 }

@@ -11,15 +11,15 @@
     ]);
 
     require('./viewModel/tablesViewModel.js').register(tablesModule);
-    tablesModule.factory('tablesSettings', function() {
+    tablesModule.factory('tablesSettings', function () {
         return require('./model/tablesSettings.js').create();
     });
     tablesModule
-       .config(function ($stateProvider, $urlRouterProvider) {
+       .config(function ($stateProvider) {
            $stateProvider
                .state('tables', {
-                   url: "/tables",
-                   templateUrl: "tables/view/index.html",
+                   url: '/tables',
+                   templateUrl: 'tables/view/index.html',
                    controller: 'TablesController',
                    params: {
                        seq: {}

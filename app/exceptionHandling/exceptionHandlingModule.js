@@ -9,7 +9,8 @@
                 type: 'angular',
                 url: window.location.hash,
                 localtime: Date.now()
-            };
+            }, el, alertArea;
+
             if (cause) { data.cause = cause; }
             if (exception) {
                 if (exception.message) { data.message = exception.message; }
@@ -17,10 +18,11 @@
                 if (exception.stack) { data.stack = exception.stack; }
             }
 
-            var el = document.getElementById('sendEmail');
-            var alertArea = document.getElementById('alertArea');
+            el = document.getElementById('sendEmail');
+            alertArea = document.getElementById('alertArea');
+
             if (el && alertArea) {
-                alertArea.style.display = "block";
+                alertArea.style.display = 'block';
                 el.href = 'mailto:' + supportEmail + '?subject=' + 'Bug Report' + '&body='
                     + data.message + '|' + data.name + '|' + data.stack
                 + '|' + data.type + '|' + data.url + '|' + data.localtime;

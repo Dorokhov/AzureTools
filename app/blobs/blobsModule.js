@@ -11,15 +11,15 @@
     ]);
 
     require('./viewModel/blobsViewModel.js').register(tablesModule);
-    tablesModule.factory('blobsSettings', function() {
+    tablesModule.factory('blobsSettings', function () {
         return require('./model/blobsSettings.js').create();
     });
     tablesModule
-       .config(function ($stateProvider, $urlRouterProvider) {
+       .config(function ($stateProvider) {
            $stateProvider
                .state('blobs', {
-                   url: "/blobs",
-                   templateUrl: "blobs/view/index.html",
+                   url: '/blobs',
+                   templateUrl: 'blobs/view/index.html',
                    controller: 'BlobsController',
                    params: {
                        seq: {}

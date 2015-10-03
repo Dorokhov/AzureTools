@@ -7,8 +7,7 @@ module.exports = function (grunt) {
                 tasks: ['browserify'],
                 options: {
                     alias: {
-
-                        'net': './libs/net-chromify/index.js'
+                        'net': './libs/net-chromify/index.js',
                     }
                 }
             }
@@ -27,6 +26,7 @@ module.exports = function (grunt) {
                         'crypto': './node_modules/browserify/node_modules/crypto-browserify/index',
 
                         'freelist': './libs/freelist-chromify',
+                        'fs': './libs/http-parser-js/fs',
                         'http_parser': './libs/http-parser-js/http-parser',
                         'http': './libs/http-chromify/index',
                         'net': './libs/net-chromify/index',

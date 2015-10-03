@@ -13,6 +13,26 @@ Install from Google Web Store:
 
 https://chrome.google.com/webstore/detail/azure-tools/hnbdokhbkhbdadpkijglgokoenihjaia
 
+### Setup
+```
+npm install
+```
+
+### Tests
+```
+npm test
+```
+
+### Build
+```
+npm run build
+```
+
+### Linting
+```
+npm run lint
+```
+
 # Change Log
 - 0.4 (30 August 2015) - Blobs Viewer was released
 - 0.3 (26 July 2015) - Tables Viewer was released.

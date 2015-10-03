@@ -21,7 +21,7 @@
                 $dialogViewModel.IsVisible = false;
 
                 $scope.$on('$stateChangeStart',
-                    function (evt, toState, toParams, fromState, fromParams) {
+                    function () {
                         $dialogViewModel.IsVisible = false;
                     });
             }

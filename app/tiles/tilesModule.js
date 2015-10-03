@@ -3,11 +3,11 @@
 
     var tilesModule = angular.module('tiles', [angularRoute, 'actionBar']);
     require('./viewModel/tilesViewModel.js').register(tilesModule);
-    tilesModule.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    tilesModule.config(function ($stateProvider) {
         $stateProvider
             .state('tiles', {
-                url: "",
-                templateUrl: "tiles/view/index.html",
+                url: '',
+                templateUrl: 'tiles/view/index.html',
                 controller: 'TilesController',
                 params: {
                     seq: {}

@@ -1,12 +1,13 @@
 ﻿(function () {
     'use strict';
     //require('process');
-    var angular = require('angular');
-    var angularRoute = require('angular-ui-router');
+    var angular = require('angular'),
+        angularRoute = require('angular-ui-router'),
+        dataTable = require('datatables'),
+        app;
 
     window.$ = require('jquery');
-    var dataTable = require('dataTables');
-    $.DataTable = dataTable;
+    window.$.DataTable = dataTable;
 
     window.isDebugVersion = false;
 
@@ -19,7 +20,7 @@
     require('./blobs/blobsModule.js').register(angular, angularRoute);
     require('./tiles/tilesModule.js').register(angular, angularRoute);
 
-    var app = angular
+    app = angular
         .module('app', [
             'exceptionOverride',
             'common',
@@ -29,8 +30,8 @@
             'tiles.redis',
             'tiles.tables',
             'tiles.blobs',
-        ], function() {});
+        ], function () {});
     require('./directives/appDirectives.js')
         .register(app)
-        .controller('AppController', ['$state', function ($state) { }]);
-})();
+        .controller('AppController', ['$state', function () { }]);
+}());

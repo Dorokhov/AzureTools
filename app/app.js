@@ -3,7 +3,7 @@
     //require('process');
     var angular = require('angular'),
         angularRoute = require('angular-ui-router'),
-        dataTable = require('dataTables'),
+        dataTable = require('datatables'),
         app;
 
     window.$ = require('jquery');

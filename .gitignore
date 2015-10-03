@@ -1,4 +1,5 @@
 node_modules
+bundle.js
 .DS_Store
 AzureTools.v12.suo
 app/node_modules/grunt-browserify

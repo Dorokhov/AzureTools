@@ -8,8 +8,10 @@
                         <i class="fa fa-windows"></i><span id="accoundName">{{TablesViewModel.Settings.AccountName}}</span>
                     </div>
                     <div class="tablesSelect">
-                        <ul>
-                            <li ng-repeat="table in TablesViewModel.TableSelectViewModel.Tables" ng-click="TablesViewModel.TableSelectViewModel.onSelectedTableChanged(table)"><i class="fa fa-table"></i>{{table}}</li>
+                        <ul id="tableList">
+                            <li ng-repeat="table in TablesViewModel.TableSelectViewModel.Tables" 
+                            ng-click="TablesViewModel.TableSelectViewModel.onSelectedTableChanged(table)"
+                            ng-class="{selected: table === TablesViewModel.TableSelectViewModel.SelectedTable}"><i class="fa fa-table"></i>{{table}}</li>
                         </ul>
                     </div>
 

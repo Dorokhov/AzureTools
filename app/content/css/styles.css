@@ -336,3 +336,22 @@
 .clearFloat {
   clear: both;
 }
+
+li.selected{
+background:rgba(122, 197, 255, 0.2);
+}
+
+#tableList li{
+  cursor:pointer;
+}
+#tableList li:hover{   
+  background:rgba(122, 197, 255, 0.2);
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}

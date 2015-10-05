@@ -1,4 +1,4 @@
-﻿exports.register = function (module) {
+exports.register = function(module) {
     module
         .controller('TablesController', [
             '$scope',
@@ -10,7 +10,7 @@
             'tablesSettings',
             'azureStorage',
             'tablesPresenter',
-            function (
+            function(
                 $scope,
                 $timeout,
                 $actionBarItems,
@@ -20,13 +20,13 @@
                 tablesSettings,
                 azureStorage,
                 tablesPresenter) {
-                $scope.TablesViewModel = new function () {
+                $scope.TablesViewModel = new function() {
                     var self = this;
                     var listTablesOperation = 'listTablesOperation';
                     var queryEntitiesOperation = 'queryEntitiesOperation';
 
                     var searchViewModel = {
-                        search: function () {
+                        search: function() {
                             if (!isConnectionSettingsSpecified()) {
                                 return;
                             }
@@ -34,21 +34,21 @@
                             queryTableEntities(this.Pattern);
                         },
                         Pattern: '',
-                        clear: function () {
+                        clear: function() {
                             this.Pattern = '';
                             this.IsClearVisible = false;
                             searchViewModel.search();
                         },
                         IsClearVisible: false,
-                        onChange: function () {
+                        onChange: function() {
                             this.IsClearVisible = this.Pattern !== '';
                         }
                     };
 
-                    var tableSelectionViewModel = new function () {
+                    var tableSelectionViewModel = new function() {
                         this.Tables = null;
                         this.SelectedTable = null;
-                        this.onSelectedTableChanged = function (selectedTable) {
+                        this.onSelectedTableChanged = function(selectedTable) {
                             this.SelectedTable = selectedTable;
                             $notifyViewModel.close();
                             searchViewModel.search();
@@ -66,7 +66,7 @@
                     $actionBarItems.IsRefreshVisible = true;
                     $actionBarItems.IsSettingsVisible = true;
                     $actionBarItems.IsSearchVisible = true;
-                    $actionBarItems.refresh = function () {
+                    $actionBarItems.refresh = function() {
                         if (!isConnectionSettingsSpecified()) {
                             return;
                         }
@@ -82,11 +82,11 @@
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
                     self.TableSelectViewModel = tableSelectionViewModel;
-                    $actionBarItems.changeSettings = function () {
+                    $actionBarItems.changeSettings = function() {
                         $dialogViewModel.WithOption = true;
                         $dialogViewModel.OptionText = 'Use demo credentials';
                         $dialogViewModel.IsChecked = false;
-                        $dialogViewModel.onChecked = function () {
+                        $dialogViewModel.onChecked = function() {
                             if ($dialogViewModel.IsChecked) {
                                 $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.table.core.windows.net/';
                                 $dialogViewModel.BodyViewModel.AccountName = 'dorphoenixtest';
@@ -106,12 +106,7 @@
 
                         $dialogViewModel.Body = 'tablesSettingsTemplate';
                         $dialogViewModel.Header = 'Settings';
-                        $dialogViewModel.save = function () {
-                            //if ($validator.validatePort(+$dialogViewModel.BodyViewModel.Port) === false) {
-                            //    showError('Port value is wrong. Port must be in range [1;65535]');
-                            //    return;
-                            //};
-
+                        $dialogViewModel.save = function() {
                             tablesSettings.AccountUrl = $dialogViewModel.BodyViewModel.AccountUrl;
                             tablesSettings.AccountName = $dialogViewModel.BodyViewModel.AccountName;
                             tablesSettings.AccountKey = $dialogViewModel.BodyViewModel.AccountKey;
@@ -120,23 +115,21 @@
                         };
                     };
 
-                    var isConnectionSettingsSpecified = function () {
-                        return (tablesSettings.AccountUrl !== null && tablesSettings.AccountUrl !== '')
-                            && (tablesSettings.AccountKey !== null && tablesSettings.AccountKey !== '')
-                            && (tablesSettings.AccountName !== null && tablesSettings.AccountName !== '');
+                    var isConnectionSettingsSpecified = function() {
+                        return (tablesSettings.AccountUrl !== null && tablesSettings.AccountUrl !== '') && (tablesSettings.AccountKey !== null && tablesSettings.AccountKey !== '') && (tablesSettings.AccountName !== null && tablesSettings.AccountName !== '');
                     };
 
-                    var showError = function (data) {
+                    var showError = function(data) {
                         if (data !== undefined && data !== null) {
                             if (data.name && data.name === 'Error') {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data.message);
                                     });
                                 });
                             } else {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data);
                                     });
                                 });
@@ -144,11 +137,11 @@
                         }
                     };
 
-                    var showInfo = function (msg) {
+                    var showInfo = function(msg) {
                         if (msg !== undefined && msg !== null) {
-                            $timeout(function () {
-                                $notifyViewModel.scope().$apply(function () {
-                                    $notifyViewModel.showInfo(msg, 'Load More', function () {
+                            $timeout(function() {
+                                $notifyViewModel.scope().$apply(function() {
+                                    $notifyViewModel.showInfo(msg, 'Load More', function() {
                                         appendTableEntities(searchViewModel.Pattern);
                                     });
                                 });
@@ -157,7 +150,7 @@
                     };
 
                     var defaultClient = null;
-                    var defaultClientFactory = function () {
+                    var defaultClientFactory = function() {
                         console.log(defaultClient);
                         if (defaultClient == null || (defaultClient.storageAccount !== tablesSettings.AccountName || defaultClient.storageAccessKey !== tablesSettings.AccountKey)) {
                             defaultClient = azureStorage.createTableService(tablesSettings.AccountName, tablesSettings.AccountKey, tablesSettings.AccountUrl);
@@ -165,21 +158,25 @@
                         return defaultClient;
                     };
 
-                    var cancelOperation = function () { };
+                    var cancelOperation = function() {};
 
                     var continuation = null;
                     var entries = null;
-                    var queryTableEntities = function (query) {
+                    var queryTableEntities = function(query) {
                         if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
                             var tableService = defaultClientFactory();
                             var cancelled = false;
-                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
+                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function() {
+                                cancelled = true;
+                            });
 
                             var azureQuery = new azureStorage.TableQuery().where(query);
 
-                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, null, function (error, result, response) {
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, null, function(error, result, response) {
                                 if (cancelled) return;
-                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
+                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function() {
+                                    cancelled = true;
+                                });
                                 if (error) {
                                     showError(error);
                                 }
@@ -197,16 +194,20 @@
                         }
                     };
 
-                    var appendTableEntities = function (query) {
+                    var appendTableEntities = function(query) {
                         if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
                             var tableService = defaultClientFactory();
                             var cancelled = false;
-                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function () { cancelled = true; });
+                            $busyIndicator.setIsBusy(queryEntitiesOperation, true, function() {
+                                cancelled = true;
+                            });
 
                             var azureQuery = new azureStorage.TableQuery().where(query);
 
-                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, continuation, function (error, result, response) {
-                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function () { cancelled = true; });
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, continuation, function(error, result, response) {
+                                $busyIndicator.setIsBusy(queryEntitiesOperation, false, function() {
+                                    cancelled = true;
+                                });
                                 if (cancelled) return;
                                 if (error) {
                                     showError(error);
@@ -226,11 +227,14 @@
                         }
                     };
 
-                    var loadTableList = function () {
+                    var loadTableList = function() {
                         if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
                             var cancelled = false;
-                            $busyIndicator.setIsBusy(listTablesOperation, true, function () { cancelled = true; });
-                            defaultClientFactory().listTablesSegmented(null, null, function (error, data) {
+                            $busyIndicator.setIsBusy(listTablesOperation, true, function() {
+                                cancelled = true;
+                            });
+                            defaultClientFactory().listTablesSegmented(null, null, function(error, data) {
+                                console.log('Tables Loaded')
                                 if (cancelled) return;
                                 $busyIndicator.setIsBusy(listTablesOperation, false, cancelOperation);
                                 if (error) {
@@ -247,11 +251,12 @@
                     };
 
                     // init
-                    if (tablesSettings.isEmpty()) {
-                        $actionBarItems.changeSettings();
-                    } else {
-                        loadTableList();
-                    }
+                    $actionBarItems.changeSettings();
+                    //if (tablesSettings.isEmpty()) {
+                    //$actionBarItems.changeSettings();
+                    //  } else {
+                    //     loadTableList();
+                    //  }
                 };
             }
         ]);

@@ -71,7 +71,7 @@ exports.register = function(module) {
                             return;
                         }
 
-                        continuation = null;
+                        $actionBarItems.Continuation = null;
                         entries = null;
 
                         if (tableSelectionViewModel.SelectedTable == null) {
@@ -79,6 +79,10 @@ exports.register = function(module) {
                         } else {
                             searchViewModel.search();
                         }
+                    };
+                    $actionBarItems.Continuation = null;
+                    $actionBarItems.loadMore = function() {
+                        appendTableEntities(searchViewModel.Pattern);
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
                     self.TableSelectViewModel = tableSelectionViewModel;
@@ -137,18 +141,6 @@ exports.register = function(module) {
                         }
                     };
 
-                    var showInfo = function(msg) {
-                        if (msg !== undefined && msg !== null) {
-                            $timeout(function() {
-                                $notifyViewModel.scope().$apply(function() {
-                                    $notifyViewModel.showInfo(msg, 'Load More', function() {
-                                        appendTableEntities(searchViewModel.Pattern);
-                                    });
-                                });
-                            });
-                        }
-                    };
-
                     var defaultClient = null;
                     var defaultClientFactory = function() {
                         console.log(defaultClient);
@@ -160,7 +152,6 @@ exports.register = function(module) {
 
                     var cancelOperation = function() {};
 
-                    var continuation = null;
                     var entries = null;
                     var queryTableEntities = function(query) {
                         if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
@@ -183,10 +174,10 @@ exports.register = function(module) {
 
                                 entries = result.entries;
                                 if (result.continuationToken != null) {
-                                    showInfo('First ' + entries.length + ' entries loaded ');
-                                    continuation = result.continuationToken;
+                                    //showInfo('First ' + entries.length + ' entries loaded ');
+                                    $actionBarItems.Continuation = result.continuationToken;
                                 } else {
-                                    continuation = null;
+                                    $actionBarItems.Continuation = null;
                                     $notifyViewModel.close();
                                 }
                                 tablesPresenter.showEntities(result.entries);
@@ -204,7 +195,7 @@ exports.register = function(module) {
 
                             var azureQuery = new azureStorage.TableQuery().where(query);
 
-                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, continuation, function(error, result, response) {
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery,  $actionBarItems.Continuation, function(error, result, response) {
                                 $busyIndicator.setIsBusy(queryEntitiesOperation, false, function() {
                                     cancelled = true;
                                 });
@@ -217,10 +208,10 @@ exports.register = function(module) {
 
                                 tablesPresenter.showEntities(entries);
                                 if (result.continuationToken != null) {
-                                    showInfo('First ' + entries.length + ' entries loaded ');
-                                    continuation = result.continuationToken;
+                                    //showInfo('First ' + entries.length + ' entries loaded ');
+                                    $actionBarItems.Continuation = result.continuationToken;
                                 } else {
-                                    continuation = null;
+                                    $actionBarItems.Continuation = null;
                                     $notifyViewModel.close();
                                 }
                             });

@@ -116,6 +116,13 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
+                <li ng-show="ActionBarItems.Continuation != null">
+                    <div class="tileTables">
+                        <a class="fa-links" title="Load More" ng-click="ActionBarItems.loadMore()">
+                            <i class="fa fa-play"></i><span>Entities</span>
+                        </a>
+                    </div>
+                </li>
                 <!--<li>
                     <div class="tileTables">
                         <a class="fa-links" title="Create new table">
@@ -135,7 +142,7 @@
         </div>
 
 
-        <div id="alertArea" class="alert alert-danger" style="display:none;">
+        <div id="alertArea" class="alert alert-danger" style="display:none; z-index:100;">
             Error occured
             <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
         </div>

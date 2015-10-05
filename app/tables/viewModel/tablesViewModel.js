@@ -173,6 +173,7 @@ exports.register = function(module) {
                                 }
 
                                 entries = result.entries;
+                                console.log('entries:' + entries.length);
                                 if (result.continuationToken != null) {
                                     //showInfo('First ' + entries.length + ' entries loaded ');
                                     $actionBarItems.Continuation = result.continuationToken;
@@ -180,6 +181,7 @@ exports.register = function(module) {
                                     $actionBarItems.Continuation = null;
                                     $notifyViewModel.close();
                                 }
+
                                 tablesPresenter.showEntities(result.entries);
                             });
                         }

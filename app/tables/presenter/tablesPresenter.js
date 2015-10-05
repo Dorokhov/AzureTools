@@ -45,17 +45,21 @@
                     },
                 });
             }
-
-            self.oTable = $('#tables').DataTable({
-                bFilter: false,
-                bInfo: false,
-                bPaginate: false,
-                scrollY: calcDataTableHeight(),
-                scrollX: true,
-                data: data,
-                autoWidth: true,
-                columns: columns
-            });
+            if (self.oTable != null){
+                self.oTable.clear();
+                self.oTable.rows.add(data).draw();
+            }
+            else
+                self.oTable = $('#tables').DataTable({
+                    bFilter: false,
+                    bInfo: false,
+                    bPaginate: false,
+                    scrollY: calcDataTableHeight(),
+                    scrollX: true,
+                    data: data,
+                    autoWidth: true,
+                    columns: columns
+                });
         };
     };
 }

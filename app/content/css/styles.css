@@ -111,6 +111,8 @@
   position: absolute;
   left: calc(50% - 250px);
   top: calc(50% - 119px);
+  display: inline-block; 
+  z-index: 1000;
 }
 
 .input-group-addon {
@@ -196,13 +198,14 @@
 .metro .tablesSelect ul li {
   white-space: pre;
   font-size: 12px;
-  line-height: 24px;
+  line-height: 26px;
   color: #2A2A2A;
   letter-spacing: 0;
+  padding-left: 5px;
 }
 
 .tablesSelect .fa {
-  padding: 0px 6px 0 2px;
+  padding: 0px 6px 0 0;
   font-size: 18px;
   vertical-align: -10%;
   color: #515151;
@@ -232,7 +235,6 @@
   padding: 7px 12px;
   font-size: 13px;
   width: 100%;
-  max-width: 779px;
   resize: vertical;
 }
 
@@ -245,7 +247,6 @@
   position: relative;
   width: calc(100% - 45px);
   float: left;
-  max-width: 779px;
 }
 
 .searchclear {
@@ -276,11 +277,10 @@
   font-size: 22px;
 }
 
-
 #tables_wrapper {
   border: 1px solid #b4b4b4;
   overflow: hidden;
-  height: calc(100% - 42px);
+  /*height: calc(100% - 42px);*/
 }
 
 #data_wrapper {
@@ -338,14 +338,21 @@
 }
 
 li.selected{
-background:rgba(122, 197, 255, 0.2);
+background:#EBF0F3; 
+border: 1px solid #DDDDDD; 
+border-right: none;
+}
+
+.metro .tablesSelect ul li.selected {
+  line-height: 24px;
+  padding-left: 4px;
 }
 
 #tableList li{
   cursor:pointer;
 }
 #tableList li:hover{   
-  background:rgba(122, 197, 255, 0.2);
+  background: #E4F4FF;
 }
 
 table.dataTable,

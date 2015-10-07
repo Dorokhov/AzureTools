@@ -31,6 +31,7 @@
     <script type="text/javascript" src="content/js/bootstrap.js"></script>
     <script type="text/javascript" src="bundle.js"></script>
 </head>
+
 <body ng-controller="AppController">
     <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables'}">
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
@@ -161,7 +162,7 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" style="display: inline-block; z-index: 100;" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+        <div class="panel panel-primary popup" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>

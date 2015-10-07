@@ -41,25 +41,26 @@
                     title: col,
                     data: col,
                     render: function(item) {
-                        return '<span style="display: block;overflow: hidden;white-space:nowrap;">' + (item == undefined ? '' : item._) + '</span>';
+                        return '<div style="white-space:nowrap;display: block;overflow: hidden;  display: -webkit-box; max-width: 500em;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden; text-overflow: ellipsis;">' + (item == undefined ? '' : item._) + '</div>';
                     },
                 });
             }
-            if (self.oTable != null){
+
+            if (self.oTable != null) {
                 self.oTable.clear();
                 self.oTable.rows.add(data).draw();
             }
-            else
-                self.oTable = $('#tables').DataTable({
-                    bFilter: false,
-                    bInfo: false,
-                    bPaginate: false,
-                    scrollY: calcDataTableHeight(),
-                    scrollX: true,
-                    data: data,
-                    autoWidth: true,
-                    columns: columns
-                });
+
+            self.oTable = $('#tables').DataTable({
+                bFilter: false,
+                bInfo: false,
+                bPaginate: false,
+                scrollY: calcDataTableHeight(),
+                scrollX: true,
+                data: data,
+                autoWidth: true,
+                columns: columns
+            });
         };
     };
 }

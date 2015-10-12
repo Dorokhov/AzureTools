@@ -152,7 +152,7 @@ exports.register = function(module) {
 
                     var cancelOperation = function() {};
 
-                    var entries = null;
+                    self.entries = [];
                     var queryTableEntities = function(query) {
                         if ($busyIndicator.getIsBusy(queryEntitiesOperation) === false) {
                             var tableService = defaultClientFactory();
@@ -170,17 +170,11 @@ exports.register = function(module) {
                                 });
                                 if (error) {
                                     showError(error);
+                                    return;
                                 }
 
-                                entries = result.entries;
-                                console.log('entries:' + entries.length);
-                                if (result.continuationToken != null) {
-                                    //showInfo('First ' + entries.length + ' entries loaded ');
-                                    $actionBarItems.Continuation = result.continuationToken;
-                                } else {
-                                    $actionBarItems.Continuation = null;
-                                    $notifyViewModel.close();
-                                }
+                                self.entries = result.entries;
+                                $actionBarItems.Continuation = result.continuationToken;
 
                                 tablesPresenter.showEntities(result.entries);
                             });
@@ -196,26 +190,21 @@ exports.register = function(module) {
                             });
 
                             var azureQuery = new azureStorage.TableQuery().where(query);
-
-                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery,  $actionBarItems.Continuation, function(error, result, response) {
+                            console.log($actionBarItems.Continuation);
+                            tableService.queryEntities(tableSelectionViewModel.SelectedTable, azureQuery, $actionBarItems.Continuation, function(error, result, response) {
                                 $busyIndicator.setIsBusy(queryEntitiesOperation, false, function() {
                                     cancelled = true;
                                 });
                                 if (cancelled) return;
                                 if (error) {
                                     showError(error);
+                                    return;
                                 }
 
-                                entries = entries.concat(result.entries);
+                                $actionBarItems.Continuation = result.continuationToken;
+                                self.entries = self.entries.concat(result.entries);
 
-                                tablesPresenter.showEntities(entries);
-                                if (result.continuationToken != null) {
-                                    //showInfo('First ' + entries.length + ' entries loaded ');
-                                    $actionBarItems.Continuation = result.continuationToken;
-                                } else {
-                                    $actionBarItems.Continuation = null;
-                                    $notifyViewModel.close();
-                                }
+                                tablesPresenter.showEntities(self.entries);
                             });
                         }
                     };
@@ -232,13 +221,10 @@ exports.register = function(module) {
                                 $busyIndicator.setIsBusy(listTablesOperation, false, cancelOperation);
                                 if (error) {
                                     showError(error);
+                                    return;
                                 }
 
                                 tableSelectionViewModel.Tables = data.entries;
-                                if (tableSelectionViewModel.Tables != null && tableSelectionViewModel.Tables.length > 0) {
-                                    tableSelectionViewModel.SelectedTable = tableSelectionViewModel.Tables[0];
-                                    searchViewModel.search();
-                                }
                             });
                         }
                     };

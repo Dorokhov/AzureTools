@@ -61,6 +61,7 @@
                 autoWidth: true,
                 columns: columns
             });
+            self.oTable.columns.adjust().draw();
         };
     };
 }

@@ -20,7 +20,11 @@
             <bg-pane min-size="150">
                 <div class="wrapTablesBlock2">
                     <div class="headTablesBlock">
-                        <i class="fa fa-table"></i><span id="tableName">{{TablesViewModel.TableSelectViewModel.SelectedTable}}</span>
+                        <i class="fa fa-table"></i><span id="tableName">
+                        {{
+                        (TablesViewModel.TableSelectViewModel.SelectedTable == null ? '' : TablesViewModel.TableSelectViewModel.SelectedTable)
+                        + " " + (TablesViewModel.entries == null || TablesViewModel.entries.length == 0? '' : TablesViewModel.entries.length + ' loaded')}}
+                        </span>
                     </div>
                     <div class="tablesBlock2">
                         <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">

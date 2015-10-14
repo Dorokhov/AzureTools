@@ -5,6 +5,7 @@ exports.register = function(module) {
             '$timeout',
             '$actionBarItems',
             '$busyIndicator',
+            '$confirmViewModel',
             '$dialogViewModel',
             '$notifyViewModel',
             'tablesSettings',
@@ -15,6 +16,7 @@ exports.register = function(module) {
                 $timeout,
                 $actionBarItems,
                 $busyIndicator,
+                $confirmViewModel,
                 $dialogViewModel,
                 $notifyViewModel,
                 tablesSettings,
@@ -129,7 +131,7 @@ exports.register = function(module) {
                         createTableDialog.IsVisible = true;
 
                         createTableDialog.save = function() {
-                            $dialogViewModel.AreButtonsDisabled = true;
+                            createTableDialog.AreButtonsDisabled = true;
 
                             try {
 
@@ -147,6 +149,22 @@ exports.register = function(module) {
                                 createTableDialog.BodyViewModel.ErrorMessage = ex.message;
                             }
                         };
+                    };
+
+                    $actionBarItems.deleteTable = function() {
+                        if (tableSelectionViewModel.SelectedTable != null) {
+                            //$confirmViewModel.scope().$apply(function() {
+                            $confirmViewModel.Body = 'Are you sure you want to delete "' + tableSelectionViewModel.SelectedTable + '"?';
+                            $confirmViewModel.show(function() {
+                                defaultClientFactory().deleteTable(tableSelectionViewModel.SelectedTable, function(error, result, response) {
+                                    if (!error) {
+                                        loadTableList();
+                                        tableSelectionViewModel.SelectedTable = null;
+                                    } else {}
+                                });
+                            });
+                            //});
+                        }
                     };
 
                     var isConnectionSettingsSpecified = function() {

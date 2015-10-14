@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     grunt.initConfig({
         watch: {
@@ -12,13 +12,27 @@ module.exports = function (grunt) {
                 }
             }
         },
+        sass: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'libs/datatables-colreorder/css',
+                    src: ['*.scss'],
+                    dest: 'app/content/css/styles/',
+                    ext: '.css'
+                }]
+            }
+        },
         browserify: {
-            vendor: {
+            dist: {
                 src: './app/app.js',
                 dest: './app/bundle.js',
                 options: {
                     alias: {
                         'jquery': 'jquery-browserify',
+                        'colReorder': './libs/datatables-colreorder',
+                        'colResize': './libs/colResize/dataTables.colResize',
+                        'colVis': 'drmonty-datatables-colvis',
 
                         'util': './libs/net-chromify/node_modules/util/util',
                         'events': './libs/net-chromify/node_modules/events/events',
@@ -32,12 +46,14 @@ module.exports = function (grunt) {
                         'net': './libs/net-chromify/index',
                         'string_decoder': './libs/string_decoder-chromify/index.js',
                     },
+                    debug: true
                 }
             }
         },
     });
 
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.registerTask('default', 'build', ['browserify']);
+    grunt.registerTask('default', 'build', ['sass', 'browserify']);
 };

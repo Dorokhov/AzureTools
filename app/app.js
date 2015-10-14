@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
     //require('process');
     var angular = require('angular'),
@@ -8,9 +8,13 @@
 
     window.$ = require('jquery');
     window.$.DataTable = dataTable;
+    window.$.dataTable = dataTable;
+
+    var reorder = require('colReorder');
+    var colVis = require('colVis');
+    var colResize = require('colResize');
 
     window.isDebugVersion = false;
-
     require('./exceptionHandling/exceptionHandlingModule.js').register(angular);
     require('./common/commonModule.js').register(angular, angularRoute);
     require('./common/dialogsModule.js').register(angular, angularRoute);
@@ -30,8 +34,8 @@
             'tiles.redis',
             'tiles.tables',
             'tiles.blobs',
-        ], function () {});
+        ], function() {});
     require('./directives/appDirectives.js')
         .register(app)
-        .controller('AppController', ['$state', function () { }]);
+        .controller('AppController', ['$state', function() {}]);
 }());

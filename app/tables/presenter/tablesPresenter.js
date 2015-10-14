@@ -13,7 +13,7 @@
         };
 
         var calcDataTableHeight = function() {
-            var headerHeight = 243 + $('#filterArea').height();
+            var headerHeight = 243 + $('#filterArea').height() + 42;
             return ($(window).height() - headerHeight);
         };
 
@@ -47,20 +47,37 @@
             }
 
             if (self.oTable != null) {
-                self.oTable.clear();
-                self.oTable.rows.add(data).draw();
+                self.oTable.destroy();
             }
 
+            $('#tables').empty();
             self.oTable = $('#tables').DataTable({
                 bFilter: false,
                 bInfo: false,
-                bPaginate: false,
+                //   bPaginate: false,
+                lengthMenu: [100, 50, 1000],
                 scrollY: calcDataTableHeight(),
                 scrollX: true,
                 data: data,
                 autoWidth: true,
-                columns: columns
+                deferRender: true,
+                columns: columns,
+                colReorder: {
+                    realtime: false
+                },
+                //dom: 'Zlfrtip',
+                dom:  '<Zf<t>lip>',
+                colResize: {
+                    "tableWidthFixed": false
+                },
+                //dom: 'C<"clear">lfrtip',
+                //colVis: {
+                //    restore: "Restore",
+                //    showAll: "Show all",
+                //    showNone: "Show none"
+                //}
             });
+
             self.oTable.columns.adjust().draw();
         };
     };

@@ -208,8 +208,8 @@ exports.register = function(module) {
                             });
                         }
                     };
-
                     var loadTableList = function() {
+
                         if ($busyIndicator.getIsBusy(listTablesOperation) === false) {
                             var cancelled = false;
                             $busyIndicator.setIsBusy(listTablesOperation, true, function() {

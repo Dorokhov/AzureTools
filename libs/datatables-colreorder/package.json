@@ -1,0 +1,33 @@
+{
+  "name": "datatables-colreorder",
+  "version": "1.2.0",
+  "main": "js/dataTables.colReorder.js",
+  "dependencies": {
+    "jquery": ">=1.7.0",
+    "datatables": ">=1.10.8"
+  },
+  "license": "MIT",
+  "description": "ColReorder adds the ability for the end user to click and drag column headers to reorder a table as they see fit, to DataTables. See the [documentation](http://datatables.net/extensions/colreorder/) for full details.",
+  "_id": "datatables-colreorder@1.2.0",
+  "scripts": {},
+  "_shasum": "2352bf8902d3487dd8c1e11b2fe34a64033c8d91",
+  "_from": "datatables-colreorder@1.2.0",
+  "_npmVersion": "2.14.3",
+  "_nodeVersion": "0.12.7",
+  "_npmUser": {
+    "name": "luqin",
+    "email": "luqin2006@163.com"
+  },
+  "dist": {
+    "shasum": "2352bf8902d3487dd8c1e11b2fe34a64033c8d91",
+    "tarball": "http://registry.npmjs.org/datatables-colreorder/-/datatables-colreorder-1.2.0.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "luqin",
+      "email": "luqin2006@163.com"
+    }
+  ],
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/datatables-colreorder/-/datatables-colreorder-1.2.0.tgz"
+}

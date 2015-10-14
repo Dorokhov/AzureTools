@@ -14,15 +14,12 @@
         }])
         .controller('DialogsController', [
             '$scope', '$dialogViewModel', '$notifyViewModel', function ($scope, $dialogViewModel, $notifyViewModel) {
-                $scope.DialogViewModel = $dialogViewModel;
+                $scope.DialogViewModel = $dialogViewModel();
                 $scope.NotifyViewModel = $notifyViewModel;
-
-                $dialogViewModel.Body = '';
-                $dialogViewModel.IsVisible = false;
 
                 $scope.$on('$stateChangeStart',
                     function () {
-                        $dialogViewModel.IsVisible = false;
+                        $dialogViewModel().IsVisible = false;
                     });
             }
         ])

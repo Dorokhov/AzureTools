@@ -1,4 +1,4 @@
-﻿exports.register = function (module) {
+﻿exports.register = function(module) {
     module
         .controller('BlobsController', [
             '$scope',
@@ -11,7 +11,7 @@
             'azureStorage',
             'blobsPresenter',
             'bufferFactory',
-            function (
+            function(
                 $scope,
                 $timeout,
                 $actionBarItems,
@@ -23,14 +23,14 @@
                 blobsPresenter,
                 bufferFactory) {
 
-                $scope.BlobsViewModel = new function () {
+                $scope.BlobsViewModel = new function() {
                     var self = this;
                     var listContainersOperation = 'listContainersOperation';
                     var queryBlobsOperation = 'queryBlobsOperation';
                     var loadBlobOperation = 'loadBlobOperation';
 
                     var searchViewModel = {
-                        search: function () {
+                        search: function() {
                             if (!isConnectionSettingsSpecified()) {
                                 return;
                             }
@@ -38,21 +38,21 @@
                             loadBlobs(containerSelectionViewModel.SelectedContainer, this.Pattern);
                         },
                         Pattern: '',
-                        clear: function () {
+                        clear: function() {
                             this.Pattern = '';
                             this.IsClearVisible = false;
                             searchViewModel.search();
                         },
                         IsClearVisible: false,
-                        onChange: function () {
+                        onChange: function() {
                             this.IsClearVisible = this.Pattern !== '';
                         }
                     };
 
-                    var containerSelectionViewModel = new function () {
+                    var containerSelectionViewModel = new function() {
                         this.Containers = null;
                         this.SelectedContainer = null;
-                        this.onSelectedcontainerChanged = function () {
+                        this.onSelectedcontainerChanged = function() {
                             $notifyViewModel.close();
                             searchViewModel.search();
                         };
@@ -66,7 +66,7 @@
                     $actionBarItems.IsRefreshVisible = true;
                     $actionBarItems.IsSettingsVisible = true;
                     $actionBarItems.IsSearchVisible = true;
-                    $actionBarItems.refresh = function () {
+                    $actionBarItems.refresh = function() {
                         if (!isConnectionSettingsSpecified()) {
                             return;
                         }
@@ -82,56 +82,56 @@
                     };
                     $actionBarItems.SearchViewModel = searchViewModel;
                     $actionBarItems.ContainerSelectViewModel = containerSelectionViewModel;
-                    $actionBarItems.changeSettings = function () {
-                        $dialogViewModel.WithOption = true;
-                        $dialogViewModel.OptionText = 'Use demo credentials';
-                        $dialogViewModel.IsChecked = false;
-                        $dialogViewModel.onChecked = function () {
-                            if ($dialogViewModel.IsChecked) {
-                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.blob.core.windows.net/';
-                                $dialogViewModel.BodyViewModel.AccountName = 'dorphoenixtest';
-                                $dialogViewModel.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
+                    $actionBarItems.changeSettings = function() {
+                        var changeSettingsDialog = $dialogViewModel();
+                        changeSettingsDialog.AreButtonsDisabled = false;
+                        changeSettingsDialog.WithOption = true;
+                        changeSettingsDialog.OptionText = 'Use demo credentials';
+                        changeSettingsDialog.IsChecked = false;
+                        changeSettingsDialog.onChecked = function() {
+                            if (changeSettingsDialog.IsChecked) {
+                                changeSettingsDialog.BodyViewModel.AccountUrl = 'http://dorphoenixtest.blob.core.windows.net/';
+                                changeSettingsDialog.BodyViewModel.AccountName = 'dorphoenixtest';
+                                changeSettingsDialog.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
                             } else {
-                                $dialogViewModel.BodyViewModel.AccountUrl = blobsSettings.AccountUrl;
-                                $dialogViewModel.BodyViewModel.AccountName = blobsSettings.AccountName;
-                                $dialogViewModel.BodyViewModel.AccountKey = blobsSettings.AccountKey;
+                                changeSettingsDialog.BodyViewModel.AccountUrl = blobsSettings.AccountUrl;
+                                changeSettingsDialog.BodyViewModel.AccountName = blobsSettings.AccountName;
+                                changeSettingsDialog.BodyViewModel.AccountKey = blobsSettings.AccountKey;
                             }
                         };
-                        $dialogViewModel.IsVisible = true;
-                        $dialogViewModel.BodyViewModel = {
+                        changeSettingsDialog.IsVisible = true;
+                        changeSettingsDialog.BodyViewModel = {
                             AccountUrl: blobsSettings.AccountUrl,
                             AccountName: blobsSettings.AccountName,
                             AccountKey: blobsSettings.AccountKey,
                         };
 
-                        $dialogViewModel.Body = 'blobsSettingsTemplate';
-                        $dialogViewModel.Header = 'Settings';
-                        $dialogViewModel.save = function () {
-                            blobsSettings.AccountUrl = $dialogViewModel.BodyViewModel.AccountUrl;
-                            blobsSettings.AccountName = $dialogViewModel.BodyViewModel.AccountName;
-                            blobsSettings.AccountKey = $dialogViewModel.BodyViewModel.AccountKey;
-                            $dialogViewModel.IsVisible = false;
+                        changeSettingsDialog.Body = 'blobsSettingsTemplate';
+                        changeSettingsDialog.Header = 'Settings';
+                        changeSettingsDialog.save = function() {
+                            blobsSettings.AccountUrl = changeSettingsDialog.BodyViewModel.AccountUrl;
+                            blobsSettings.AccountName = changeSettingsDialog.BodyViewModel.AccountName;
+                            blobsSettings.AccountKey = changeSettingsDialog.BodyViewModel.AccountKey;
+                            changeSettingsDialog.IsVisible = false;
                             loadContainerList();
                         };
                     };
 
-                    var isConnectionSettingsSpecified = function () {
-                        return (blobsSettings.AccountUrl !== null && blobsSettings.AccountUrl !== '')
-                            && (blobsSettings.AccountKey !== null && blobsSettings.AccountKey !== '')
-                            && (blobsSettings.AccountName !== null && blobsSettings.AccountName !== '');
+                    var isConnectionSettingsSpecified = function() {
+                        return (blobsSettings.AccountUrl !== null && blobsSettings.AccountUrl !== '') && (blobsSettings.AccountKey !== null && blobsSettings.AccountKey !== '') && (blobsSettings.AccountName !== null && blobsSettings.AccountName !== '');
                     };
 
-                    var showError = function (data) {
+                    var showError = function(data) {
                         if (data !== undefined && data !== null) {
                             if (data.name && data.name === 'Error') {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data.message);
                                     });
                                 });
                             } else {
-                                $timeout(function () {
-                                    $notifyViewModel.scope().$apply(function () {
+                                $timeout(function() {
+                                    $notifyViewModel.scope().$apply(function() {
                                         $notifyViewModel.showWarning(data);
                                     });
                                 });
@@ -140,7 +140,7 @@
                     };
 
                     var defaultClient = null;
-                    var defaultClientFactory = function () {
+                    var defaultClientFactory = function() {
                         console.log(defaultClient);
                         if (defaultClient == null || (defaultClient.storageAccount !== blobsSettings.AccountName || defaultClient.storageAccessKey !== blobsSettings.AccountKey)) {
                             defaultClient = azureStorage.createBlobService(blobsSettings.AccountName, blobsSettings.AccountKey, blobsSettings.AccountUrl);
@@ -149,12 +149,12 @@
                         return defaultClient;
                     };
 
-                    var cancelOperation = function () { };
+                    var cancelOperation = function() {};
 
                     var continuation = null;
                     var entries = null;
 
-                    var loadBlobs = function (containerResult, pattern) {
+                    var loadBlobs = function(containerResult, pattern) {
                         if (containerResult == null) return;
                         $notifyViewModel.close();
                         $busyIndicator.setIsBusy(listContainersOperation, true, cancelOperation);
@@ -174,8 +174,10 @@
                                         var buffer = bufferFactory.Buffer;
                                         var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
                                         var chunks = [];
-                                        stream.on('data', function(chunk) { chunks.push(chunk); });
-                                        stream.on('end', function () {
+                                        stream.on('data', function(chunk) {
+                                            chunks.push(chunk);
+                                        });
+                                        stream.on('end', function() {
                                             $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
 
                                             var result = buffer.concat(chunks);
@@ -191,22 +193,24 @@
                                         defaultClientFactory().getBlobToText(
                                             containerResult.name,
                                             selectedBlob.name,
-                                            function (ex, text) {
+                                            function(ex, text) {
                                                 $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
                                                 showText(text);
                                             });
                                     }
                                 },
                                 // load bytes
-                                function (selectedBlob, downloadBytes) {
+                                function(selectedBlob, downloadBytes) {
                                     if ($busyIndicator.getIsBusy(loadBlobOperation) === false) {
                                         $busyIndicator.setIsBusy(loadBlobOperation, true, cancelOperation);
 
                                         var buffer = bufferFactory.Buffer;
                                         var stream = defaultClientFactory().createReadStream(containerResult.name, selectedBlob.name);
                                         var chunks = [];
-                                        stream.on('data', function(chunk) { chunks.push(chunk); });
-                                        stream.on('end', function () {
+                                        stream.on('data', function(chunk) {
+                                            chunks.push(chunk);
+                                        });
+                                        stream.on('end', function() {
                                             $busyIndicator.setIsBusy(loadBlobOperation, false, cancelOperation);
                                             var result = buffer.concat(chunks);
                                             downloadBytes([result.buffer]);
@@ -221,11 +225,13 @@
                         }
                     };
 
-                    var loadContainerList = function () {
+                    var loadContainerList = function() {
                         $notifyViewModel.close();
                         if ($busyIndicator.getIsBusy(listContainersOperation) === false) {
                             var cancelled = false;
-                            $busyIndicator.setIsBusy(listContainersOperation, true, function () { cancelled = true; });
+                            $busyIndicator.setIsBusy(listContainersOperation, true, function() {
+                                cancelled = true;
+                            });
 
                             var token = null;
                             var containers = [];

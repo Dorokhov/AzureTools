@@ -83,3 +83,15 @@
         </div>
     </div>
 </script>
+
+<script type="text/ng-template" id="createTableTemplate">
+    <div class="input-group input-group-sm">
+        <div class="input-group input-group-sm" style="margin-top:2px">
+            <span class="input-group-addon" style="width:96px;">Table Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.TableName" class="form-control" style="width:372px" />
+        </div>
+        <div class="input-group input-group-sm" style="margin-top:2px" 
+        ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">
+        {{ DialogViewModel.BodyViewModel.ErrorMessage }}</div>
+    </div>
+</script>

@@ -87,35 +87,65 @@ exports.register = function(module) {
                     $actionBarItems.SearchViewModel = searchViewModel;
                     self.TableSelectViewModel = tableSelectionViewModel;
                     $actionBarItems.changeSettings = function() {
-                        $dialogViewModel.WithOption = true;
-                        $dialogViewModel.OptionText = 'Use demo credentials';
-                        $dialogViewModel.IsChecked = false;
-                        $dialogViewModel.onChecked = function() {
-                            if ($dialogViewModel.IsChecked) {
-                                $dialogViewModel.BodyViewModel.AccountUrl = 'http://dorphoenixtest.table.core.windows.net/';
-                                $dialogViewModel.BodyViewModel.AccountName = 'dorphoenixtest';
-                                $dialogViewModel.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
+                        var changeSettingsDialog = $dialogViewModel();
+
+                        changeSettingsDialog.WithOption = true;
+                        changeSettingsDialog.OptionText = 'Use demo credentials';
+                        changeSettingsDialog.IsChecked = false;
+
+                        changeSettingsDialog.onChecked = function() {
+                            if (changeSettingsDialog.IsChecked) {
+                                changeSettingsDialog.BodyViewModel.AccountUrl = 'http://dorphoenixtest.table.core.windows.net/';
+                                changeSettingsDialog.BodyViewModel.AccountName = 'dorphoenixtest';
+                                changeSettingsDialog.BodyViewModel.AccountKey = 'P7YnAD3x84bpwxV0abmguZBXJp7FTCEYj5SYlRPm5BJkf8KzGKEiD1VB1Kv21LGGxbUiLvmVvoChzCprFSWAbg==';
                             } else {
-                                $dialogViewModel.BodyViewModel.AccountUrl = tablesSettings.AccountUrl;
-                                $dialogViewModel.BodyViewModel.AccountName = tablesSettings.AccountName;
-                                $dialogViewModel.BodyViewModel.AccountKey = tablesSettings.AccountKey;
+                                changeSettingsDialog.BodyViewModel.AccountUrl = tablesSettings.AccountUrl;
+                                changeSettingsDialog.BodyViewModel.AccountName = tablesSettings.AccountName;
+                                changeSettingsDialog.BodyViewModel.AccountKey = tablesSettings.AccountKey;
                             }
                         };
-                        $dialogViewModel.IsVisible = true;
-                        $dialogViewModel.BodyViewModel = {
+                        changeSettingsDialog.IsVisible = true;
+                        changeSettingsDialog.BodyViewModel = {
                             AccountUrl: tablesSettings.AccountUrl,
                             AccountName: tablesSettings.AccountName,
                             AccountKey: tablesSettings.AccountKey,
                         };
 
-                        $dialogViewModel.Body = 'tablesSettingsTemplate';
-                        $dialogViewModel.Header = 'Settings';
-                        $dialogViewModel.save = function() {
-                            tablesSettings.AccountUrl = $dialogViewModel.BodyViewModel.AccountUrl;
-                            tablesSettings.AccountName = $dialogViewModel.BodyViewModel.AccountName;
-                            tablesSettings.AccountKey = $dialogViewModel.BodyViewModel.AccountKey;
-                            $dialogViewModel.IsVisible = false;
+                        changeSettingsDialog.Body = 'tablesSettingsTemplate';
+                        changeSettingsDialog.Header = 'Settings';
+                        changeSettingsDialog.save = function() {
+                            tablesSettings.AccountUrl = changeSettingsDialog.BodyViewModel.AccountUrl;
+                            tablesSettings.AccountName = changeSettingsDialog.BodyViewModel.AccountName;
+                            tablesSettings.AccountKey = changeSettingsDialog.BodyViewModel.AccountKey;
+                            changeSettingsDialog.IsVisible = false;
                             loadTableList();
+                        };
+                    };
+
+                    $actionBarItems.createTable = function() {
+                        var createTableDialog = $dialogViewModel();
+                        createTableDialog.Body = 'createTableTemplate';
+                        createTableDialog.Header = 'Create Table';
+                        createTableDialog.IsVisible = true;
+
+                        createTableDialog.save = function() {
+                            $dialogViewModel.AreButtonsDisabled = true;
+
+                            try {
+
+                                defaultClientFactory().createTableIfNotExists(createTableDialog.BodyViewModel.TableName,
+                                    function(error, result, response) {
+                                        createTableDialog.AreButtonsDisabled = false;
+                                        if (!error) {
+                                            createTableDialog.IsVisible = false;
+                                            loadTableList();
+                                        } else {
+                                            createTableDialog.BodyViewModel.ErrorMessage = error.message;
+                                        }
+                                    });
+                            } catch (ex) {
+                                createTableDialog.BodyViewModel.ErrorMessage = ex.message;
+                            }
                         };
                     };
 

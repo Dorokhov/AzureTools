@@ -50,12 +50,13 @@ describe('RedisController', function () {
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
            ];
+           var aDialog = $dialogViewModel();
 
            // act
            $actionBarItems.addKey();
-           $dialogViewModel.BodyViewModel.Key = 'key:3';
-           $dialogViewModel.BodyViewModel.Value = '3';
-           $dialogViewModel.save();
+           aDialog.BodyViewModel.Key = 'key:3';
+           aDialog.BodyViewModel.Value = '3';
+           aDialog.save();
            viewModel.loadKeys('*');
 
            // assert
@@ -77,13 +78,14 @@ describe('RedisController', function () {
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
            ];
+           var aDialog = $dialogViewModel();
 
            // act
            $actionBarItems.addKey();
-           $dialogViewModel.BodyViewModel.Key = 'key:3';
-           $dialogViewModel.BodyViewModel.Value = '[["name1","value1"],["name2", "value2"]]';
-           $dialogViewModel.BodyViewModel.selectType('hash set');
-           $dialogViewModel.save();
+           aDialog.BodyViewModel.Key = 'key:3';
+           aDialog.BodyViewModel.Value = '[["name1","value1"],["name2", "value2"]]';
+           aDialog.BodyViewModel.selectType('hash set');
+           aDialog.save();
            viewModel.loadKeys('*');
 
            // assert
@@ -104,13 +106,14 @@ describe('RedisController', function () {
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
            ];
+           var aDialog = $dialogViewModel();
 
            // act
            $actionBarItems.addKey();
-           $dialogViewModel.BodyViewModel.Key = 'key:3';
-           $dialogViewModel.BodyViewModel.Value = '["item1","item2"]';
-           $dialogViewModel.BodyViewModel.selectType('set');
-           $dialogViewModel.save();
+           aDialog.BodyViewModel.Key = 'key:3';
+           aDialog.BodyViewModel.Value = '["item1","item2"]';
+           aDialog.BodyViewModel.selectType('set');
+           aDialog.save();
            viewModel.loadKeys('*');
 
            // assert

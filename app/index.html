@@ -128,14 +128,14 @@
                         </a>
                     </div>
                 </li>
-                <!--<li>
+               <li>
                     <div class="tileTables">
-                        <a class="fa-links" title="Create new table">
+                        <a class="fa-links" title="Create new table" ng-click="ActionBarItems.createTable()">
                             <i class="fa fa-table"></i><span>Create</span>
                         </a>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="tileTables">
                         <a class="fa-links" title="Delete selected table">
                             <i class="fa fa-trash-o"></i>
@@ -180,7 +180,7 @@
                     <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
                 </label>
 
-                <div class="btn-group" style="float:right; margin-top:10px">
+                <div class="btn-group" style="float:right; margin-top:10px" ng-disabled="DialogViewModel.AreButtonsDisabled">
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
                 </div>

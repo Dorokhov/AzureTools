@@ -50,7 +50,6 @@
   background: #F8F8F8;
   border: 1px solid #E2E2E2;
   width: 100%;
-  border-top:0; 
 }
 
 .tileTables {
@@ -172,10 +171,6 @@
 .headTablesBlock .fa {
   padding: 0 8px;
   font-size: 18px;
-  vertical-align: -5%;
-}
-
-.wrapTablesBlock2 .headTablesBlock .fa {
   vertical-align: -10%;
 } 
 

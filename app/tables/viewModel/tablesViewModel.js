@@ -151,19 +151,66 @@ exports.register = function(module) {
                         };
                     };
 
+                    $actionBarItems.createTableEntity = function() {
+                        var createTableEntityDialog = $dialogViewModel();
+                        createTableEntityDialog.Body = 'createTableEntityTemplate';
+                        createTableEntityDialog.Header = 'Update Entity';
+                        createTableEntityDialog.IsVisible = true;
+
+                        var columnsDictionary = {};
+                        var tableProperties = [];
+                        for (var i = 0; i < self.entries.length; i++) {
+                            for (var propertyName in self.entries[i]) {
+                                if (columnsDictionary[propertyName] == undefined && propertyName !== 'Timestamp' && propertyName !== '.metadata') {
+                                    columnsDictionary[propertyName] = propertyName;
+                                    tableProperties.push({
+                                        Key: propertyName,
+                                        Type: {
+                                            Types: ['string', 'binary', 'boolean', 'datetime'],
+                                            Selected: 'string'
+                                        },
+                                        Value: ''
+                                    });
+                                }
+                            }
+                        }
+                        createTableEntityDialog.BodyViewModel.TableProperties = tableProperties;
+
+                        createTableEntityDialog.save = function() {
+                            createTableEntityDialog.AreButtonsDisabled = true;
+
+                            try {
+                                var entGen = azureStorage.TableUtilities.entityGenerator;
+                                var task = {};
+                                for (var i = 0; i < createTableEntityDialog.BodyViewModel.TableProperties.length; i++) {
+                                    var each = createTableEntityDialog.BodyViewModel.TableProperties[i];
+                                    task[each.Key] = entGen.String(each.Value);
+                                };
+                                console.log('creating')
+                                console.log(task)
+                                defaultClientFactory().insertEntity(tableSelectionViewModel.SelectedTable, task, function(error, result, response) {
+                                    if (!error) {
+                                        // Entity inserted
+                                    }
+                                });
+                            } catch (ex) {
+                                createTableEntityDialog.BodyViewModel.ErrorMessage = ex.message;
+                            }
+                        };
+                    };
+
                     $actionBarItems.deleteTable = function() {
                         if (tableSelectionViewModel.SelectedTable != null) {
-                            //$confirmViewModel.scope().$apply(function() {
                             $confirmViewModel.Body = 'Are you sure you want to delete "' + tableSelectionViewModel.SelectedTable + '"?';
                             $confirmViewModel.show(function() {
                                 defaultClientFactory().deleteTable(tableSelectionViewModel.SelectedTable, function(error, result, response) {
                                     if (!error) {
                                         loadTableList();
                                         tableSelectionViewModel.SelectedTable = null;
+                                        tablesPresenter.showEntities(null);
                                     } else {}
                                 });
                             });
-                            //});
                         }
                     };
 

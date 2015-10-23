@@ -5,7 +5,7 @@
         var self = this;
 
         self.Body = null;
-        self.BodyViewModel = null;
+        self.BodyViewModel = {};
         self.IsVisible = false;
         self.IsChecked = false;
         self.WithOption = false;
@@ -25,7 +25,7 @@
     };
     return function() {
         dialog.Body = null;
-        dialog.BodyViewModel = null;
+        dialog.BodyViewModel = {};
         dialog.IsVisible = false;
         dialog.IsChecked = false;
         dialog.WithOption = false;

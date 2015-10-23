@@ -20,6 +20,13 @@ module.exports = function(grunt) {
                     src: ['*.scss'],
                     dest: 'app/content/css/styles/',
                     ext: '.css'
+                },
+{
+                    expand: true,
+                    cwd: 'libs/select/css',
+                    src: ['*.scss'],
+                    dest: 'app/content/css/styles/',
+                    ext: '.css'
                 }]
             }
         },
@@ -33,6 +40,7 @@ module.exports = function(grunt) {
                         'colReorder': './libs/datatables-colreorder',
                         'colResize': './libs/colResize/dataTables.colResize',
                         'colVis': 'drmonty-datatables-colvis',
+                        'dataTablesSelect' : './libs/select/js/dataTables.select',
 
                         'util': './libs/net-chromify/node_modules/util/util',
                         'events': './libs/net-chromify/node_modules/events/events',

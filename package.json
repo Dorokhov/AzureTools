@@ -53,7 +53,8 @@
     "redis": "^0.10.3",
     "redisscan": "^1.1.0",
     "drmonty-datatables-colvis": "1.1.2",
-    "grunt-contrib-sass": "0.9.2"
+    "grunt-contrib-sass": "0.9.2",
+    "datatables.net": "1.10.9"
   },
   "config": {
     "ghooks": {

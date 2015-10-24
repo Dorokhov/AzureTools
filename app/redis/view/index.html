@@ -1,6 +1,52 @@
 <div class="container">
     <div class="metro grid" style="font-weight: normal; -webkit-user-select: text">
-        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+        <bg-splitter orientation="horizontal">
+            <bg-pane min-size="50" init-width-percentage="26.7">
+                <div class="wrapLeftBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-database"></i><span id="accountName"></span>
+                    </div>
+                    <div class="bodyLeftBlock">
+                        <!-- <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                            <div ng-show="ActionBarItems.IsSearchVisible">
+                                <div class="saerchText">
+                                    <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                    ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="PartitionKey eq 'xxx' and RowKey eq 'yyy'"
+                                    id="filterArea"
+                                    autofocus></textarea>
+
+                                    <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+
+                                </div>
+                                <span class="tileFunction">
+                                    <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </span>
+
+                                <div class="clearFloat"></div>
+                            </div>
+                        </div> -->
+                        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+                    </div>
+                </div>
+            </bg-pane>
+            <bg-pane min-size="150">
+                <div class="wrapRightBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-table"></i><span id="tableName"></span>
+                    </div>
+                    <div class="bodyRightBlock">
+                        
+                       
+                    </div>
+                </div>
+            </bg-pane>
+        </bg-splitter>
     </div>
 </div>
 

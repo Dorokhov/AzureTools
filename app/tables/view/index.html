@@ -1,64 +1,61 @@
-<div class="gridTables">
-    <div class="metro grid" style="font-weight: normal;" ng-controller="TablesController">
-        <bg-splitter orientation="horizontal">
-            <bg-pane min-size="50" init-width-percentage="26.7">
-
-                <div class="wrapTablesBlock1">
-                    <div class="headTablesBlock">
-                        <i class="fa fa-th-large"></i><span id="accountName">{{TablesViewModel.Settings.AccountName}}</span>
-                    </div>
-                    <div class="tablesSelect">
-                        <ul id="tableList">
-                            <li ng-repeat="table in TablesViewModel.TableSelectViewModel.Tables" 
-                            ng-click="TablesViewModel.TableSelectViewModel.onSelectedTableChanged(table)"
-                            ng-class="{selected: table === TablesViewModel.TableSelectViewModel.SelectedTable}"><i class="fa fa-table"></i>{{table}}</li>
-                        </ul>
-                    </div>
-
+<div class="metro grid" style="font-weight: normal;" ng-controller="TablesController">
+    <bg-splitter orientation="horizontal">
+        <bg-pane min-size="50" init-width-percentage="26.7">
+            <div class="wrapLeftBlock">
+                <div class="headBlock">
+                    <i class="fa fa-th-large"></i><span id="accountName">{{TablesViewModel.Settings.AccountName}}</span>
                 </div>
-            </bg-pane>
-            <bg-pane min-size="150">
-                <div class="wrapTablesBlock2">
-                    <div class="headTablesBlock">
-                        <i class="fa fa-table"></i><span id="tableName">
+                <div class="bodyLeftBlock">
+                    <ul id="tableList">
+                        <li ng-repeat="table in TablesViewModel.TableSelectViewModel.Tables" 
+                        ng-click="TablesViewModel.TableSelectViewModel.onSelectedTableChanged(table)"
+                        ng-class="{selected: table === TablesViewModel.TableSelectViewModel.SelectedTable}"><i class="fa fa-table"></i>{{table}}</li>
+                    </ul>
+                </div>
+            </div>
+        </bg-pane>
+        <bg-pane min-size="150">
+            <div class="wrapRightBlock">
+                <div class="headBlock">
+                    <i class="fa fa-table"></i>
+                    <span id="tableName">
                         {{
                         (TablesViewModel.TableSelectViewModel.SelectedTable == null ? '' : TablesViewModel.TableSelectViewModel.SelectedTable)
                         + " " + (TablesViewModel.entries == null || TablesViewModel.entries.length == 0? '' : TablesViewModel.entries.length + ' loaded')}}
-                        </span>
-                    </div>
-                    <div class="tablesBlock2">
-                        <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
-                            <div ng-show="ActionBarItems.IsSearchVisible">
-                                <div class="saerchText">
-                                    <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
-                                              ng-change="ActionBarItems.SearchViewModel.onChange()"
-                                              ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                              type="text"
-                                              class="form-control"
-                                              placeholder="PartitionKey eq 'xxx' and RowKey eq 'yyy'"
-                                              id="filterArea"
-                                              autofocus></textarea>
-
-                                    <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-
-                                </div>
-                                <span class="tileTables">
-                                    <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                </span>
-
-                                <div class="clearFloat"></div>
-                            </div>
-                        </div>
-
-                        <div class="dt-buttons"></div>
-                        <table id="tables" class="table striped hovered dataTable"></table>
-                    </div>
+                    </span>
                 </div>
-            </bg-pane>
-        </bg-splitter>
-    </div>
+                <div class="bodyRightBlock">
+                    <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
+                        <div ng-show="ActionBarItems.IsSearchVisible">
+                            <div class="saerchText">
+                                <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                type="text"
+                                class="form-control"
+                                placeholder="PartitionKey eq 'xxx' and RowKey eq 'yyy'"
+                                id="filterArea"
+                                autofocus></textarea>
+
+                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+
+                            </div>
+                            <span class="tileFunction">
+                                <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+
+                            <div class="clearFloat"></div>
+                        </div>
+                    </div>
+
+                    <div class="dt-buttons"></div>
+                    <table id="tables" class="table striped hovered dataTable"></table>
+                </div>
+            </div>
+        </bg-pane>
+    </bg-splitter>
 </div>
 
 <script type="text/ng-template" id="tablesSettingsTemplate">

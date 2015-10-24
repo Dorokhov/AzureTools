@@ -39,43 +39,43 @@ tr.shown {
     padding: 5px 12px 5px 8px;
 }
 
-.gridTables .metro .table th {
+.forTables .metro .table th {
 	font-size: 12px;
 	border-right: 1px #DDDDDD solid;
     padding: 4px 12px 4px 8px;
 }
 
-.gridTables .metro .table thead th {
+.forTables .metro .table thead th {
     border-bottom: 1px solid #b4b4b4;
 }
 
-.gridTables .dataTables_scroll {
+.forTables .dataTables_scroll {
     margin-top: 0px;
 }
-.gridTables .dataTables_scrollHead {
+.forTables .dataTables_scrollHead {
     top: 0px;
 }
 
-.gridTables .dataTables_scrollHead th {
+.forTables .dataTables_scrollHead th {
     position: relative;
     background-color: #EBF0F3; 
 }
 
-.gridTables .dataTables_scrollHead th:focus {
+.forTables .dataTables_scrollHead th:focus {
     outline-color: #7AC5FF; 
 }
 
-.gridTables .metro .dataTable thead .sorting_asc:after, .gridTables .metro .dataTable thead .sorting_desc:after, .gridTables .metro .dataTable thead .sorting:after {
+.forTables .metro .dataTable thead .sorting_asc:after, .forTables .metro .dataTable thead .sorting_desc:after, .forTables .metro .dataTable thead .sorting:after {
     position: absolute;
     float: right;
     right: 1px;
 }
 
-.gridTables .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .gridTables .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .gridTables .metro .dataTables_scrollBody .dataTable thead .sorting:after {
+.forTables .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting:after {
     font-size: 1px;
 }
 
-.gridTables .metro .table.hovered tbody tr:hover {
+.forTables .metro .table.hovered tbody tr:hover {
     background-color: rgba(122, 197, 255, 0.2);
 }
 

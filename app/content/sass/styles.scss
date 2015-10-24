@@ -1,0 +1,365 @@
+$borderBlock: 1px solid #e2e2e2;
+$bg-colorBlock: #F8F8F8;
+$borderTable: 1px solid #b4b4b4;
+
+@mixin colorsModule ($colorHead, $colorTile) {
+	.navbar-default {
+		background-color: $colorHead;
+		border-color: $colorHead;
+	}
+	.tileFunction {
+		background-color: $colorTile;
+		&:hover {
+			background-color: lighten($colorTile, 8%);
+		}
+	}
+	.popup {
+		border-color: $colorHead;
+		.panel-heading {
+			background-color: $colorHead;
+			border-color: $colorHead;
+		}
+	}
+	.loading {
+		.fa {
+			color: darken($colorTile, 12%);
+		}
+		a {
+			color: darken($colorTile, 12%);
+		}
+	}
+	.input-group-addon {
+		background-color: hsl(hue($colorTile), 40%, 95%);
+	}
+	.headBlock {
+		background: $colorHead;
+	}
+}
+
+@import "redis.scss";
+@import "tables.scss"; 
+
+.forTables, .forRedis {
+	margin: 10px;
+	font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+	height: calc(100% - 20px);
+	.navbar {
+		min-height: 40px;
+	}
+	.navbar-brand {
+		height: 40px;
+		padding: 10px;
+		padding-top: 2px;
+	}
+	.icon-cloud {
+		font-size: 38px; 
+		vertical-align: -26%;
+		line-height: 0.8;
+		padding-right: 5px;
+	}
+	.input-group-sm>.input-group-addon {
+		padding: 5px 8px;
+	}
+}
+
+.navbar-brand {
+	padding-top: 3px;
+}
+
+.navbar-default .navbar-brand:hover {
+	color: #DCF2FB; 
+}
+
+.icon-cloud {
+	font-size: 35px; 
+	vertical-align: -16%;
+}
+
+.navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus  {
+	color: #ffffff;  
+}
+
+.leftOffset {
+	margin-left: 113px;
+}
+
+.noMarginBottom {
+	margin-bottom: 0px;
+}
+
+.navbarTilesFunction {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	.navbar-nav {
+		margin: 0px;
+		padding-right: 10px;
+		background: $bg-colorBlock;
+		border: $borderBlock;
+		width: 100%;
+	}
+}
+
+.tileFunction {
+	display: block;
+	cursor: pointer;
+	float: left;
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	z-index: 1;
+	color: #ffffff;
+	margin: 10px 0 10px 10px;
+
+	&:active {
+		transform: perspective(400px) rotateX(0.2rad);
+		transform-origin: 50% bottom;
+	}
+
+	a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	.fa {
+		padding-top: 6px;
+		font-size: 32px;
+		padding-bottom: 0px;
+		margin-bottom: 0px;
+	} 
+
+	span {
+		padding-top: 0px;
+		margin-top: 0px;
+		font-size: 13px;
+		line-height: 0px;
+	}
+}
+
+.delimiter-tiles {
+	border-left: $borderBlock;
+	height: 70px;
+	margin: 5px -1px 5px 9px;
+}
+
+.popup {
+	margin: 0;
+	position: absolute;
+	left: calc(50% - 250px);
+	top: calc(50% - 119px);
+	display: inline-block; 
+	z-index: 1000;
+}
+
+.loading {
+	width: 367px;
+	height: 301px;
+	padding: 108px;
+	text-align: center;
+	position: absolute;
+	left: calc(50% - 183px);
+	top: calc(50% - 150px);
+	background: url(../img/Loading.png) no-repeat 0 0;
+	z-index: 999;
+	line-height: 22px;
+
+	.fa {
+		padding: 4px;
+		font-size: 32px;
+		color: #2e8bcc;
+	}
+
+	a {
+		cursor: pointer;
+	}
+}
+
+#content {
+	height: 100%;
+}
+
+.wrapLeftBlock {
+	margin: 0px 3px 10px 10px;
+	height: 100%;
+}
+
+.headBlock {
+	color: #ffffff;
+	height: 30px;
+	line-height: 28px;
+	font-size: 16px;
+	white-space: nowrap;
+	.fa {
+		padding: 0 8px;
+		font-size: 18px;
+		vertical-align: -10%;
+	} 
+}
+
+.bodyLeftBlock, .bodyRightBlock {
+	background: $bg-colorBlock;
+	border: $borderBlock;
+	height: calc(100% - 30px);
+	padding: 8px;
+}
+
+#tableList {
+	list-style: none;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	-webkit-user-select: text;
+	li {
+		white-space: pre;
+		font-size: 12px;
+		line-height: 26px;
+		color: #2A2A2A;
+		letter-spacing: 0;
+		padding-left: 5px;
+		cursor:pointer;
+		&:hover {   
+			background: #E4F4FF;
+		}
+		&.selected {
+			background:#EBF0F3; 
+			border: 1px solid #DDDDDD; 
+			border-right: none;
+			line-height: 24px;
+			padding-left: 4px;
+		}
+	}
+	.fa {
+		padding: 0px 6px 0 0;
+		font-size: 18px;
+		vertical-align: -10%;
+		color: #515151;
+	}
+}
+
+.wrapRightBlock {
+	margin: 0px 10px 10px 6px;
+	height: 100%;
+}
+
+.searchBar {
+	margin-bottom: 10px;
+}
+
+.searchBar .form-control { 
+	float: none; 
+	max-height: 250px; 
+	height: 36px;
+	border: $borderTable;
+	padding: 7px 12px;
+	font-size: 13px;
+	width: 100%;
+	resize: vertical;
+}
+
+.searchBar .form-control:focus {
+	border-color: #7AC5FF;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px rgba(102,175,233,.6);
+}
+
+.saerchText {
+	position: relative;
+	width: calc(100% - 45px);
+	float: left;
+}
+
+.searchclear {
+	position: absolute;
+	right: 55px;
+	top: 0;
+	bottom: 0;
+	height: 14px;
+	margin: auto;
+	font-size: 14px;
+	cursor: pointer;
+	color: #ccc;
+}
+
+.forTables .searchclear {
+	right: 20px;
+	top: 12px;
+	margin: 0;
+}
+
+.searchBar .tileFunction {
+	width: 36px;
+	height: 36px;
+	margin: 0 0 0 8px;
+}
+
+.searchBar .tileFunction .fa {
+	font-size: 22px;
+}
+
+#tables_wrapper {
+	border: $borderTable;
+	overflow: hidden;
+}
+
+#data_wrapper {
+	margin-top: 20px;
+}
+
+.forTables #alertArea, .forTables #errorNotification {
+	display: none;
+}
+
+.thumbnail {
+	margin-top: 10px;
+	margin-right: 4px;
+}
+
+@media (max-width:992px) {
+	.margin-to-align {
+		margin-left: 0px;
+		position: relative;
+	}
+}
+
+@media (max-width:992px) {
+	.tile-preview{
+		margin-left: 0px;
+		position: relative;
+		width: 160px;
+	}
+}
+
+@media (min-width: 992px) {
+	.margin-to-align {
+		margin-left: auto;
+		margin-right: auto;
+		position: relative;
+		width: 940px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.margin-to-align {
+		margin-left: auto;
+		margin-right: auto;
+		position: relative;
+		width: 1140px;
+	}
+}
+
+.clearFloat {
+	clear: both;
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}

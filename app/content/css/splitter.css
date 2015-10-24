@@ -1,5 +1,4 @@
-.split-panes 
-{
+.split-panes {
   margin-top: 53px;
   left: 0px;
   right: 0px;
@@ -8,75 +7,64 @@
   position: absolute;
 }
 
-.split-panes > .split-handler 
-{
+.split-panes > .split-handler {
   background: transparent;
   position: absolute;
   z-index: 90;
 }
 
-/* Horizontal */ 
-
-.split-panes.horizontal > .split-handler
-{
+/* Horizontal */
+.split-panes.horizontal > .split-handler {
   width: 4px;
-    top: 50px;  left: 50%;
+  top: 50px;
+  left: 50%;
   bottom: 0px;
   cursor: ew-resize;
 }
 
 .split-panes.horizontal > .split-pane1,
-.split-panes.horizontal > .split-pane2
-{
+.split-panes.horizontal > .split-pane2 {
   position: absolute;
   height: 100%;
 }
 
-.split-panes.horizontal > .split-pane1
-{
-  width: 50%; 
+.split-panes.horizontal > .split-pane1 {
+  width: 50%;
 }
 
-.split-panes.horizontal > .split-pane2
-{
+.split-panes.horizontal > .split-pane2 {
   left: 50%;
   right: 0px;
   border-left: 1px solid #aaa;
 }
 
-
 /* Vertical */
-
-.split-panes.vertical > .split-handler
-{
+.split-panes.vertical > .split-handler {
   height: 4px;
- top: 50%; 
+  top: 50%;
   left: 0px;
   right: 0px;
   cursor: ns-resize;
 }
 
 .split-panes.vertical > .split-pane1,
-.split-panes.vertical > .split-pane2
-{
+.split-panes.vertical > .split-pane2 {
   position: absolute;
   width: 100%;
 }
 
-.split-panes.vertical > .split-pane1
-{
-  height: 50%; 
+.split-panes.vertical > .split-pane1 {
+  height: 50%;
 }
 
-.split-panes.vertical > .split-pane2
-{
+.split-panes.vertical > .split-pane2 {
   top: 50%;
   bottom: 0px;
   border-top: 1px solid #aaa;
 }
 
-/*split-pane for Tables*/
-.gridTables .split-panes {
+/*split-pane for Tables and Redis*/
+.forTables .split-panes, .forRedis .split-panes {
   left: 0px;
   right: 0px;
   top: 134px;
@@ -85,19 +73,19 @@
   padding: 0;
   position: absolute;
 }
-
-.gridTables .split-panes.horizontal > .split-pane2
-{
+.forTables .split-panes.horizontal > .split-pane2, .forRedis .split-panes.horizontal > .split-pane2 {
   border: none;
 }
-
-.gridTables .split-panes.horizontal > .split-handler
-{
+.forTables .split-panes.horizontal > .split-handler, .forRedis .split-panes.horizontal > .split-handler {
   width: 4px;
   top: 30px;
   bottom: 50px;
-  background: url(../img/splitHandler.png) no-repeat 0 center;  
 }
 
+.forTables .split-panes.horizontal > .split-handler {
+  background: url(../img/splitHorizontal-Tables.png) no-repeat 0 center;
+}
 
-
+.forRedis .split-panes.horizontal > .split-handler {
+  background: url(../img/splitHorizontal-Redis.png) no-repeat 0 center;
+}

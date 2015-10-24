@@ -1,17 +1,87 @@
-.forTables {
+.forRedis .navbar-default {
+  background-color: #00ADAA;
+  border-color: #00ADAA;
+}
+.forRedis .tileFunction {
+  background-color: #48E6B7;
+}
+.forRedis .tileFunction:hover {
+  background-color: #6cebc5;
+}
+.forRedis .popup {
+  border-color: #00ADAA;
+}
+.forRedis .popup .panel-heading {
+  background-color: #00ADAA;
+  border-color: #00ADAA;
+}
+.forRedis .loading .fa {
+  color: #1dd49d;
+}
+.forRedis .loading a {
+  color: #1dd49d;
+}
+.forRedis .input-group-addon {
+  background-color: #edf7f4;
+}
+.forRedis .headBlock {
+  background: #00ADAA;
+}
+
+.forTables .navbar-default {
+  background-color: #2e8bcc;
+  border-color: #2e8bcc;
+}
+.forTables .tileFunction {
+  background-color: #7AC5FF;
+}
+.forTables .tileFunction:hover {
+  background-color: #a3d7ff;
+}
+.forTables .popup {
+  border-color: #2e8bcc;
+}
+.forTables .popup .panel-heading {
+  background-color: #2e8bcc;
+  border-color: #2e8bcc;
+}
+.forTables .loading .fa {
+  color: #3daaff;
+}
+.forTables .loading a {
+  color: #3daaff;
+}
+.forTables .input-group-addon {
+  background-color: #edf3f7;
+}
+.forTables .headBlock {
+  background: #2e8bcc;
+}
+.forTables .bodyLeftBlock {
+  padding: 4px 5px 5px 5px;
+}
+
+.forTables, .forRedis {
   margin: 10px;
   font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   height: calc(100% - 20px);
 }
-
-.forTables .navbar {
+.forTables .navbar, .forRedis .navbar {
   min-height: 40px;
 }
-
-.forTables .navbar-brand {
+.forTables .navbar-brand, .forRedis .navbar-brand {
   height: 40px;
   padding: 10px;
   padding-top: 2px;
+}
+.forTables .icon-cloud, .forRedis .icon-cloud {
+  font-size: 38px;
+  vertical-align: -26%;
+  line-height: 0.8;
+  padding-right: 5px;
+}
+.forTables .input-group-sm > .input-group-addon, .forRedis .input-group-sm > .input-group-addon {
+  padding: 5px 8px;
 }
 
 .navbar-brand {
@@ -19,80 +89,70 @@
 }
 
 .navbar-default .navbar-brand:hover {
-  color: #DCF2FB; 
+  color: #DCF2FB;
 }
 
 .icon-cloud {
-  font-size: 35px; 
+  font-size: 35px;
   vertical-align: -16%;
 }
 
-.forTables .icon-cloud {
-  font-size: 38px; 
-  vertical-align: -26%;
-  line-height: 0.8;
-  padding-right: 5px;
+.navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus {
+  color: #ffffff;
 }
 
-.navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus  {
-  color: #ffffff;  
+.leftOffset {
+  margin-left: 113px;
 }
 
-.navbarTables {
+.noMarginBottom {
+  margin-bottom: 0px;
+}
+
+.navbarTilesFunction {
   margin: 0px;
   padding: 0px;
   width: 100%;
 }
-
-.navbarTables .navbar-nav {
+.navbarTilesFunction .navbar-nav {
   margin: 0px;
   padding-right: 10px;
   background: #F8F8F8;
-  border: 1px solid #E2E2E2;
+  border: 1px solid #e2e2e2;
   width: 100%;
 }
 
-.tileTables {
+.tileFunction {
   display: block;
   cursor: pointer;
   float: left;
   width: 60px;
   height: 60px;
   text-align: center;
-  background-color: #7AC5FF;
   z-index: 1;
   color: #ffffff;
   margin: 10px 0 10px 10px;
 }
-
-.tileTables:hover {
-  background-color: #A1D6FF;
-}
-
-.tileTables:active {
+.tileFunction:active {
   transform: perspective(400px) rotateX(0.2rad);
   transform-origin: 50% bottom;
 }
-
-.tileTables a {
+.tileFunction a {
   display: block;
   width: 100%;
   height: 100%;
   position: relative;
 }
-
-.tileTables a:hover {
+.tileFunction a:hover {
   text-decoration: none;
 }
-
-.tileTables .fa {
+.tileFunction .fa {
   padding-top: 6px;
   font-size: 32px;
   padding-bottom: 0px;
   margin-bottom: 0px;
-} 
-
-.tileTables span {
+}
+.tileFunction span {
   padding-top: 0px;
   margin-top: 0px;
   font-size: 13px;
@@ -100,7 +160,7 @@
 }
 
 .delimiter-tiles {
-  border-left: 1px solid #E2E2E2;
+  border-left: 1px solid #e2e2e2;
   height: 70px;
   margin: 5px -1px 5px 9px;
 }
@@ -110,12 +170,8 @@
   position: absolute;
   left: calc(50% - 250px);
   top: calc(50% - 119px);
-  display: inline-block; 
+  display: inline-block;
   z-index: 1000;
-}
-
-.input-group-addon {
-    background-color: #EBF0F3;
 }
 
 .loading {
@@ -130,101 +186,90 @@
   z-index: 999;
   line-height: 22px;
 }
-
 .loading .fa {
   padding: 4px;
   font-size: 32px;
-  color: #4A9CE2;
+  color: #2e8bcc;
 }
-
 .loading a {
   cursor: pointer;
-  color: #4A9CE2;
-}
-
-.leftOffset {
-  margin-left: 113px;
-}
-
-.noMarginBottom {
-  margin-bottom: 0px;
 }
 
 #content {
   height: 100%;
 }
 
-.wrapTablesBlock1 {
+.wrapLeftBlock {
   margin: 0px 3px 10px 10px;
   height: 100%;
 }
 
-.headTablesBlock {
-  background: #2e8bcc;
+.headBlock {
   color: #ffffff;
   height: 30px;
   line-height: 28px;
   font-size: 16px;
   white-space: nowrap;
 }
-
-.headTablesBlock .fa {
+.headBlock .fa {
   padding: 0 8px;
   font-size: 18px;
   vertical-align: -10%;
-} 
-
-.tablesSelect {
-  background: #F8F8F8;
-  border: 1px solid #E2E2E2;
-  height: calc(100% - 30px);
-  padding: 4px 5px 5px 5px;
-  -webkit-user-select: text;
 }
 
-.tablesSelect ul {
+.bodyLeftBlock, .bodyRightBlock {
+  background: #F8F8F8;
+  border: 1px solid #e2e2e2;
+  height: calc(100% - 30px);
+  padding: 8px;
+}
+
+#tableList {
   list-style: none;
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: auto;
+  -webkit-user-select: text;
 }
-
-.metro .tablesSelect ul li {
+#tableList li {
   white-space: pre;
   font-size: 12px;
   line-height: 26px;
   color: #2A2A2A;
   letter-spacing: 0;
   padding-left: 5px;
+  cursor: pointer;
 }
-
-.tablesSelect .fa {
+#tableList li:hover {
+  background: #E4F4FF;
+}
+#tableList li.selected {
+  background: #EBF0F3;
+  border: 1px solid #DDDDDD;
+  border-right: none;
+  line-height: 24px;
+  padding-left: 4px;
+}
+#tableList .fa {
   padding: 0px 6px 0 0;
   font-size: 18px;
   vertical-align: -10%;
   color: #515151;
 }
 
-.wrapTablesBlock2 {
+.wrapRightBlock {
   margin: 0px 10px 10px 6px;
   height: 100%;
-}
-
-.tablesBlock2 {
-  background: #F8F8F8;
-  border: 1px solid #E2E2E2;
-  padding: 8px;
-  height: calc(100% - 30px);
 }
 
 .searchBar {
   margin-bottom: 10px;
 }
 
-.searchBar .form-control { 
-  float: none; 
-  max-height: 250px; 
+.searchBar .form-control {
+  float: none;
+  max-height: 250px;
   height: 36px;
   border: 1px solid #b4b4b4;
   padding: 7px 12px;
@@ -235,7 +280,7 @@
 
 .searchBar .form-control:focus {
   border-color: #7AC5FF;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(102, 175, 233, 0.6);
 }
 
 .saerchText {
@@ -256,34 +301,29 @@
   color: #ccc;
 }
 
-.gridTables .searchclear {
+.forTables .searchclear {
   right: 20px;
   top: 12px;
   margin: 0;
 }
 
-.searchBar .tileTables {
+.searchBar .tileFunction {
   width: 36px;
   height: 36px;
   margin: 0 0 0 8px;
 }
 
-.searchBar .tileTables .fa {
+.searchBar .tileFunction .fa {
   font-size: 22px;
 }
 
 #tables_wrapper {
   border: 1px solid #b4b4b4;
   overflow: hidden;
-  /*height: calc(100% - 42px);*/
 }
 
 #data_wrapper {
   margin-top: 20px;
-}
-
-.forTables .input-group-sm>.input-group-addon {
-  padding: 5px 8px;
 }
 
 .forTables #alertArea, .forTables #errorNotification {
@@ -295,59 +335,37 @@
   margin-right: 4px;
 }
 
-@media (max-width:992px) {
-    .margin-to-align {
-      margin-left: 0px;
-      position: relative;
+@media (max-width: 992px) {
+  .margin-to-align {
+    margin-left: 0px;
+    position: relative;
   }
 }
-
-@media (max-width:992px) {
-    .tile-preview{
-      margin-left: 0px;
-      position: relative;
-      width: 160px;
+@media (max-width: 992px) {
+  .tile-preview {
+    margin-left: 0px;
+    position: relative;
+    width: 160px;
   }
 }
-
 @media (min-width: 992px) {
   .margin-to-align {
-      margin-left: auto;
-      margin-right: auto;
-      position: relative;
-      width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 940px;
   }
 }
-
 @media (min-width: 1200px) {
   .margin-to-align {
-      margin-left: auto;
-      margin-right: auto;
-      position: relative;
-      width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 1140px;
   }
 }
-
 .clearFloat {
   clear: both;
-}
-
-li.selected{
-background:#EBF0F3; 
-border: 1px solid #DDDDDD; 
-border-right: none;
-}
-
-.metro .tablesSelect ul li.selected {
-  line-height: 24px;
-  padding-left: 4px;
-}
-
-#tableList li{
-  cursor:pointer;
-}
-#tableList li:hover{   
-  background: #E4F4FF;
 }
 
 table.dataTable,

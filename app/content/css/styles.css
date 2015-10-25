@@ -61,6 +61,40 @@
   padding: 4px 5px 5px 5px;
 }
 
+#tableList {
+  list-style: none;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  -webkit-user-select: text;
+}
+#tableList li {
+  white-space: pre;
+  font-size: 12px;
+  line-height: 26px;
+  color: #2A2A2A;
+  letter-spacing: 0;
+  padding-left: 5px;
+  cursor: pointer;
+}
+#tableList li:hover {
+  background: #E4F4FF;
+}
+#tableList li.selected {
+  background: #EBF0F3;
+  border: 1px solid #DDDDDD;
+  border-right: none;
+  line-height: 24px;
+  padding-left: 4px;
+}
+#tableList .fa {
+  padding: 0px 6px 0 0;
+  font-size: 18px;
+  vertical-align: -10%;
+  color: #515151;
+}
+
 .forTables, .forRedis {
   margin: 10px;
   font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
@@ -222,40 +256,6 @@
   border: 1px solid #e2e2e2;
   height: calc(100% - 30px);
   padding: 8px;
-}
-
-#tableList {
-  list-style: none;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: auto;
-  -webkit-user-select: text;
-}
-#tableList li {
-  white-space: pre;
-  font-size: 12px;
-  line-height: 26px;
-  color: #2A2A2A;
-  letter-spacing: 0;
-  padding-left: 5px;
-  cursor: pointer;
-}
-#tableList li:hover {
-  background: #E4F4FF;
-}
-#tableList li.selected {
-  background: #EBF0F3;
-  border: 1px solid #DDDDDD;
-  border-right: none;
-  line-height: 24px;
-  padding-left: 4px;
-}
-#tableList .fa {
-  padding: 0px 6px 0 0;
-  font-size: 18px;
-  vertical-align: -10%;
-  color: #515151;
 }
 
 .wrapRightBlock {

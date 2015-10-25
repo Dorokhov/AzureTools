@@ -10,9 +10,9 @@
     window.$.DataTable = dataTable;
     window.$.dataTable = dataTable;
 
-   // var reorder = require('colReorder');
-    //var colVis = require('colVis');
-    //var colResize = require('colResize');
+    var reorder = require('colReorder');
+    var colVis = require('colVis');
+    var colResize = require('colResize');
     var select = require('dataTablesSelect')($);
 
     window.isDebugVersion = false;

@@ -46,6 +46,11 @@
                 });
             }
 
+            if ((data == null || data.length == 0)) {
+                $('#tables').empty();
+                return;
+            }
+
             if (self.oTable != null) {
                 self.oTable.destroy();
             }
@@ -66,10 +71,16 @@
                     realtime: false
                 },
                 //dom: 'Zlfrtip',
-                dom:  '<Zf<t>lip>',
+                dom: '<Zf<t>lip>',
                 colResize: {
                     "tableWidthFixed": false
                 },
+select:true
+                //dom: 'T<"clear">lfrtip',
+                //tableTools: {
+                //    "sRowSelect": "os"
+                //}
+
                 //dom: 'C<"clear">lfrtip',
                 //colVis: {
                 //    restore: "Restore",

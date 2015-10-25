@@ -25,7 +25,7 @@
             }
         });
 
-        self.showEntities = function(data) {
+        self.showEntities = function(data, onselect) {
             var columnsDictionary = {};
             for (var i = 0; i < data.length; i++) {
                 for (var propertyName in data[i]) {
@@ -75,11 +75,7 @@
                 colResize: {
                     "tableWidthFixed": false
                 },
-select:true
-                //dom: 'T<"clear">lfrtip',
-                //tableTools: {
-                //    "sRowSelect": "os"
-                //}
+                select: true
 
                 //dom: 'C<"clear">lfrtip',
                 //colVis: {
@@ -90,6 +86,10 @@ select:true
             });
 
             self.oTable.columns.adjust().draw();
+            self.oTable.on('select', function(e,dt) {
+                var rows = dt.rows( { selected: true } ).data();
+                if(onselect) onselect(rows);
+            });
         };
     };
 }

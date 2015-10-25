@@ -57,6 +57,15 @@ exports.register = function(module) {
                         };
                     };
 
+                    var entitiesSelectionViewModel = new function() {
+                        var self = this;
+                        this.SelectedEntities = null;
+                        this.onSelectedEntitiesChanged = function(selectedEntities) {
+                            self.SelectedEntities = selectedEntities;
+                            $notifyViewModel.close();
+                        };
+                    };
+
                     $busyIndicator.Text = 'Loading...';
 
                     // tables action bar
@@ -199,6 +208,28 @@ exports.register = function(module) {
                         };
                     };
 
+                    $actionBarItems.deleteTableEntity = function() {
+                        console.log(entitiesSelectionViewModel.SelectedEntities)
+                        if (entitiesSelectionViewModel.SelectedEntities != null) {
+                            $confirmViewModel.Body = 'Are you sure you want to delete ' + entitiesSelectionViewModel.SelectedEntities.length + ' entities?';
+                            $confirmViewModel.show(function() {
+                                for (var i = 0; i < entitiesSelectionViewModel.SelectedEntities.length; i++) {
+                                    var each = entitiesSelectionViewModel.SelectedEntities[i];
+                                    defaultClientFactory().deleteEntity(
+                                        tableSelectionViewModel.SelectedTable,
+                                        each,
+                                        function(error, result, response) {
+                                            if (!error) {
+                                                //loadTableList();
+                                                //tableSelectionViewModel.SelectedTable = null;
+                                                //tablesPresenter.showEntities(null);
+                                            } else {}
+                                        });
+                                };
+                            });
+                        }
+                    };
+
                     $actionBarItems.deleteTable = function() {
                         if (tableSelectionViewModel.SelectedTable != null) {
                             $confirmViewModel.Body = 'Are you sure you want to delete "' + tableSelectionViewModel.SelectedTable + '"?';
@@ -271,7 +302,7 @@ exports.register = function(module) {
                                 self.entries = result.entries;
                                 $actionBarItems.Continuation = result.continuationToken;
 
-                                tablesPresenter.showEntities(result.entries);
+                                tablesPresenter.showEntities(result.entries, entitiesSelectionViewModel.onSelectedEntitiesChanged);
                             });
                         }
                     };

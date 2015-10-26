@@ -7,7 +7,7 @@
   "scripts": {
     "test": "grunt browserify && karma start karma.config.js",
     "lint": "eslint app/**/*.js app/*.js",
-    "build": "grunt browserify sass"
+    "build": "grunt browserify"
   },
   "repository": {
     "type": "git",

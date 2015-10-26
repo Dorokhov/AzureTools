@@ -1,6 +1,7 @@
 $borderBlock: 1px solid #e2e2e2;
 $bg-colorBlock: #F8F8F8;
 $borderTable: 1px solid #b4b4b4;
+$fontFamily: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
 
 @mixin colorsModule ($colorHead, $colorTile) {
 	.navbar-default {
@@ -10,7 +11,7 @@ $borderTable: 1px solid #b4b4b4;
 	.tileFunction {
 		background-color: $colorTile;
 		&:hover {
-			background-color: lighten($colorTile, 8%);
+			background-color: lighten($colorTile, 10%);
 		}
 	}
 	.popup {
@@ -41,10 +42,11 @@ $borderTable: 1px solid #b4b4b4;
 
 .forTables, .forRedis {
 	margin: 10px;
-	font-family: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+	font-family: $fontFamily;
 	height: calc(100% - 20px);
 	.navbar {
 		min-height: 40px;
+		white-space: nowrap;
 	}
 	.navbar-brand {
 		height: 40px;
@@ -90,7 +92,6 @@ $borderTable: 1px solid #b4b4b4;
 .navbarTilesFunction {
 	margin: 0px;
 	padding: 0px;
-	width: 100%;
 	.navbar-nav {
 		margin: 0px;
 		padding-right: 10px;
@@ -154,6 +155,7 @@ $borderTable: 1px solid #b4b4b4;
 	top: calc(50% - 119px);
 	display: inline-block; 
 	z-index: 1000;
+	box-shadow: 2px 2px 8px rgba(0,0,0,.175);
 }
 
 .loading {

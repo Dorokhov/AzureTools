@@ -1,10 +1,22 @@
 <div class="container">
     <div class="metro grid" style="font-weight: normal; -webkit-user-select: text">
         <bg-splitter orientation="horizontal">
-            <bg-pane min-size="50" init-width-percentage="26.7">
+            <bg-pane min-size="170" init-width-percentage="26.7">
                 <div class="wrapLeftBlock">
-                    <div class="headBlock">
-                        <i class="fa fa-database"></i><span id="accountName"></span>
+                    <div id="headBlock-Database" class="headBlock">
+                        <i class="fa fa-database"></i><span>Database</span>
+                        
+                            <div class="dropdown" ng-show="ActionBarItems.IsDatabaseSelectVisible">
+                                <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ActionBarItems.DatabaseViewModel.Current}}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
+                                </ul>
+                            </div>
+                            <div class="clearFloat"></div>
+                        
                     </div>
                     <div class="bodyLeftBlock">
                         <!-- <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">

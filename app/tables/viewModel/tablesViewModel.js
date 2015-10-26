@@ -166,8 +166,14 @@ exports.register = function(module) {
                         createTableEntityDialog.Header = 'Update Entity';
                         createTableEntityDialog.IsVisible = true;
 
-                        var columnsDictionary = {};
-                        var tableProperties = [];
+                        var columnsDictionary = {PartitionKey:'',RowKey:''};
+                        var tableProperties = [{
+                            Key: 'PartitionKey',
+                            Value: ''
+                        }, {
+                            Key: 'RowKey',
+                            Value: ''
+                        }];
                         for (var i = 0; i < self.entries.length; i++) {
                             for (var propertyName in self.entries[i]) {
                                 if (columnsDictionary[propertyName] == undefined && propertyName !== 'Timestamp' && propertyName !== '.metadata') {

@@ -37,13 +37,15 @@
 
             var columns = [];
             for (var col in columnsDictionary) {
-                columns.push({
-                    title: col,
-                    data: col,
-                    render: function(item) {
-                        return '<div style="white-space:nowrap;display: block;overflow: hidden;  display: -webkit-box; max-width: 500em;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden; text-overflow: ellipsis;">' + (item == undefined ? '' : item._) + '</div>';
-                    },
-                });
+                if (col !== '.metadata') {
+                    columns.push({
+                        title: col,
+                        data: col,
+                        render: function(item) {
+                            return '<div style="white-space:nowrap;display: block;overflow: hidden;  display: -webkit-box; max-width: 500em;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden; text-overflow: ellipsis;">' + (item == undefined ? '' : item._) + '</div>';
+                        },
+                    });
+                }
             }
 
             if ((data == null || data.length == 0)) {
@@ -86,9 +88,11 @@
             });
 
             self.oTable.columns.adjust().draw();
-            self.oTable.on('select', function(e,dt) {
-                var rows = dt.rows( { selected: true } ).data();
-                if(onselect) onselect(rows);
+            self.oTable.on('select', function(e, dt) {
+                var rows = dt.rows({
+                    selected: true
+                }).data();
+                if (onselect) onselect(rows);
             });
         };
     };

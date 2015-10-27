@@ -70,21 +70,9 @@
             </div>
         </nav>
 
-        <div ng-controller="ActionBarController" class="collapse navbar-collapse navbarTilesFunction">
+        <div ng-controller="ActionBarController" class="collapse navbar-collapse" id="navbarTilesFunction">
             <!--Redis Action Bar-->
             <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'redis'">
-                <!-- <li class="row-fluid" ng-show="ActionBarItems.IsDatabaseSelectVisible" style="padding-top: 16px;">
-                    <span style="color: white; float: left;" class="on-left-more">Database</span>
-                    <div class="dropdown" style="float: left; margin-left: 5px; margin-top: -2px;">
-                        <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ActionBarItems.DatabaseViewModel.Current}}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
-                        </ul>
-                    </div>
-                </li> -->
                 <li ng-show="ActionBarItems.IsSettingsVisible">
                     <div class="tileFunction">
                         <a class="fa-links" title="Account storage" ng-click="ActionBarItems.changeSettings()">
@@ -114,20 +102,6 @@
                         </a>
                     </div>
                 </li>
-                                       
-                            
-                <!-- <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible" style="display: inline-flex;">
-                    <input ng-model="ActionBarItems.SearchViewModel.Pattern"
-                    ng-change="ActionBarItems.SearchViewModel.onChange()"
-                    ng-enter="ActionBarItems.SearchViewModel.search()"
-                    ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                    type="text" class="form-control" style="margin-top: 8px; float: left; min-width:450px; " autofocus />
-                    <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-
-                    <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
-                        <span class="icon-search"></span>
-                    </a>
-                </li> -->
             </ul>
 
             <!--Tables Action Bar-->

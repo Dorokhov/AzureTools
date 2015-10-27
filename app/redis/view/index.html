@@ -19,30 +19,23 @@
                         
                     </div>
                     <div class="bodyLeftBlock">
-                        <!-- <div class="searchBar" ng-controller="ActionBarController" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'tables'">
-                            <div ng-show="ActionBarItems.IsSearchVisible">
-                                <div class="saerchText">
-                                    <textarea ng-model="ActionBarItems.SearchViewModel.Pattern"
-                                    ng-change="ActionBarItems.SearchViewModel.onChange()"
-                                    ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="PartitionKey eq 'xxx' and RowKey eq 'yyy'"
-                                    id="filterArea"
-                                    autofocus></textarea>
-
-                                    <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-
-                                </div>
-                                <span class="tileFunction">
-                                    <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                </span>
-
-                                <div class="clearFloat"></div>
+                        <div class="searchBar" ng-show="ActionBarItems.IsSearchVisible">
+                            <div class="saerchText">
+                                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                ng-enter="ActionBarItems.SearchViewModel.search()"
+                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                type="text" class="form-control" autofocus />
+                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
                             </div>
-                        </div> -->
+                            <span class="tileFunction">
+                                <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                            <div class="clearFloat"></div>
+                        </div>
+
                         <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
                     </div>
                 </div>

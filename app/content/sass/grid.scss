@@ -1,0 +1,93 @@
+.details-textarea{
+	width: 100%;
+}
+
+.updateButton {
+	float: right;
+	margin-top: 5px !important;
+}
+
+tr.details td.details-control {
+	background: green no-repeat center center;
+}
+
+.grid label {
+	font-size: 12px;
+}
+
+tr.shown {
+	background: #eeeeee;
+}
+
+.dataTables_scrollHead {
+	background: white;
+	top: 20px;
+	z-index: 100;
+}
+
+/*Tables and Redis*/
+$borderTH: 1px solid #b4b4b4;
+$borderTD: 1px #DDDDDD solid;
+
+#tables, #data {
+	-webkit-user-select: text;
+	margin-right: -1px;
+	td {
+		font-size: 12px;
+		line-height: 14px;
+		border-right: $borderTD;
+		border-bottom: $borderTD;
+		padding: 5px 12px 5px 8px;
+	}
+}
+
+#data td {
+		font-size: 13px;
+		line-height: 16px;
+		padding: 8px 12px 8px 8px;
+}
+
+.forTables, .forRedis {
+	.dataTables_scroll {
+		margin-top: 0px;
+	}
+	.dataTables_scrollHead {
+		top: 0px;
+		th {
+			position: relative;
+		}
+	}
+	.metro {
+		.table {
+			th {
+				font-size: 12px;
+				border-right: $borderTD;
+				padding: 4px 12px 4px 8px;
+			}
+			thead th {
+				border-bottom: $borderTH;
+			}
+		}
+		.dataTable thead {
+			.sorting_asc:after, .sorting_desc:after, .sorting:after {
+				position: absolute;
+				float: right;
+				right: 1px;
+			}
+		}
+		.dataTables_scrollBody .dataTable thead {
+			.sorting_asc:after, .sorting_desc:after, .sorting:after {
+				font-size: 1px;
+			}
+		}
+	}
+}
+
+.forRedis .metro .table th {
+				font-size: 13px;
+				line-height: 24px;
+}
+
+
+
+

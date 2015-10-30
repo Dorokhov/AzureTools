@@ -31,6 +31,15 @@
   border-color: #75ecc9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #75ecc9;
 }
+.forRedis .dataTables_scrollHead th {
+  background-color: #edf7f4;
+}
+.forRedis .dataTables_scrollHead th:focus {
+  outline-color: #00ADAA;
+}
+.forRedis .metro .table.hovered tbody tr:hover {
+  background-color: #e5fff7;
+}
 
 #headBlock-Database .fa {
   float: left;
@@ -84,6 +93,22 @@
   background-color: #edf7f4;
 }
 
+#typeValue {
+  margin-bottom: 10px;
+}
+
+.metro #typeValue p {
+  padding: 0px 6px 4px 0;
+  font-size: 15px;
+  margin: 0;
+  line-height: 32px;
+  color: #2A2A2A;
+}
+.metro #typeValue span {
+  font-weight: bold;
+  color: #48E6B7;
+}
+
 .forTables .navbar-default {
   background-color: #2e8bcc;
   border-color: #2e8bcc;
@@ -116,6 +141,15 @@
 .forTables .searchBar .form-control:focus {
   border-color: #addbff;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #addbff;
+}
+.forTables .dataTables_scrollHead th {
+  background-color: #edf3f7;
+}
+.forTables .dataTables_scrollHead th:focus {
+  outline-color: #2e8bcc;
+}
+.forTables .metro .table.hovered tbody tr:hover {
+  background-color: #e5f4ff;
 }
 .forTables .bodyLeftBlock {
   padding: 4px 5px 5px 5px;
@@ -377,7 +411,7 @@
   right: 12px;
 }
 
-#tables_wrapper {
+#tables_wrapper, #data_wrapper {
   border: 1px solid #b4b4b4;
   overflow: hidden;
 }

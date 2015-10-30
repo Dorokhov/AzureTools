@@ -1,7 +1,3 @@
-//Color for Redis
-$bg-colorHeadBlock-Redis: #00ADAA;
-$bg-colorTile-Redis: #48E6B7;
-
 .forRedis {
 	@include colorsModule($bg-colorHeadBlock-Redis, $bg-colorTile-Redis);
 }
@@ -57,5 +53,23 @@ $bg-colorTile-Redis: #48E6B7;
 				}
 			}
 		}
+	}
+}
+
+#typeValue {
+	margin-bottom: 10px;
+}
+
+.metro #typeValue {
+	p {
+		padding: 0px 6px 4px 0;
+		font-size: 15px;
+		margin: 0; 
+		line-height: 32px;
+		color: #2A2A2A;
+	}
+	span {
+		font-weight: bold;
+		color: $bg-colorTile-Redis;
 	}
 }

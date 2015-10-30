@@ -1,7 +1,3 @@
-//Color for Tables
-$bg-colorHeadBlock-Tables: #2e8bcc;
-$bg-colorTile-Tables: #7AC5FF;
-
 .forTables {
 	@include colorsModule($bg-colorHeadBlock-Tables, $bg-colorTile-Tables);
 

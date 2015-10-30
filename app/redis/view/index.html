@@ -43,11 +43,25 @@
             <bg-pane min-size="150">
                 <div class="wrapRightBlock">
                     <div class="headBlock">
-                        <i class="fa fa-table"></i><span id="tableName"></span>
+                        <i class="fa fa-table"></i><span>Value</span>
                     </div>
                     <div class="bodyRightBlock">
-                        
-                       
+                       <div id="valueHashSet">
+                            <bg-splitter orientation="vertical">
+                                <bg-pane min-size="100" init-height-percentage="50">
+                                    <div id="typeValue">
+                                        <p>Type: <span>Hash Set</span></p>
+                                    </div>
+                                </bg-pane>
+                                <bg-pane min-size="100">
+                                    <div id="editValue">
+                                        <p>Edit Value</p>
+                                    </div>
+                                    
+                                </bg-pane>
+                            </bg-splitter>
+                           
+                       </div> 
                     </div>
                 </div>
             </bg-pane>

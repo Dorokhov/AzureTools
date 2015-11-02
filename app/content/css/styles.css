@@ -21,15 +21,15 @@
 .forRedis .loading a {
   color: #1dd49d;
 }
+.forRedis .form-control:focus {
+  border-color: #75ecc9;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #75ecc9;
+}
 .forRedis .input-group-addon {
   background-color: #edf7f4;
 }
 .forRedis .headBlock {
   background: #00ADAA;
-}
-.forRedis .searchBar .form-control:focus {
-  border-color: #75ecc9;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #75ecc9;
 }
 .forRedis .dataTables_scrollHead th {
   background-color: #edf7f4;
@@ -59,7 +59,7 @@
   color: #ffffff;
   font-family: "Segoe UI_", "Open Sans", Verdana, Arial, Helvetica, sans-serif;
 }
-#headBlock-Database button:active {
+#headBlock-Database button:active, #headBlock-Database button:hover {
   background-color: #75ecc9 !important;
 }
 #headBlock-Database button:focus {
@@ -93,20 +93,56 @@
   background-color: #edf7f4;
 }
 
-#typeValue {
+.wrapRightBlock .headBlock span {
+  padding-left: 10px;
+}
+
+.typeValue {
   margin-bottom: 10px;
 }
 
-.metro #typeValue p {
+.metro .typeValue p {
   padding: 0px 6px 4px 0;
   font-size: 15px;
   margin: 0;
   line-height: 32px;
   color: #2A2A2A;
 }
-.metro #typeValue span {
+.metro .typeValue span {
   font-weight: bold;
-  color: #48E6B7;
+  color: #1edda4;
+}
+
+.editValue {
+  height: 100%;
+}
+.editValue p {
+  margin: 0 0 8px;
+  padding-top: 2px;
+}
+.editValue .form-control {
+  height: calc(100% - 65px);
+  border: 1px solid #b4b4b4;
+  padding: 7px 12px;
+  font-size: 13px;
+  width: 100%;
+  min-height: 36px;
+  resize: none;
+}
+.editValue .tileFunction {
+  width: 48px;
+  height: 30px;
+  -webkit-user-select: none;
+  line-height: 30px;
+  float: right;
+  margin: 8px 0 7px 8px;
+}
+
+#value-String {
+  height: 100%;
+}
+#value-String .form-control {
+  height: calc(100% - 112px);
 }
 
 .forTables .navbar-default {
@@ -132,15 +168,15 @@
 .forTables .loading a {
   color: #3daaff;
 }
+.forTables .form-control:focus {
+  border-color: #addbff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #addbff;
+}
 .forTables .input-group-addon {
   background-color: #edf3f7;
 }
 .forTables .headBlock {
   background: #2e8bcc;
-}
-.forTables .searchBar .form-control:focus {
-  border-color: #addbff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #addbff;
 }
 .forTables .dataTables_scrollHead th {
   background-color: #edf3f7;

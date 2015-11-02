@@ -28,7 +28,6 @@ tr.shown {
 /*Tables and Redis*/
 #tables, #data {
   -webkit-user-select: text;
-  margin-right: -1px;
 }
 #tables td, #data td {
   font-size: 12px;
@@ -41,7 +40,7 @@ tr.shown {
 #data td {
   font-size: 13px;
   line-height: 16px;
-  padding: 8px 12px 8px 8px;
+  padding: 7px 12px 7px 8px;
 }
 
 .forTables .dataTables_scroll, .forRedis .dataTables_scroll {
@@ -70,7 +69,10 @@ tr.shown {
   font-size: 1px;
 }
 
+.forRedis .metro .table {
+  margin-bottom: 0;
+}
 .forRedis .metro .table th {
   font-size: 13px;
-  line-height: 24px;
+  line-height: 22px;
 }

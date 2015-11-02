@@ -24,16 +24,19 @@
 			color: darken($colorTile, 12%);
 		}
 	}
+
+	.form-control:focus {
+		border-color: lighten($colorTile, 10%);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($colorTile, 10%);
+	}
+
 	.input-group-addon {
 		background-color: hsl(hue($colorTile), 40%, 95%);
 	}
 	.headBlock {
 		background: $colorHead;
 	}
-	.searchBar .form-control:focus {
-		border-color: lighten($colorTile, 10%);
-		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($colorTile, 10%);
-	}
+	
 	.dataTables_scrollHead {
 		th {
 			background-color: hsl(hue($colorTile), 40%, 95%); 
@@ -273,7 +276,7 @@
 	color: #ccc;
 }
 
-.forTables, .forRedis {
+.forTables, .forRedis  {
 	.searchclear {
 		right: 20px;
 		top: 12px;

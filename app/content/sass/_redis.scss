@@ -20,7 +20,7 @@
 		background-color: $bg-colorTile-Redis;
 		color: #ffffff;
 		font-family: $fontFamily;
-		&:active {
+		&:active, &:hover {
 			background-color: lighten($bg-colorTile-Redis, 10%) !important;
 		}
 		&:focus {
@@ -56,11 +56,15 @@
 	}
 }
 
-#typeValue {
+.wrapRightBlock .headBlock span {
+	padding-left: 10px;
+}
+
+.typeValue {
 	margin-bottom: 10px;
 }
 
-.metro #typeValue {
+.metro .typeValue {
 	p {
 		padding: 0px 6px 4px 0;
 		font-size: 15px;
@@ -70,6 +74,38 @@
 	}
 	span {
 		font-weight: bold;
-		color: $bg-colorTile-Redis;
+		color: darken($bg-colorTile-Redis, 10%);
+	}
+}
+
+.editValue {
+	height: 100%;
+	p {
+		margin: 0 0 8px;
+		padding-top: 2px;
+	}
+	.form-control {
+		height: calc(100% - 65px);
+		border: $borderTable;
+		padding: 7px 12px;
+		font-size: 13px;
+		width: 100%;
+		min-height: 36px;
+		resize: none;
+	}
+	.tileFunction {
+		width: 48px;
+		height: 30px;
+		-webkit-user-select: none;
+		line-height: 30px;
+		float: right;
+		margin: 8px 0 7px 8px;
+	}
+}
+
+#value-String {
+	height: 100%;
+	.form-control {
+		height: calc(100% - 112px);
 	}
 }

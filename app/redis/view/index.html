@@ -1,121 +1,154 @@
 <div class="container">
-    <div class="metro grid" style="font-weight: normal; -webkit-user-select: text">
-        <bg-splitter orientation="horizontal">
-            <bg-pane min-size="170" init-width-percentage="26.7">
-                <div class="wrapLeftBlock">
-                    <div id="headBlock-Database" class="headBlock">
-                        <i class="fa fa-database"></i><span>Database</span>
-                        
-                            <div class="dropdown" ng-show="ActionBarItems.IsDatabaseSelectVisible">
-                                <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ActionBarItems.DatabaseViewModel.Current}}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                    <li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
-                                </ul>
-                            </div>
-                            <div class="clearFloat"></div>
-                        
-                    </div>
-                    <div class="bodyLeftBlock">
-                        <div class="searchBar" ng-show="ActionBarItems.IsSearchVisible">
-                            <div class="saerchText">
-                                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
-                                ng-change="ActionBarItems.SearchViewModel.onChange()"
-                                ng-enter="ActionBarItems.SearchViewModel.search()"
-                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                type="text" class="form-control" autofocus />
-                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-                            </div>
-                            <span class="tileFunction">
-                                <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                            </span>
-                            <div class="clearFloat"></div>
-                        </div>
+	<div class="metro grid" style="font-weight: normal; -webkit-user-select: text">
+		<bg-splitter orientation="horizontal">
+			<bg-pane min-size="170" init-width-percentage="26.7">
+				<div class="wrapLeftBlock">
+					<div id="headBlock-Database" class="headBlock">
+						<i class="fa fa-database"></i><span>Database</span>
+						
+							<div class="dropdown" ng-show="ActionBarItems.IsDatabaseSelectVisible">
+								<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{{ActionBarItems.DatabaseViewModel.Current}}
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+									<li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="ActionBarItems.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
+								</ul>
+							</div>
+							<div class="clearFloat"></div>
+						
+					</div>
+					<div class="bodyLeftBlock">
+						<div class="searchBar" ng-show="ActionBarItems.IsSearchVisible">
+							<div class="saerchText">
+								<input ng-model="ActionBarItems.SearchViewModel.Pattern"
+								ng-change="ActionBarItems.SearchViewModel.onChange()"
+								ng-enter="ActionBarItems.SearchViewModel.search()"
+								ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+								type="text" class="form-control" autofocus />
+								<span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+							</div>
+							<span class="tileFunction">
+								<a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+									<i class="fa fa-search"></i>
+								</a>
+							</span>
+							<div class="clearFloat"></div>
+						</div>
 
-                        <table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
-                    </div>
-                </div>
-            </bg-pane>
-            <bg-pane min-size="150">
-                <div class="wrapRightBlock">
-                    <div class="headBlock">
-                        <i class="fa fa-table"></i><span>Value</span>
-                    </div>
-                    <div class="bodyRightBlock">
-                       <div id="valueHashSet">
-                            <bg-splitter orientation="vertical">
-                                <bg-pane min-size="100" init-height-percentage="50">
-                                    <div id="typeValue">
-                                        <p>Type: <span>Hash Set</span></p>
-                                    </div>
-                                </bg-pane>
-                                <bg-pane min-size="100">
-                                    <div id="editValue">
-                                        <p>Edit Value</p>
-                                    </div>
-                                    
-                                </bg-pane>
-                            </bg-splitter>
-                           
-                       </div> 
-                    </div>
-                </div>
-            </bg-pane>
-        </bg-splitter>
-    </div>
+						<table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+					</div>
+				</div>
+			</bg-pane>
+			<bg-pane min-size="150">
+				<div class="wrapRightBlock">
+					<div class="headBlock">
+						<span>Value</span>
+					</div>
+					<div class="bodyRightBlock">
+						<div id="navbarValue">
+							<div class="typeValue">
+								<p>Type: <span>Hash Set</span></p>
+							</div>
+						</div>
+						<div id="value-HashSet" style="display: none">
+							<bg-splitter orientation="vertical">
+								<bg-pane min-size="100" init-height-percentage="55">
+									
+								</bg-pane>
+								<bg-pane min-size="119">
+									<div class="editValue">
+										<p>Edit Value</p>
+										<textarea type="text" class="form-control" autofocus></textarea>
+										<span class="tileFunction">
+											<a class="fa-links" title="Save value">Save</a>
+										</span>
+									</div>
+								</bg-pane>
+							</bg-splitter>
+						</div>
+						
+						<div id="value-Set" style="display: none">
+							<bg-splitter orientation="vertical">
+								<bg-pane min-size="100" init-height-percentage="55">
+									
+								</bg-pane>
+								<bg-pane min-size="119">
+									<div class="editValue">
+										<p>Edit Value</p>
+										<textarea type="text" class="form-control" autofocus></textarea>
+										<span class="tileFunction">
+											<a class="fa-links" title="Save value">Save</a>
+										</span>
+									</div>
+								</bg-pane>
+							</bg-splitter>
+						</div>  
+						
+						<div id="value-String" style="display: none">
+							<div class="editValue">
+								<p>Edit Value</p>
+								<textarea type="text" class="form-control" autofocus></textarea>
+								<span class="tileFunction">
+									<a class="fa-links" title="Save value">Save</a>
+								</span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</bg-pane>
+		</bg-splitter>
+	</div>
 </div>
 
 <script type="text/ng-template" id="createKeyTemplate">
-    <div class="input-group input-group-sm" style="margin-top:2px">
-        <span class="input-group-addon" style="border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid; width:97px;">Type</span>
-        <div class="dropdown" style="float:left; margin-left: 5px;">
-            <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
-                {{DialogViewModel.BodyViewModel.SelectedType}}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
-            </ul>
-        </div>
-    </div>
+	<div class="input-group input-group-sm" style="margin-top:2px">
+		<span class="input-group-addon" style="border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid; width:97px;">Type</span>
+		<div class="dropdown" style="float:left; margin-left: 5px;">
+			<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
+				{{DialogViewModel.BodyViewModel.SelectedType}}
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				<li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
+			</ul>
+		</div>
+	</div>
 
-    <div class="input-group input-group-sm" style="margin-top:2px">
-        <span class="input-group-addon" style="width:96px">Key</span>
-        <input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
-    </div>
-    
-    <div class="input-group input-group-sm" style="margin-top:2px">
-        <span class="input-group-addon" style="width:96px">Value</span>
-        <textarea ng-model="DialogViewModel.BodyViewModel.Value"
-                  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
-                  class="form-control"
-                  style="width:372px; height: 100px;" />
-    </div>
+	<div class="input-group input-group-sm" style="margin-top:2px">
+		<span class="input-group-addon" style="width:96px">Key</span>
+		<input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
+	</div>
+	
+	<div class="input-group input-group-sm" style="margin-top:2px">
+		<span class="input-group-addon" style="width:96px">Value</span>
+		<textarea ng-model="DialogViewModel.BodyViewModel.Value"
+				  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
+				  class="form-control"
+				  style="width:372px; height: 100px;" />
+	</div>
 </script>
 
 <script type="text/ng-template" id="changeSettingsTemplate">
-    <div class="input-group input-group-sm">
-        <label>Provide credentials to access your Redis storage</label>
-    </div>
+	<div class="input-group input-group-sm">
+		<label>Provide credentials to access your Redis storage</label>
+	</div>
 
-    <div class="input-group input-group-sm">
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Host</span>
-            <input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
-        </div>
+	<div class="input-group input-group-sm">
+		<div class="input-group input-group-sm" style="margin-top:2px">
+			<span class="input-group-addon" style="width:96px;">Host</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
+		</div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Port</span>
-            <input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
-        </div>
+		<div class="input-group input-group-sm" style="margin-top:2px">
+			<span class="input-group-addon" style="width:96px;">Port</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
+		</div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon">Auth Password</span>
-            <input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
-        </div>
-    </div>
+		<div class="input-group input-group-sm" style="margin-top:2px">
+			<span class="input-group-addon">Auth Password</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
+		</div>
+	</div>
 </script>

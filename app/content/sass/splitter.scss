@@ -1,0 +1,124 @@
+@import "variables.scss";
+@import "functions.scss";
+
+.split-panes {
+	margin-top: 53px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	position: absolute;
+}
+
+.split-panes > .split-handler {
+	background: transparent;
+	position: absolute;
+	z-index: z-ind("split-handler");
+}
+
+/* Horizontal */ 
+
+.split-panes.horizontal > .split-handler {
+	width: 4px;
+		top: 50px;  left: 50%;
+	bottom: 0px;
+	cursor: ew-resize;
+}
+
+.split-panes.horizontal > .split-pane1,
+.split-panes.horizontal > .split-pane2 {
+	position: absolute;
+	height: 100%;
+}
+
+.split-panes.horizontal > .split-pane1 {
+	width: 50%; 
+}
+
+.split-panes.horizontal > .split-pane2 {
+	left: 50%;
+	right: 0px;
+	border-left: 1px solid #aaa;
+}
+
+
+/* Vertical */
+
+.split-panes.vertical > .split-handler {
+	height: 4px;
+ 	top: 50%; 
+	left: 0px;
+	right: 0px;
+	cursor: ns-resize;
+}
+
+.split-panes.vertical > .split-pane1,
+.split-panes.vertical > .split-pane2 {
+	position: absolute;
+	width: 100%;
+}
+
+.split-panes.vertical > .split-pane1 {
+	height: 50%; 
+}
+
+.split-panes.vertical > .split-pane2 {
+	top: 50%;
+	bottom: 0px;
+	border-top: 1px solid #aaa;
+}
+
+/*split-pane for Tables and Redis*/
+.forTables, .forRedis {
+	.split-panes {
+		left: 0px;
+		right: 0px;
+		top: 134px;
+		bottom: 10px;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+	}
+	.split-panes.horizontal > .split-pane2 {
+		border: none;
+	}
+	.split-panes.horizontal > .split-handler {
+		width: 4px;
+		top: 30px;
+		bottom: 50px;
+	}
+}
+
+.forTables .split-panes.horizontal > .split-handler { 
+	background: url(../img/splitHorizontal-Tables.png) no-repeat 0 center;  
+}
+
+.forRedis {
+	.split-panes.horizontal > .split-handler { 
+		background: url(../img/splitHorizontal-Redis.png) no-repeat 0 center;  
+	}
+	.split-panes.vertical {
+		left: 6px;
+		right: 10px;
+		top: 30px;
+		bottom: 0px;
+		margin: 10px;
+	}
+	.split-panes.vertical > .split-handler {
+		height: 7px;
+		left: 0px;
+		right: 0px;
+		background: #FFFFFF url(../img/splitVertical-Redis.png) no-repeat center center;
+		border-top: $borderBlock;
+		border-bottom: $borderBlock;
+	}
+	.split-panes.vertical > .split-pane2 {
+		border-top: none;
+		margin-top: 8px;
+    	padding-top: 6px;
+    	min-height: 111px;
+	}
+}
+
+
+

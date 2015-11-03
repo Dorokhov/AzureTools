@@ -1,0 +1,55 @@
+@mixin colorsModule ($colorHead, $colorTile) {
+	.navbar-default {
+		background-color: $colorHead;
+		border-color: $colorHead;
+	}
+	.tileFunction {
+		background-color: $colorTile;
+		&:hover {
+			background-color: lighten($colorTile, 10%);
+		}
+	}
+	.popup {
+		border-color: $colorHead;
+		.panel-heading {
+			background-color: $colorHead;
+			border-color: $colorHead;
+		}
+	}
+	.loading {
+		.fa {
+			color: darken($colorTile, 12%);
+		}
+		a {
+			color: darken($colorTile, 12%);
+		}
+	}
+	.form-control:focus {
+		border-color: lighten($colorTile, 10%);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($colorTile, 10%);
+	}
+
+	.input-group-addon {
+		background-color: hsl(hue($colorTile), 40%, 95%);
+	}
+	.headBlock {
+		background: $colorHead;
+	}
+	.dataTables_scrollHead {
+		th {
+			background-color: hsl(hue($colorTile), 40%, 95%); 
+			&:focus {
+				outline-color: $colorHead; 
+			}
+		}
+	}
+	.metro {
+		.table.hovered tbody tr:hover {
+			background-color: hsl(hue($colorTile), 100%, 95%);
+		}
+	}
+}
+
+@function z-ind($layer) {
+  @return map-get($z-layers, $layer);
+}

@@ -12,24 +12,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        sass: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'libs/datatables-colreorder/css',
-                    src: ['*.scss'],
-                    dest: 'app/content/css/styles/',
-                    ext: '.css'
-                },
-{
-                    expand: true,
-                    cwd: 'libs/select/css',
-                    src: ['*.scss'],
-                    dest: 'app/content/css/styles/',
-                    ext: '.css'
-                }]
-            }
-        },
         browserify: {
             dist: {
                 src: './app/app.js',
@@ -60,8 +42,7 @@ module.exports = function(grunt) {
         },
     });
 
-    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.registerTask('default', 'build', ['sass', 'browserify']);
+    grunt.registerTask('default', 'build', ['browserify']);
 };

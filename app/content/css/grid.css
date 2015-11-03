@@ -1,84 +1,78 @@
-.details-textarea{
-    width: 100%;
+.details-textarea {
+  width: 100%;
 }
 
 .updateButton {
-    float: right;
-    margin-top: 5px !important;
+  float: right;
+  margin-top: 5px !important;
 }
 
 tr.details td.details-control {
-    background: green no-repeat center center;
+  background: green no-repeat center center;
 }
 
 .grid label {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 tr.shown {
-    background: #eeeeee;
+  background: #eeeeee;
 }
 
 .dataTables_scrollHead {
-    background: white;
-    top: 20px;
-    z-index: 100;
+  background: white;
+  top: 20px;
+  z-index: 200;
 }
 
-/*Tables*/
-
-#tables {
-	-webkit-user-select: text;
+/*Tables and Redis*/
+#tables, #data {
+  -webkit-user-select: text;
+}
+#tables td, #data td {
+  font-size: 12px;
+  line-height: 14px;
+  border-right: 1px #DDDDDD solid;
+  border-bottom: 1px #DDDDDD solid;
+  padding: 5px 12px 5px 8px;
 }
 
-#tables td {
-	font-size: 12px;
-	line-height: 14px;
-	border-right: 1px #DDDDDD solid;
-    border-bottom: 1px #DDDDDD solid;
-    padding: 5px 12px 5px 8px;
+#data td {
+  font-size: 13px;
+  line-height: 16px;
+  padding: 7px 12px 7px 8px;
 }
 
-.gridTables .metro .table th {
-	font-size: 12px;
-	border-right: 1px #DDDDDD solid;
-    padding: 4px 12px 4px 8px;
+.forTables .dataTables_scroll, .forRedis .dataTables_scroll {
+  margin-top: 0px;
+}
+.forTables .dataTables_scrollHead, .forRedis .dataTables_scrollHead {
+  top: 0px;
+}
+.forTables .dataTables_scrollHead th, .forRedis .dataTables_scrollHead th {
+  position: relative;
+}
+.forTables .metro .table th, .forRedis .metro .table th {
+  font-size: 12px;
+  border-right: 1px #DDDDDD solid;
+  padding: 4px 12px 4px 8px;
+}
+.forTables .metro .table thead th, .forRedis .metro .table thead th {
+  border-bottom: 1px solid #b4b4b4;
+}
+.forTables .metro .dataTable thead .sorting_asc:after, .forTables .metro .dataTable thead .sorting_desc:after, .forTables .metro .dataTable thead .sorting:after, .forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after {
+  position: absolute;
+  float: right;
+  right: 1px;
+}
+.forTables .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting:after {
+  font-size: 1px;
 }
 
-.gridTables .metro .table thead th {
-    border-bottom: 1px solid #b4b4b4;
+.forRedis .metro .table {
+  margin-bottom: 0;
 }
-
-.gridTables .dataTables_scroll {
-    margin-top: 0px;
+.forRedis .metro .table th {
+  font-size: 13px;
+  line-height: 22px;
 }
-.gridTables .dataTables_scrollHead {
-    top: 0px;
-}
-
-.gridTables .dataTables_scrollHead th {
-    position: relative;
-    background-color: #EBF0F3; 
-}
-
-.gridTables .dataTables_scrollHead th:focus {
-    outline-color: #7AC5FF; 
-}
-
-.gridTables .metro .dataTable thead .sorting_asc:after, .gridTables .metro .dataTable thead .sorting_desc:after, .gridTables .metro .dataTable thead .sorting:after {
-    position: absolute;
-    float: right;
-    right: 1px;
-}
-
-.gridTables .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .gridTables .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .gridTables .metro .dataTables_scrollBody .dataTable thead .sorting:after {
-    font-size: 1px;
-}
-
-.gridTables .metro .table.hovered tbody tr:hover {
-    background-color: rgba(122, 197, 255, 0.2);
-}
-
-
-
-

@@ -1,3 +1,6 @@
+@import "variables.scss";
+@import "functions.scss";
+
 .details-textarea{
 	width: 100%;
 }
@@ -22,12 +25,10 @@ tr.shown {
 .dataTables_scrollHead {
 	background: white;
 	top: 20px;
-	z-index: 100;
+	z-index: z-ind("tables-head");
 }
 
 /*Tables and Redis*/
-$borderTH: 1px solid #b4b4b4;
-$borderTD: 1px #DDDDDD solid;
 
 #tables, #data {
 	-webkit-user-select: text;

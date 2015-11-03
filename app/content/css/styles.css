@@ -72,7 +72,7 @@
 }
 #headBlock-Database .dropdown-menu {
   top: 30px;
-  z-index: 1000;
+  z-index: 1100;
   min-width: 90px;
   border: 1px solid #00ADAA;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.175);
@@ -296,7 +296,6 @@
   width: 60px;
   height: 60px;
   text-align: center;
-  z-index: 1;
   color: #ffffff;
   margin: 10px 0 10px 10px;
 }
@@ -351,7 +350,7 @@
   left: calc(50% - 183px);
   top: calc(50% - 150px);
   background: url(../img/Loading.png) no-repeat 0 0;
-  z-index: 999;
+  z-index: 900;
   line-height: 22px;
 }
 .loading .fa {

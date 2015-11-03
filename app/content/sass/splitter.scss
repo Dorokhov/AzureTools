@@ -1,4 +1,5 @@
 @import "variables.scss";
+@import "functions.scss";
 
 .split-panes {
 	margin-top: 53px;
@@ -12,7 +13,7 @@
 .split-panes > .split-handler {
 	background: transparent;
 	position: absolute;
-	z-index: 90;
+	z-index: z-ind("split-handler");
 }
 
 /* Horizontal */ 
@@ -114,7 +115,8 @@
 	.split-panes.vertical > .split-pane2 {
 		border-top: none;
 		margin-top: 8px;
-    	padding-top: 10px;
+    	padding-top: 6px;
+    	min-height: 111px;
 	}
 }
 

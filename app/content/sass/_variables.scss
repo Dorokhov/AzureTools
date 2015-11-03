@@ -2,6 +2,17 @@ $borderBlock: 1px solid #e2e2e2;
 $bg-colorBlock: #F8F8F8;
 $borderTable: 1px solid #b4b4b4;
 $fontFamily: 'Segoe UI_', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+$borderTH: 1px solid #b4b4b4;
+$borderTD: 1px #DDDDDD solid;
+
+//z-index
+$z-layers: (
+  "split-handler": 100,
+  "tables-head":   200,
+  "loading":       900,
+  "popup": 	       1000,
+  "dropdown-menu": 1100
+);
 
 //Color for Tables
 $bg-colorHeadBlock-Tables: #2e8bcc;
@@ -10,3 +21,4 @@ $bg-colorTile-Tables: #7AC5FF;
 //Color for Redis
 $bg-colorHeadBlock-Redis: #00ADAA;
 $bg-colorTile-Redis: #48E6B7;
+

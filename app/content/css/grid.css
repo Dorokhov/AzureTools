@@ -22,7 +22,7 @@ tr.shown {
 .dataTables_scrollHead {
   background: white;
   top: 20px;
-  z-index: 100;
+  z-index: 200;
 }
 
 /*Tables and Redis*/

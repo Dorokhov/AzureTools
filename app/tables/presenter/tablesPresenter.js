@@ -88,6 +88,7 @@
             });
 
             self.oTable.columns.adjust().draw();
+            self.oTable.off('select');
             self.oTable.on('select', function(e, dt) {
                 var rows = dt.rows({
                     selected: true

@@ -36,7 +36,6 @@
 
                     var loadKeysOperation = 'loadKeys';
 
-                    self.Keys = [];
                     var searchViewModel = {
                         search: function() {
                             self.loadKeys(this.Pattern);
@@ -61,6 +60,8 @@
                         },
                         Current: $activeDatabase.Current
                     };
+
+                    self.Keys = [];
 
                     // redis action bar
                     $actionBarItems.ModuleName = ': Redis';
@@ -175,8 +176,9 @@
                         };
                     };
 
-                    $actionBarItems.SearchViewModel = searchViewModel;
-                    $actionBarItems.DatabaseViewModel = databaseViewModel;
+                    self.SearchViewModel = searchViewModel;
+                    self.DatabaseViewModel = databaseViewModel;
+                    self.SelectedKey = 'avc';
 
                     var groupByKey = function(type, key, value) {
                         var existing = self.Keys.filter(function(item) {
@@ -198,6 +200,8 @@
 
                         return false;
                     };
+
+
 
                     // load redis data
                     var maxItemsToLoad = 100;
@@ -243,7 +247,13 @@
                                         self.loadKeys(pattern);
                                     }
 
-                                    $dataTablePresenter.showKeys(self.Keys, self.updateKey, self.removeKey);
+                                    $dataTablePresenter.showKeys(self.Keys, function(items) {
+                                        $timeout(function() {
+                                            $notifyViewModel.scope().$apply(function() {
+                                                self.SelectedKey = items.length > 0 ? items[0] : null;
+                                            })
+                                        });
+                                    });
                                 }
                             });
                             $busyIndicator.setIsBusy(loadKeysOperation, true, function() {

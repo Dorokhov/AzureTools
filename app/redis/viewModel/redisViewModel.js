@@ -251,6 +251,17 @@
                                         $timeout(function() {
                                             $notifyViewModel.scope().$apply(function() {
                                                 self.SelectedKey = items.length > 0 ? items[0] : null;
+                                                if (self.SelectedKey != null) {
+                                                    if (self.SelectedKey.Type === 'set') {
+                                                        var parsed = jQuery.parseJSON(self.SelectedKey.Value);
+                                                        $dataTablePresenter.showSet(parsed);
+                                                    }
+                                                    else if(self.SelectedKey.Type === 'hash'){
+
+                                                        var parsed = jQuery.parseJSON(self.SelectedKey.Value);
+                                                        $dataTablePresenter.showHashSet(parsed);
+                                                    }
+                                                }
                                             })
                                         });
                                     });

@@ -111,6 +111,7 @@
 
                     angular.element(document).bind('mouseup', function () {
                         drag = false;
+                        scope.$emit('splitter-resize')
                     });
                 }
             };

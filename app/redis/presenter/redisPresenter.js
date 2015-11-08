@@ -12,6 +12,11 @@
             }
 
         };
+        self.adjustColumns = function() {
+            if (self.oTable != null) {
+                self.oTable.columns.adjust().draw();
+            }
+        };
 
         self.showKeys = function(data, onselect, selected) {
             self.Keys = data;
@@ -38,17 +43,18 @@
                 autoWidth: false,
                 sDom: 'rt',
                 columns: [{
-                    //"title": "Key",
-                    "data": "Key"
+                    "title": "Key",
+                    "data": "Key",
+                    "width": "100%"
                 }],
                 select: true
             });
 
-            if(selected){
+            if (selected) {
                 var indexes = self.oTable.rows().indexes();
                 for (var i = 0; i < indexes.length; i++) {
                     // TODO: fix comparison by key
-                    if(self.oTable.row(indexes[i]).data().Key === selected.Key){
+                    if (self.oTable.row(indexes[i]).data().Key === selected.Key) {
                         self.oTable.row(indexes[i]).select();
                     }
                 };
@@ -69,7 +75,7 @@
                 $('#' + tableId).empty();
                 return;
             }
-            
+
             var set = [];
             for (var i = 0; i < data.length; i++) {
                 set.push({

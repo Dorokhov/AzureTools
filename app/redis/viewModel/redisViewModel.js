@@ -183,6 +183,7 @@
                     self.SearchViewModel = searchViewModel;
                     self.DatabaseViewModel = databaseViewModel;
                     self.SelectedKey = null;
+                    self.SelectedKeys = [];
 
                     var groupByKey = function(type, key, value) {
                         var existing = self.Keys.filter(function(item) {
@@ -205,8 +206,6 @@
                         return false;
                     };
 
-
-
                     // load redis data
                     var maxItemsToLoad = 100;
 
@@ -214,14 +213,15 @@
                         $dataTablePresenter.showKeys(self.Keys, function(items) {
                             $timeout(function() {
                                 $notifyViewModel.scope().$apply(function() {
-                                    self.SelectedKey = items.length > 0 ? items[0] : null;
-                                    if (self.SelectedKey != null) {
-                                        if (self.SelectedKey.Type === 'set') {
-                                            var parsed = jQuery.parseJSON(self.SelectedKey.Value);
+                                    self.SelectedKeys = items;
+                                    var selected = items.length > 0 ? items[0] : null;
+                                    self.SelectedKey = selected;
+                                    if (selected != null) {
+                                        if (selected.Type === 'set') {
+                                            var parsed = jQuery.parseJSON(selected.Value);
                                             $dataTablePresenter.showSet(parsed);
-                                        } else if (self.SelectedKey.Type === 'hash') {
-
-                                            var parsed = jQuery.parseJSON(self.SelectedKey.Value);
+                                        } else if (selected.Type === 'hash') {
+                                            var parsed = jQuery.parseJSON(selected.Value);
                                             $dataTablePresenter.showHashSet(parsed);
                                         }
                                     }
@@ -256,6 +256,7 @@
                                     $scope.$apply(function() {
                                         $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items'
                                     });
+                                    updateKeysPresentation();
 
                                     if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
                                         showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
@@ -289,22 +290,25 @@
                             repo.update(self.SelectedKey, function() {
                                 updateKeysPresentation();
                             });
-                        }
-                        catch(ex){
+                        } catch (ex) {
                             showError(ex.message);
                         }
                     };
 
                     self.removeKey = function() {
-                        if (self.SelectedKey == null) return;
+                        if (self.SelectedKeys == null || self.SelectedKeys.length === 0) return;
 
                         $timeout(function() {
                             $confirmViewModel.scope().$apply(function() {
-                                $confirmViewModel.Body = 'Are you sure you want to delete "' + self.SelectedKey.Key + '"?';
+                                $confirmViewModel.Body = 'Are you sure you want to delete "' + (self.SelectedKeys.length === 1 ? self.SelectedKeys[0].Key : self.SelectedKeys.length) + '"?';
                                 $confirmViewModel.show(function() {
-                                    var type = self.SelectedKey.Type;
-                                    var repo = $redisRepositoryFactory(type);
-                                    repo.delete(self.SelectedKey);
+                                    for (var i = 0; i < self.SelectedKeys.length; i++) {
+                                        var type = self.SelectedKeys[i].Type;
+                                        var repo = $redisRepositoryFactory(type);
+                                        repo.delete(self.SelectedKeys[i]);
+                                    };
+                                    self.SelectedKeys = [];
+                                    self.SelectedKey = null;
                                     searchViewModel.search();
                                 });
                             });
@@ -345,6 +349,13 @@
                             });
                         }
                     };
+
+
+                    $scope.$on('splitter-resize', function() {
+                        $timeout(function() {
+                            $dataTablePresenter.adjustColumns();
+                        });
+                    });
 
                     $messageBus.subscribe(
                         ['redis-communication-error'],

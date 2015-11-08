@@ -13,7 +13,7 @@
 
         };
 
-        self.showKeys = function(data, onselect) {
+        self.showKeys = function(data, onselect, selected) {
             self.Keys = data;
 
             var calcDataTableHeight = function() {
@@ -43,6 +43,16 @@
                 }],
                 select: true
             });
+
+            if(selected){
+                var indexes = self.oTable.rows().indexes();
+                for (var i = 0; i < indexes.length; i++) {
+                    // TODO: fix comparison by key
+                    if(self.oTable.row(indexes[i]).data().Key === selected.Key){
+                        self.oTable.row(indexes[i]).select();
+                    }
+                };
+            }
 
             self.oTable.off('select');
             self.oTable.on('select', function(e, dt) {

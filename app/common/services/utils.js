@@ -6,6 +6,7 @@
             try {
                 return JSON.parse(value);
             } catch (e) {
+                console.log('Invalid JSON "' + value + '"')
                 throw {
                     name: 'Json Parse Error',
                     message: 'Invalid JSON "' + value + '"',

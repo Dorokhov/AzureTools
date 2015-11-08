@@ -12,13 +12,13 @@
             }
         };
 
-        self.update = function (keyData, newValue, cb) {
-            self.Utils.safeJsonParse(newValue);
+        self.update = function (keyData, cb) {
+            self.Utils.safeJsonParse(keyData.Value);
             // TODO: Transaction here
             self.safeRedisCmd(function (client) {
                 client.del(keyData.Key);
             });
-            self.create(keyData.Key, newValue, cb);
+            self.create(keyData.Key, keyData.Value, cb);
         };
     };
 };

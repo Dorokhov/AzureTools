@@ -31,7 +31,7 @@
                 $messageBus,
                 $validator) {
 
-                $scope.RedisViewModel = new function() {
+                $scope.RedisViewModel = (new function() {
                     var self = this;
 
                     var loadKeysOperation = 'loadKeys';
@@ -212,22 +212,20 @@
                     var updateKeysPresentation = function() {
                         $dataTablePresenter.showKeys(self.Keys, function(items) {
                             $timeout(function() {
-                                $notifyViewModel.scope().$apply(function() {
-                                    self.SelectedKeys = items;
-                                    var selected = items.length > 0 ? items[0] : null;
-                                    self.SelectedKey = selected;
-                                    if (selected != null) {
-                                        if (selected.Type === 'set') {
-                                            var parsed = jQuery.parseJSON(selected.Value);
-                                            $dataTablePresenter.showSet(parsed);
-                                        } else if (selected.Type === 'hash') {
-                                            var parsed = jQuery.parseJSON(selected.Value);
-                                            $dataTablePresenter.showHashSet(parsed);
-                                        }
+                                self.SelectedKeys = items;
+                                var selected = items.length > 0 ? items[0] : null;
+                                self.SelectedKey = selected;
+                                if (selected != null) {
+                                    if (selected.Type === 'set') {
+                                        var parsed = jQuery.parseJSON(selected.Value);
+                                        $dataTablePresenter.showSet(parsed);
+                                    } else if (selected.Type === 'hash') {
+                                        var parsed = jQuery.parseJSON(selected.Value);
+                                        $dataTablePresenter.showHashSet(parsed);
                                     }
-                                })
+                                }
                             });
-                        }, self.SelectedKey);
+                        });
                     };
 
                     self.loadKeys = function(pattern) {
@@ -254,9 +252,9 @@
                                     loadedNumber = added === true ? loadedNumber + 1 : loadedNumber;
 
                                     $scope.$apply(function() {
-                                        $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items'
+                                        $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
+                                        //  updateKeysPresentation();
                                     });
-                                    updateKeysPresentation();
 
                                     if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
                                         showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
@@ -315,13 +313,6 @@
                         });
                     };
 
-                    // init
-                    if ($redisSettings.isEmpty()) {
-                        $actionBarItems.changeSettings();
-                    } else {
-                        self.loadKeys(searchViewModel.Pattern);
-                    }
-
                     var showError = function(data) {
                         if (data !== undefined && data !== null) {
                             if (data.name && data.name === 'Error') {
@@ -363,7 +354,16 @@
                             console.log('Received data: ' + data);
                             showError(data);
                         });
-                };
+
+                    // init
+                    if ($redisSettings.isEmpty()) {
+                        $actionBarItems.changeSettings();
+                    } else {
+                        $timeout(function() {
+                            $actionBarItems.refresh();
+                        })
+                    }
+                });
             }
         ]);
 };

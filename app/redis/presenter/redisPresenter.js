@@ -25,7 +25,7 @@
                 return ($(window).height() - 150);
             };
 
-            self.cleanUp();
+           // self.cleanUp();
 
             $(window).unbind('resize');
             $(window).bind('resize', function() {
@@ -33,13 +33,22 @@
                 self.oTable.columns.adjust().draw();
             });
 
+            if ((data == null || data.length == 0)) {
+                $('#data').empty();
+                return;
+            }
+            if (self.oTable != null) {
+                self.oTable.destroy();
+           }
+
+            $('#data').empty();
             self.oTable = $('#data').DataTable({
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
                 scrollY: calcDataTableHeight(),
                 //scrollCollapse: true,
-                data: self.Keys,
+                data: data,
                 autoWidth: false,
                 sDom: 'rt',
                 columns: [{
@@ -49,6 +58,7 @@
                 }],
                 select: true
             });
+            self.oTable.columns.adjust().draw();
 
             if (selected) {
                 var indexes = self.oTable.rows().indexes();

@@ -94,17 +94,17 @@
 </script>
 
 <script type="text/ng-template" id="createTableEntityTemplate">
-    <div class="input-group input-group-sm">
-    <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
-    <li>
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()">
-            <span class="input-group-addon" style="width:96px;">{{property.Key}}</span>
-            <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
-            <input ng-model="property.Value" class="form-control" style="width:372px" />
-        </div>
-        </li>
-</ul>
+    <div id="createTableEntity" class="input-group input-group-sm">
+        <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
+            <li>
+                <div class="input-group input-group-sm" style="margin-top:2px">
+                    <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()">
+                    <span class="input-group-addon" style="width:96px;">{{property.Key}}</span>
+                    <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
+                    <input ng-model="property.Value" class="form-control" style="width:372px" />
+                </div>
+            </li>
+        </ul>
         <div class="input-group input-group-sm" style="margin-top:2px" 
         ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">{{ DialogViewModel.BodyViewModel.ErrorMessage }}</div>
     </div>

@@ -22,10 +22,9 @@
 		line-height: 0.8;
 		padding-right: 5px;
 	}
-	.input-group-sm>.input-group-addon {
-		padding: 5px 8px;
-	}
 }
+
+/*Header*/
 
 .navbar-brand {
 	padding-top: 3px;
@@ -44,13 +43,11 @@
 	color: #ffffff;  
 }
 
-.leftOffset {
-	margin-left: 113px;
-}
-
 .noMarginBottom {
 	margin-bottom: 0px;
 }
+
+/*Functional panel*/
 
 #navbarTilesFunction {
 	margin: 0px;
@@ -109,6 +106,8 @@
 	margin: 5px -1px 5px 9px;
 }
 
+/*Dialog windows*/
+
 .popup {
 	margin: 0;
 	position: absolute;
@@ -117,6 +116,20 @@
 	display: inline-block; 
 	z-index: z-ind("popup");
 	box-shadow: 2px 2px 8px rgba(0,0,0,.175);
+}
+
+.forRedis, .forTables {
+	.input-group-sm>.input-group-addon {
+		padding: 5px 8px;
+	}
+}
+
+#createTableEntity {
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
 }
 
 .loading {
@@ -139,6 +152,8 @@
 		cursor: pointer;
 	}
 }
+
+/*Body*/
 
 #content {
 	height: 100%;
@@ -277,10 +292,3 @@
 	clear: both;
 }
 
-table.dataTable,
-table.dataTable th,
-table.dataTable td {
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
-}

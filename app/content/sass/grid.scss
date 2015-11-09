@@ -28,6 +28,14 @@ tr.shown {
 	z-index: z-ind("tables-head");
 }
 
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
 /*Tables and Redis*/
 
 #tables, #data {

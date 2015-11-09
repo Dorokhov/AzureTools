@@ -31,7 +31,7 @@
                 $messageBus,
                 $validator) {
 
-                $scope.RedisViewModel = new function() {
+                $scope.RedisViewModel = (new function() {
                     var self = this;
 
                     var loadKeysOperation = 'loadKeys';
@@ -133,6 +133,10 @@
                         };
                     };
 
+                    $actionBarItems.removeKey = function() {
+                        self.removeKey();
+                    };
+
                     $actionBarItems.refresh = function() {
                         searchViewModel.search();
                     };
@@ -178,7 +182,8 @@
 
                     self.SearchViewModel = searchViewModel;
                     self.DatabaseViewModel = databaseViewModel;
-                    self.SelectedKey = 'avc';
+                    self.SelectedKey = null;
+                    self.SelectedKeys = [];
 
                     var groupByKey = function(type, key, value) {
                         var existing = self.Keys.filter(function(item) {
@@ -201,10 +206,27 @@
                         return false;
                     };
 
-
-
                     // load redis data
                     var maxItemsToLoad = 100;
+
+                    var updateKeysPresentation = function() {
+                        $dataTablePresenter.showKeys(self.Keys, function(items) {
+                            $timeout(function() {
+                                self.SelectedKeys = items;
+                                var selected = items.length > 0 ? items[0] : null;
+                                self.SelectedKey = selected;
+                                if (selected != null) {
+                                    if (selected.Type === 'set') {
+                                        var parsed = jQuery.parseJSON(selected.Value);
+                                        $dataTablePresenter.showSet(parsed);
+                                    } else if (selected.Type === 'hash') {
+                                        var parsed = jQuery.parseJSON(selected.Value);
+                                        $dataTablePresenter.showHashSet(parsed);
+                                    }
+                                }
+                            });
+                        });
+                    };
 
                     self.loadKeys = function(pattern) {
                         $notifyViewModel.close();
@@ -230,7 +252,8 @@
                                     loadedNumber = added === true ? loadedNumber + 1 : loadedNumber;
 
                                     $scope.$apply(function() {
-                                        $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items'
+                                        $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
+                                        //  updateKeysPresentation();
                                     });
 
                                     if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
@@ -247,13 +270,7 @@
                                         self.loadKeys(pattern);
                                     }
 
-                                    $dataTablePresenter.showKeys(self.Keys, function(items) {
-                                        $timeout(function() {
-                                            $notifyViewModel.scope().$apply(function() {
-                                                self.SelectedKey = items.length > 0 ? items[0] : null;
-                                            })
-                                        });
-                                    });
+                                    updateKeysPresentation();
                                 }
                             });
                             $busyIndicator.setIsBusy(loadKeysOperation, true, function() {
@@ -262,30 +279,39 @@
                         }
                     };
 
-                    self.updateKey = function(keyData, newValue) {
-                        var type = keyData.Type;
+                    self.updateKey = function() {
+                        if (self.SelectedKey == null) return;
+
+                        var type = self.SelectedKey.Type;
                         var repo = $redisRepositoryFactory(type);
-                        repo.update(keyData, newValue);
+                        try {
+                            repo.update(self.SelectedKey, function() {
+                                updateKeysPresentation();
+                            });
+                        } catch (ex) {
+                            showError(ex.message);
+                        }
                     };
 
-                    self.removeKey = function(keyData) {
-                        $confirmViewModel.scope().$apply(function() {
-                            $confirmViewModel.Body = 'Are you sure you want to delete "' + keyData.Key + '"?';
-                            $confirmViewModel.show(function() {
-                                var type = keyData.Type;
-                                var repo = $redisRepositoryFactory(type);
-                                repo.delete(keyData);
-                                searchViewModel.search();
+                    self.removeKey = function() {
+                        if (self.SelectedKeys == null || self.SelectedKeys.length === 0) return;
+
+                        $timeout(function() {
+                            $confirmViewModel.scope().$apply(function() {
+                                $confirmViewModel.Body = 'Are you sure you want to delete "' + (self.SelectedKeys.length === 1 ? self.SelectedKeys[0].Key : self.SelectedKeys.length) + '"?';
+                                $confirmViewModel.show(function() {
+                                    for (var i = 0; i < self.SelectedKeys.length; i++) {
+                                        var type = self.SelectedKeys[i].Type;
+                                        var repo = $redisRepositoryFactory(type);
+                                        repo.delete(self.SelectedKeys[i]);
+                                    };
+                                    self.SelectedKeys = [];
+                                    self.SelectedKey = null;
+                                    searchViewModel.search();
+                                });
                             });
                         });
                     };
-
-                    // init
-                    if ($redisSettings.isEmpty()) {
-                        $actionBarItems.changeSettings();
-                    } else {
-                        self.loadKeys(searchViewModel.Pattern);
-                    }
 
                     var showError = function(data) {
                         if (data !== undefined && data !== null) {
@@ -315,13 +341,29 @@
                         }
                     };
 
+
+                    $scope.$on('splitter-resize', function() {
+                        $timeout(function() {
+                            $dataTablePresenter.adjustColumns();
+                        });
+                    });
+
                     $messageBus.subscribe(
                         ['redis-communication-error'],
                         function(event, data) {
                             console.log('Received data: ' + data);
                             showError(data);
                         });
-                };
+
+                    // init
+                    if ($redisSettings.isEmpty()) {
+                        $actionBarItems.changeSettings();
+                    } else {
+                        $timeout(function() {
+                            $actionBarItems.refresh();
+                        })
+                    }
+                });
             }
         ]);
 };

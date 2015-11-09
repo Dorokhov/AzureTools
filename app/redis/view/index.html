@@ -1,5 +1,5 @@
-<div class="container" ng-controller="RedisController">
-	<div class="metro grid" style="font-weight: normal; -webkit-user-select: text">
+<div class="container">
+	<div class="metro grid" style="font-weight: normal; -webkit-user-select: text" ng-controller="RedisController">
 		<bg-splitter orientation="horizontal">
 			<bg-pane min-size="170" init-width-percentage="26.7">
 				<div class="wrapLeftBlock">
@@ -35,8 +35,7 @@
 							</span>
 							<div class="clearFloat"></div>
 						</div>
-
-						<table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+						<table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="width:100%"></table>
 					</div>
 				</div>
 			</bg-pane>
@@ -51,17 +50,17 @@
 								<p>Type: <span>{{RedisViewModel.SelectedKey.Type}}</span></p>
 							</div>
 						</div>
-						<div id="value-HashSet" ng-show="RedisViewModel.SelectedKey.Type == 'hashSet'">
+						<div id="value-HashSet" ng-show="RedisViewModel.SelectedKey.Type == 'hash'">
 							<bg-splitter orientation="vertical">
 								<bg-pane min-size="100" init-height-percentage="55">
-									
+									 <table id="hashSetTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
 								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
 										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
 										<span class="tileFunction">
-											<a class="fa-links" title="Save value">Save</a>
+											<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
 										</span>
 									</div>
 								</bg-pane>
@@ -71,14 +70,14 @@
 						<div id="value-Set" ng-show="RedisViewModel.SelectedKey.Type == 'set'">
 							<bg-splitter orientation="vertical">
 								<bg-pane min-size="100" init-height-percentage="55">
-									
+						             <table id="setTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
 								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
 										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
 										<span class="tileFunction">
-											<a class="fa-links" title="Save value">Save</a>
+											<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
 										</span>
 									</div>
 								</bg-pane>
@@ -90,7 +89,7 @@
 								<p>Edit Value</p>
 								<textarea type="text" class="form-control" autofocus ng-model="RedisViewModel.SelectedKey.Value"></textarea>
 								<span class="tileFunction">
-									<a class="fa-links" title="Save value">Save</a>
+									<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
 								</span>
 							</div>
 						</div>

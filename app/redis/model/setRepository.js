@@ -13,8 +13,9 @@
             }
         };
 
-        self.update = function (keyData, newValue, cb) {
-            var updatedMembers = self.Utils.safeJsonParse(newValue);
+        self.update = function (keyData, cb) {
+            var updatedMembers = self.Utils.safeJsonParse(keyData.Value);
+            console.log(updatedMembers)
             if (updatedMembers != null) {
                 // TODO: Replace with transaction
                 self.safeRedisCmd(function (client) {

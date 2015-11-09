@@ -9,9 +9,9 @@
             });
         };
 
-        self.update = function (keyData, newValue, cb) {
+        self.update = function (keyData, cb) {
             self.safeRedisCmd(function (client) {
-                client.set(keyData.Key, newValue, cb);
+                client.set(keyData.Key, keyData.Value, cb);
             });
         };
     };

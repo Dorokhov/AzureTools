@@ -19,17 +19,17 @@
 		line-height: 26px;
 		color: #2A2A2A;
 		letter-spacing: 0;
-		padding-left: 5px;
+		padding-left: 4px;
 		cursor:pointer;
 		&:hover {   
-			background: #E4F4FF;
+			background: hsl(hue($bg-colorTile-Tables), 100%, 95%);
 		}
 		&.selected {
-			background:#EBF0F3; 
-			border: 1px solid #DDDDDD; 
+			background: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 4%);; 
+			border: $borderTD; 
 			border-right: none;
 			line-height: 24px;
-			padding-left: 4px;
+			padding-left: 3px;
 		}
 	}
 	.fa {

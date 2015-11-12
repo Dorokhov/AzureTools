@@ -38,7 +38,7 @@ table.dataTable td {
 
 /*Tables and Redis*/
 
-#tables, #data {
+#tables, #data, #hashSetTable, #value-Set {
 	-webkit-user-select: text;
 	td {
 		font-size: 12px;
@@ -47,12 +47,20 @@ table.dataTable td {
 		border-bottom: $borderTD;
 		padding: 5px 12px 5px 8px;
 	}
+	td:last-child {
+		border-right: none;
+	}
 }
 
-#data td {
+#data, #hashSetTable, #value-Set {
+	td {
 		font-size: 13px;
 		line-height: 16px;
 		padding: 7px 12px 7px 8px;
+	}
+	tr:last-child td{
+		border-bottom: none;
+	}
 }
 
 .forTables, .forRedis {
@@ -71,6 +79,9 @@ table.dataTable td {
 				font-size: 12px;
 				border-right: $borderTD;
 				padding: 4px 12px 4px 8px;
+				&:last-child {
+					border-right: none;
+				}
 			}
 			thead th {
 				border-bottom: $borderTH;
@@ -97,6 +108,11 @@ table.dataTable td {
 		th {
 			font-size: 13px;
 			line-height: 22px;
+		}
+	}
+	.dataTable thead {
+		.sorting_asc:after, .sorting_desc:after, .sorting:after {
+			right: 5px;
 		}
 	}
 }

@@ -48,7 +48,12 @@
 			background-color: hsl(hue($colorTile), 100%, 95%);
 		}
 	}
+	.table tr.selected {
+		background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+	}
 }
+
+// background-color: rgba(28, 183, 236, 0.1);
 
 @function z-ind($layer) {
   @return map-get($z-layers, $layer);

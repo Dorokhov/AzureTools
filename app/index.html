@@ -44,7 +44,7 @@
                     <a class="row-fluid navbar-brand" ui-sref="tiles">
                         <span class="icon-cloud"></span>
                         <span>Azure Tools</span>
-                        <span>{{ActionBarItems.ModuleName}}</span>
+                        <span ng-show="state.current.name !== 'tiles'">{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
 
@@ -121,14 +121,7 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li ng-show="ActionBarItems.Continuation != null">
-                    <div class="tileFunction">
-                        <a class="fa-links" title="Load More" ng-click="ActionBarItems.loadMore()">
-                            <i class="fa fa-play"></i><br /><span>Entities</span>
-                        </a>
-                    </div>
-                </li>
-               <li>
+                <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Create new table" ng-click="ActionBarItems.createTable()">
                             <i class="fa fa-table"></i><br /><span>Create</span>
@@ -142,17 +135,25 @@
                         </a>
                     </div>
                 </li>
+                <li class="delimiter-tiles"></li>
+                <li ng-show="ActionBarItems.Continuation != null">
+                    <div class="tileFunction">
+                        <a class="fa-links" title="Load more" ng-click="ActionBarItems.loadMore()">
+                            <i class="fa fa-play-circle"></i><br /><span>Entities</span>
+                        </a>
+                    </div>
+                </li>
                 <li>
                     <div class="tileFunction">
-                        <a class="fa-links" title="Create new table" ng-click="ActionBarItems.createTableEntity()">
-                            <i class="fa fa-table"></i><span>+Entity</span>
+                        <a class="fa-links" title="Add entity" ng-click="ActionBarItems.createTableEntity()">
+                            <i class="fa fa-plus-circle"></i><br /><span>Entity</span>
                         </a>
                     </div>
                 </li>
                 <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Delete entity" ng-click="ActionBarItems.deleteTableEntity()">
-                            <i class="fa fa-trash-o"></i>
+                            <i class="fa fa-minus-circle"></i><br />
                             <span>Entity</span>
                         </a>
                     </div>

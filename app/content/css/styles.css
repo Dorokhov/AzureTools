@@ -40,10 +40,16 @@
 .forRedis .metro .table.hovered tbody tr:hover {
   background-color: #e5fff7;
 }
+.forRedis .table tr.selected {
+  background-color: #dff1ec;
+}
+.forRedis .wrapRightBlock .headBlock span {
+  padding-left: 10px;
+}
 
 #headBlock-Database .fa {
   float: left;
-  padding: 6px 8px;
+  padding: 6px 8px 6px 10px;
 }
 #headBlock-Database span:not(.caret) {
   float: left;
@@ -91,10 +97,6 @@
 }
 #headBlock-Database .dropdown-menu li a:hover, #headBlock-Database .dropdown-menu li a:focus {
   background-color: #edf7f4;
-}
-
-.wrapRightBlock .headBlock span {
-  padding-left: 10px;
 }
 
 .typeValue {
@@ -187,6 +189,9 @@
 .forTables .metro .table.hovered tbody tr:hover {
   background-color: #e5f4ff;
 }
+.forTables .table tr.selected {
+  background-color: #dfe9f1;
+}
 .forTables .bodyLeftBlock {
   padding: 4px 5px 5px 5px;
 }
@@ -205,18 +210,18 @@
   line-height: 26px;
   color: #2A2A2A;
   letter-spacing: 0;
-  padding-left: 5px;
+  padding-left: 4px;
   cursor: pointer;
 }
 #tableList li:hover {
-  background: #E4F4FF;
+  background: #e5f4ff;
 }
 #tableList li.selected {
-  background: #EBF0F3;
-  border: 1px solid #DDDDDD;
+  background: #dfe9f1;
+  border: 1px #DDDDDD solid;
   border-right: none;
   line-height: 24px;
-  padding-left: 4px;
+  padding-left: 3px;
 }
 #tableList .fa {
   padding: 0px 6px 0 0;
@@ -229,6 +234,7 @@
   margin: 10px;
   font-family: "Segoe UI_", "Open Sans", Verdana, Arial, Helvetica, sans-serif;
   height: calc(100% - 20px);
+  /*Header*/
 }
 .forTables .navbar, .forRedis .navbar {
   min-height: 40px;
@@ -236,8 +242,7 @@
 }
 .forTables .navbar-brand, .forRedis .navbar-brand {
   height: 40px;
-  padding: 10px;
-  padding-top: 2px;
+  padding: 2px 10px 10px 9px;
 }
 .forTables .icon-cloud, .forRedis .icon-cloud {
   font-size: 38px;
@@ -277,7 +282,7 @@
 }
 #navbarTilesFunction .navbar-nav {
   margin: 0px;
-  padding-right: 10px;
+  padding-left: 9px;
   background: #F8F8F8;
   border: 1px solid #e2e2e2;
   width: 100%;
@@ -292,7 +297,7 @@
   height: 60px;
   text-align: center;
   color: #ffffff;
-  margin: 10px 0 10px 10px;
+  margin: 10px 10px 10px 0px;
 }
 .tileFunction:active {
   transform: perspective(400px) rotateX(0.2rad);
@@ -323,7 +328,7 @@
 .delimiter-tiles {
   border-left: 1px solid #e2e2e2;
   height: 70px;
-  margin: 5px -1px 5px 9px;
+  margin: 5px 9px 5px -1px;
 }
 
 /*Dialog windows*/
@@ -386,7 +391,7 @@
   white-space: nowrap;
 }
 .headBlock .fa {
-  padding: 0 8px;
+  padding: 0 8px 0 10px;
   font-size: 18px;
   vertical-align: -10%;
 }
@@ -455,7 +460,10 @@
 
 #tables_wrapper, #data_wrapper {
   border: 1px solid #b4b4b4;
-  overflow: hidden;
+}
+
+#hashSetTable_wrapper, #setTable_wrapper {
+  border: 1px solid #b4b4b4;
 }
 
 .forTables #alertArea, .forTables #errorNotification {

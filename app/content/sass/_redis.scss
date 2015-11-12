@@ -1,11 +1,16 @@
 .forRedis {
 	@include colorsModule($bg-colorHeadBlock-Redis, $bg-colorTile-Redis);
+
+	.wrapRightBlock .headBlock span {
+		padding-left: 10px;
+	}
 }
+
 
 #headBlock-Database {
 	.fa {
 		float: left;
-		padding: 6px 8px;
+		padding: 6px 8px 6px 10px;
 	}
 	span:not(.caret) {
 		float: left;
@@ -54,10 +59,6 @@
 			}
 		}
 	}
-}
-
-.wrapRightBlock .headBlock span {
-	padding-left: 10px;
 }
 
 .typeValue {

@@ -2,6 +2,9 @@
 	.navbar-default {
 		background-color: $colorHead;
 		border-color: $colorHead;
+		.navbar-brand:hover {
+			color: hsl(hue($colorTile), 100%, 92%); 
+		}
 	}
 	.tileFunction {
 		background-color: $colorTile;

@@ -1,5 +1,5 @@
 .forTables {
-	@include colorsModule($bg-colorHeadBlock-Tables, $bg-colorTile-Tables);
+	@include colorsModule($bg-colorHead-Tables, $bg-colorTile-Tables);
 
 	.bodyLeftBlock {
 		padding: 4px 5px 5px 5px;

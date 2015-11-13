@@ -37,12 +37,12 @@
 </head>
 
 <body ng-controller="AppController">
-    <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables', 'forRedis': state.current.name === 'redis', 'forBlobs': state.current.name === 'blobs'}">
+    <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables', 'forRedis': state.current.name === 'redis', 'forBlobs': state.current.name === 'blobs', 'forTiles': state.current.name === 'tiles'}">
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div ng-class="{'margin-to-align': state.current.name === 'blobs' || state.current.name === 'tiles'}">
-                <div class="navbar-header" ng-style="{'margin-left: auto; margin-right:auto;': state.current.name === 'blobs' || state.current.name === 'tiles'}">
+            <div ng-class="{'margin-to-align': state.current.name === 'blobs'}">
+                <div class="navbar-header" ng-style="{'margin-left: auto; margin-right:auto;': state.current.name === 'blobs'}">
                     <a class="row-fluid navbar-brand" ui-sref="tiles">
-                        <span class="icon-cloud"></span>
+                        <i ng-show="state.current.name === 'tables' || state.current.name === 'redis'" class="fa fa-arrow-circle-left"></i><span ng-show="state.current.name === 'tiles' || state.current.name === 'blobs'" class="icon-cloud"></span>
                         <span>Azure Tools</span>
                         <span ng-show="state.current.name !== 'tiles'">{{ActionBarItems.ModuleName}}</span>
                     </a>

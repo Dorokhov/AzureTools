@@ -14,11 +14,22 @@ $z-layers: (
   "dropdown-menu": 1100
 );
 
+//Color for Redis
+$bg-colorHead-Redis: #00ADAA;
+$bg-colorTile-Redis: #48E6B7;
+
 //Color for Tables
-$bg-colorHeadBlock-Tables: #2e8bcc;
+$bg-colorHead-Tables: #2e8bcc;
 $bg-colorTile-Tables: #7AC5FF;
 
-//Color for Redis
-$bg-colorHeadBlock-Redis: #00ADAA;
-$bg-colorTile-Redis: #48E6B7;
+//Color for Blobs
+$bg-colorHead-Blobs: #039BC1;
+$bg-colorTile-Blobs: #6FDEF2;
+
+//for tiles-preview
+$tile-colors: (
+	redis: $bg-colorHead-Redis,
+	tables: $bg-colorHead-Tables,
+	blobs: $bg-colorHead-Blobs
+);
 

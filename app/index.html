@@ -195,7 +195,7 @@
                     <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
                 </label>
 
-                <div class="btn-group" style="float:right; margin-top:10px" ng-disabled="DialogViewModel.AreButtonsDisabled">
+                <div class="btn-group" ng-disabled="DialogViewModel.AreButtonsDisabled">
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
                 </div>
@@ -211,7 +211,7 @@
                 <div ng-bind="ConfirmationViewModel.Body">
                 </div>
 
-                <div class="btn-group" style="float:right; margin-top:10px">
+                <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.yes()">Yes</button>
                     <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.no()">No</button>
                 </div>

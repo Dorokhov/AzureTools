@@ -95,23 +95,34 @@
 
 <script type="text/ng-template" id="createTableEntityTemplate">
     <div id="createTableEntity">
+        <div class="input-group input-group-sm actionRows">
+            <label>Fill in the fields to create a new entity</label>
+            <span class="tileFunction">
+                <a class="fa-links" title="Delete selected rows" ng-click="RedisViewModel.updateKey()">Delete</a>
+            </span>
+            <span class="tileFunction">
+            <a class="fa-links" title="Add row" ng-click="RedisViewModel.updateKey()">Add row</a>
+            </span>
+        </div>
         <div class="wrapListFields"> 
-            <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
-                <li class="input-group input-group-sm">
-                    <label class="checkbox">
-                        <input type="checkbox" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()" />
-                        <span class="checkbox-label"></span>
-                    </label>
-                    <div class="input-group input-group-sm">
-                        <input class="input-group-addon" value="{{property.Key}}" />
-                        <input ng-model="property.Value" class="form-control" />
-                        <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
-                    </div>
-                </li>
-            </ul>
-            <div class="input-group input-group-sm"  
-            ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">
-                {{ DialogViewModel.BodyViewModel.ErrorMessage }}
+            <div>
+                <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
+                    <li class="input-group input-group-sm">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()" />
+                            <span class="checkbox-label"></span>
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <input class="input-group-addon" value="{{property.Key}}" />
+                            <input ng-model="property.Value" class="form-control" />
+                            <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
+                        </div>
+                    </li>
+                </ul>
+                <div class="input-group input-group-sm"  
+                ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">
+                    {{ DialogViewModel.BodyViewModel.ErrorMessage }}
+                </div>
             </div>
         </div>
     </div>

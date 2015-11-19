@@ -19,6 +19,7 @@
 			border-color: $colorHead;
 		}
 		.btn-default {
+			background-color: hsl(hue($colorTile), 40%, 98%);
 			&:hover, &:focus, &:active{
 				color: #fff;
 				background-color: $colorTile;

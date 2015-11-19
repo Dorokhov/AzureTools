@@ -18,6 +18,19 @@
 			background-color: $colorHead;
 			border-color: $colorHead;
 		}
+		.btn-default {
+			&:hover, &:focus, &:active{
+				color: #fff;
+				background-color: $colorTile;
+				border-color: $colorTile;
+			}
+		}
+	}
+	.panel-warning.popup {
+		.panel-heading {
+			color: $colorHead;
+			background: #FED702;
+		}
 	}
 	.loading {
 		.fa {
@@ -55,8 +68,6 @@
 		background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
 	}
 }
-
-// background-color: rgba(28, 183, 236, 0.1);
 
 @function z-ind($layer) {
   @return map-get($z-layers, $layer);

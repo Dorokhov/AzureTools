@@ -125,20 +125,39 @@
 	top: calc(50% - 119px);
 	display: inline-block; 
 	z-index: z-ind("popup");
-	box-shadow: 2px 2px 8px rgba(0,0,0,.175);
+	box-shadow: 0px 0px 14px rgba(0,0,0,0.4);
+	.panel-heading {
+		padding: 8px 15px;
+		font-size: 15px;
+	}
+	.checkbox .checkbox-label:before {
+		height: 21px;
+		width: 21px;
+		border: 2px #d9d9d9 solid;
+	}
+	.btn-default {
+		&:active{
+			box-shadow: inset 0 2px 6px rgba(0,0,0,.125);
+		}
+	}
 }
+
+.panel-warning.popup {
+	width: 500px; 
+} 
 
 .forRedis, .forTables {
 	.input-group-sm>.input-group-addon {
 		padding: 5px 8px;
+		width: 96px;
+		float: left;
 	}
-}
-
-#createTableEntity {
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
+	.input-group-sm>.input-group-sm {
+		margin-top:2px;
+	}
+	.input-group .form-control {
+		width:372px;
+		float: left;
 	}
 }
 
@@ -251,15 +270,8 @@
 	right: 12px;
 }
 
-#tables_wrapper, #data_wrapper {
-	border: $borderTable;
-	// overflow: hidden;
-}
-
-#hashSetTable_wrapper, #setTable_wrapper {
+#tables_wrapper, #data_wrapper, #hashSetTable_wrapper, #setTable_wrapper {
  	border: $borderTable;
- 	// height: 100%;
- 	// overflow: auto;
 }
 
 .forTables #alertArea, .forTables #errorNotification {

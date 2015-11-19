@@ -136,13 +136,6 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li ng-show="ActionBarItems.Continuation != null">
-                    <div class="tileFunction">
-                        <a class="fa-links" title="Load more" ng-click="ActionBarItems.loadMore()">
-                            <i class="fa fa-play-circle"></i><br /><span>Entities</span>
-                        </a>
-                    </div>
-                </li>
                 <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Add entity" ng-click="ActionBarItems.createTableEntity()">
@@ -155,6 +148,13 @@
                         <a class="fa-links" title="Delete entity" ng-click="ActionBarItems.deleteTableEntity()">
                             <i class="fa fa-minus-circle"></i><br />
                             <span>Entity</span>
+                        </a>
+                    </div>
+                </li>
+                <li ng-show="ActionBarItems.Continuation != null">
+                    <div class="tileFunction">
+                        <a class="fa-links" title="Load more" ng-click="ActionBarItems.loadMore()">
+                            <i class="fa fa-play-circle"></i><br /><span>Entities</span>
                         </a>
                     </div>
                 </li>
@@ -181,7 +181,7 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>
@@ -202,7 +202,7 @@
             </div>
         </div>
 
-        <div id="confirmationDialog" class="panel panel-warning popup" style="width:500px; height:145px;" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
+        <div id="confirmationDialog" class="panel panel-warning popup" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
             <div class="panel-heading">
                 {{ConfirmationViewModel.Header}}
             </div>

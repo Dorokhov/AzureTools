@@ -42,7 +42,7 @@
 		z-index: z-ind("dropdown-menu");
 		min-width: 90px;
 		border: 1px solid $bg-colorHead-Redis;
-		box-shadow: 2px 2px 8px rgba(0,0,0,.175);
+		box-shadow: 0px 2px 12px rgba(0,0,0,0.3);
 		li {
 			margin: 0;
 			&:hover {

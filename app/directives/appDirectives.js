@@ -55,23 +55,12 @@
                         vertical = scope.orientation == 'vertical',
                         pane1Min = pane1.minSize || 0,
                         pane2Min = pane2.minSize || 0,
-pane1Max = pane1.maxSize || 0,
-pane2Max = pane2.maxSize || 0,
                         drag = false,
-                        pane2Percentage = pane2.initPercentage ? (100 % -pane2.initPercentage) : 50,
-                        pane1Percentage = pane1.initPercentage ? pane1.initPercentage : pane2Percentage,
-                        b, w, p, h;
+                        pane2Percentage = pane2.initWidthPercentage ? (100 % -pane2.initWidthPercentage) : 50,
+                        pane1Percentage = pane1.initWidthPercentage ? pane1.initWidthPercentage : pane2Percentage,
+                        b, w, p;
                     
-                    if (vertical) {
-                        b = element[0].getBoundingClientRect();
-                        h = b.bottom - b.top;
-                        p = pane1Percentage * 0.01 * h;
-                        console.log('h' + h)
-                        handler.css('top', p + 'px');
-                        pane1.elem.css('height', p + 'px');
-                        pane2.elem.css('top', p + 'px');
-                    }
-                    else{
+                    if (!vertical) {
                         b = element[0].getBoundingClientRect();
                         w = b.right - b.left;
                         p = pane1Percentage * 0.01 * w;
@@ -97,8 +86,6 @@ pane2Max = pane2.maxSize || 0,
 
                             if (pos < pane1Min) { return; }
                             if (height - pos < pane2Min) { return; }
-                            if (pos > pane1Max && pane1Max != 0) { return; }
-                            if ((height - pos >= pane2Max) && pane2Max != 0) { return; }
 
                             handler.css('top', pos + 'px');
                             pane1.elem.css('height', pos + 'px');
@@ -109,9 +96,7 @@ pane2Max = pane2.maxSize || 0,
                             pos = ev.clientX - bounds.left;
 
                             if (pos < pane1Min) { return; }
-                            if (pos > pane2Max && pane2Max != 0) { return; }
                             if (width - pos < pane2Min) { return; }
-                            if ((width - pos > pane2Max) && pane2Max != 0) { return; }
 
                             handler.css('left', pos + 'px');
                             pane1.elem.css('width', pos + 'px');
@@ -139,8 +124,7 @@ pane2Max = pane2.maxSize || 0,
                 transclude: true,
                 scope: {
                     minSize: '=',
-                    maxSize: '=',
-                    initPercentage: '='
+                    initWidthPercentage: '='
                 },
                 template: '<div class="split-pane{{index}}" ng-transclude></div>',
                 link: function (scope, element, attrs, bgSplitterCtrl) {

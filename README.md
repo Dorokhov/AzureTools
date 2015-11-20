@@ -1,5 +1,6 @@
 [![build status](https://img.shields.io/travis/Dorokhov/AzureTools/master.svg?style=flat-square)](https://travis-ci.org/Dorokhov/AzureTools)
-# Azure Tools
+
+# AzureTools
 ### Azure Tools is a cross platform Chrome application to view and query Microsoft Azure storages.
 
 Azure Tools include following modules:

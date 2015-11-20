@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="metro grid" style="font-weight: normal; -webkit-user-select: text" ng-controller="RedisController">
 		<bg-splitter orientation="horizontal">
-			<bg-pane min-size="170" init-percentage="26.7">
+			<bg-pane min-size="170" init-width-percentage="26.7">
 				<div class="wrapLeftBlock">
 					<div id="headBlock-Database" class="headBlock">
 						<i class="fa fa-database"></i><span>Database</span>
@@ -51,11 +51,11 @@
 							</div>
 						</div>
 						<div id="value-HashSet" ng-show="RedisViewModel.SelectedKey.Type == 'hash'">
-							<<bg-splitter orientation="vertical">
-								<bg-pane min-size="100" max-size="100" init-percentage="65">
+							<bg-splitter orientation="vertical">
+								<bg-pane min-size="100" init-height-percentage="55">
 									 <table id="hashSetTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
-								<bg-pane min-size="119" max-size="120">
+								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
 										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
@@ -69,10 +69,10 @@
 						
 						<div id="value-Set" ng-show="RedisViewModel.SelectedKey.Type == 'set'">
 							<bg-splitter orientation="vertical">
-								<bg-pane min-size="400" init-percentage="65">
+								<bg-pane min-size="100" init-height-percentage="55">
 						             <table id="setTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
-								<bg-pane min-size="119" max-size="120">
+								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
 										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
@@ -102,30 +102,32 @@
 </div>
 
 <script type="text/ng-template" id="createKeyTemplate">
-	<div class="input-group input-group-sm" style="margin-top:2px">
-		<span class="input-group-addon" style="border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid; width:97px;">Type</span>
-		<div class="dropdown" style="float:left; margin-left: 5px;">
-			<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
-				{{DialogViewModel.BodyViewModel.SelectedType}}
-				<span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-				<li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
-			</ul>
+	<div class="input-group input-group-sm">
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon" style="width:97px; border-right:1px; border-right-color:rgb(204, 204, 204); border-right-style:solid">Type</span>
+			<div class="dropdown" style="float:left; margin-left: 5px;">
+				<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" height:29px;">
+					{{DialogViewModel.BodyViewModel.SelectedType}}
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation" ng-repeat="type in DialogViewModel.BodyViewModel.Types"><a ng-click="DialogViewModel.BodyViewModel.selectType(type)">{{type}}</a></li>
+				</ul>
+			</div>
 		</div>
-	</div>
 
-	<div class="input-group input-group-sm" style="margin-top:2px">
-		<span class="input-group-addon" style="width:96px">Key</span>
-		<input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" style="width:372px" />
-	</div>
-	
-	<div class="input-group input-group-sm" style="margin-top:2px">
-		<span class="input-group-addon" style="width:96px">Value</span>
-		<textarea ng-model="DialogViewModel.BodyViewModel.Value"
-				  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
-				  class="form-control"
-				  style="width:372px; height: 100px;" />
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Key</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Key" class="form-control" />
+		</div>
+		
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon" style="float:none">Value</span>
+			<textarea ng-model="DialogViewModel.BodyViewModel.Value"
+					  ng-attr-placeholder="{{DialogViewModel.BodyViewModel.ValueExample}}"
+					  class="form-control"
+					  style="height: 100px;" />
+		</div>
 	</div>
 </script>
 
@@ -135,19 +137,19 @@
 	</div>
 
 	<div class="input-group input-group-sm">
-		<div class="input-group input-group-sm" style="margin-top:2px">
-			<span class="input-group-addon" style="width:96px;">Host</span>
-			<input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" style="width:372px" />
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Host</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Host" class="form-control" />
 		</div>
 
-		<div class="input-group input-group-sm" style="margin-top:2px">
-			<span class="input-group-addon" style="width:96px;">Port</span>
-			<input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" style="float:left; width:372px" />
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Port</span>
+			<input ng-model="DialogViewModel.BodyViewModel.Port" class="form-control" />
 		</div>
 
-		<div class="input-group input-group-sm" style="margin-top:2px">
+		<div class="input-group input-group-sm">
 			<span class="input-group-addon">Auth Password</span>
-			<input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" style="float:left;width:372px" />
+			<input ng-model="DialogViewModel.BodyViewModel.Password" class="form-control" />
 		</div>
 	</div>
 </script>

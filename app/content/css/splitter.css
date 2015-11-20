@@ -92,7 +92,7 @@
 .forRedis .split-panes.vertical {
   left: 6px;
   right: 10px;
-  top: 30px;
+  top: 75px;
   bottom: 0px;
   margin: 10px;
 }
@@ -108,5 +108,4 @@
   border-top: none;
   margin-top: 8px;
   padding-top: 6px;
-  min-height: 111px;
 }

@@ -1,6 +1,77 @@
+.forTiles a.navbar-brand {
+  cursor: default;
+}
+.forTiles .navbar-default .navbar-brand:hover {
+  color: #ffffff;
+}
+.forTiles .navbar-default {
+  background: #2e8bcc;
+  background: linear-gradient(to right, #2e8bcc 0%, #00ADAA 100%);
+}
+
+.tiles-preview {
+  height: calc(100% - 2px);
+  background: #F8F8F8;
+  border: 1px solid #e2e2e2;
+  margin: 0 auto;
+}
+
+.tilePreview {
+  display: block;
+  cursor: pointer;
+  float: left;
+  width: 154px;
+  height: 154px;
+  text-align: center;
+  color: #ffffff;
+  margin: 12px 0px 0px 12px;
+}
+.tilePreview:last-child {
+  margin-right: 12px;
+}
+.tilePreview-redis {
+  background-color: #00ADAA;
+}
+.tilePreview-tables {
+  background-color: #2e8bcc;
+}
+.tilePreview-blobs {
+  background-color: #039BC1;
+}
+.tilePreview:active {
+  transform: perspective(400px) rotateX(0.1rad);
+  transform-origin: 50% bottom;
+}
+.tilePreview:hover {
+  opacity: 0.7;
+}
+.tilePreview a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.tilePreview a:hover {
+  text-decoration: none;
+}
+.tilePreview img {
+  width: 110px;
+  height: 110px;
+  margin-top: 5px;
+}
+.tilePreview h4 {
+  line-height: 26px;
+  font-size: 30px;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
 .forRedis .navbar-default {
   background-color: #00ADAA;
   border-color: #00ADAA;
+}
+.forRedis .navbar-default .navbar-brand:hover {
+  color: #d6fff3;
 }
 .forRedis .tileFunction {
   background-color: #48E6B7;
@@ -14,6 +85,18 @@
 .forRedis .popup .panel-heading {
   background-color: #00ADAA;
   border-color: #00ADAA;
+}
+.forRedis .popup .btn-default {
+  background-color: #f4faf9;
+}
+.forRedis .popup .btn-default:hover, .forRedis .popup .btn-default:focus, .forRedis .popup .btn-default:active {
+  color: #fff;
+  background-color: #48E6B7;
+  border-color: #48E6B7;
+}
+.forRedis .panel-warning.popup .panel-heading {
+  color: #00ADAA;
+  background: #FFE44E;
 }
 .forRedis .loading .fa {
   color: #1dd49d;
@@ -40,10 +123,16 @@
 .forRedis .metro .table.hovered tbody tr:hover {
   background-color: #e5fff7;
 }
+.forRedis .table tr.selected {
+  background-color: #dff1ec;
+}
+.forRedis .wrapRightBlock .headBlock span {
+  padding-left: 10px;
+}
 
 #headBlock-Database .fa {
   float: left;
-  padding: 6px 8px;
+  padding: 6px 8px 6px 10px;
 }
 #headBlock-Database span:not(.caret) {
   float: left;
@@ -75,7 +164,7 @@
   z-index: 1100;
   min-width: 90px;
   border: 1px solid #00ADAA;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.175);
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.3);
 }
 #headBlock-Database .dropdown-menu li {
   margin: 0;
@@ -91,10 +180,6 @@
 }
 #headBlock-Database .dropdown-menu li a:hover, #headBlock-Database .dropdown-menu li a:focus {
   background-color: #edf7f4;
-}
-
-.wrapRightBlock .headBlock span {
-  padding-left: 10px;
 }
 
 .typeValue {
@@ -149,6 +234,9 @@
   background-color: #2e8bcc;
   border-color: #2e8bcc;
 }
+.forTables .navbar-default .navbar-brand:hover {
+  color: #d6edff;
+}
 .forTables .tileFunction {
   background-color: #7AC5FF;
 }
@@ -161,6 +249,18 @@
 .forTables .popup .panel-heading {
   background-color: #2e8bcc;
   border-color: #2e8bcc;
+}
+.forTables .popup .btn-default {
+  background-color: #f4f8fa;
+}
+.forTables .popup .btn-default:hover, .forTables .popup .btn-default:focus, .forTables .popup .btn-default:active {
+  color: #fff;
+  background-color: #7AC5FF;
+  border-color: #7AC5FF;
+}
+.forTables .panel-warning.popup .panel-heading {
+  color: #2e8bcc;
+  background: #FFE44E;
 }
 .forTables .loading .fa {
   color: #3daaff;
@@ -187,8 +287,11 @@
 .forTables .metro .table.hovered tbody tr:hover {
   background-color: #e5f4ff;
 }
+.forTables .table tr.selected {
+  background-color: #dfe9f1;
+}
 .forTables .bodyLeftBlock {
-  padding: 4px 5px 5px 5px;
+  padding: 4px 5px 6px 5px;
 }
 
 #tableList {
@@ -205,18 +308,18 @@
   line-height: 26px;
   color: #2A2A2A;
   letter-spacing: 0;
-  padding-left: 5px;
+  padding-left: 4px;
   cursor: pointer;
 }
 #tableList li:hover {
-  background: #E4F4FF;
+  background: #e5f4ff;
 }
 #tableList li.selected {
-  background: #EBF0F3;
-  border: 1px solid #DDDDDD;
+  background: #dfe9f1;
+  border: 1px #DDDDDD solid;
   border-right: none;
   line-height: 24px;
-  padding-left: 4px;
+  padding-left: 3px;
 }
 #tableList .fa {
   padding: 0px 6px 0 0;
@@ -225,30 +328,206 @@
   color: #515151;
 }
 
-.forTables, .forRedis {
+/*Dialog window "+Entity"*/
+.popup-createEntity.popup {
+  width: 656px;
+  height: 534px;
+  left: calc(50% - 325px);
+  top: calc(50% - 227px);
+}
+.popup-createEntity.popup .panel-body {
+  padding: 8px 15px 15px 15px;
+}
+
+#createTableEntity {
+  height: 426px;
+}
+#createTableEntity .wrapListFields {
+  background: #F8F8F8;
+  border: 1px solid #e2e2e2;
+  height: calc(100% - 38px);
+  padding: 6px 4px 6px 6px;
+}
+#createTableEntity .wrapListFields div:first-child {
+  background: #F8F8F8;
+  overflow: auto;
+  height: 100%;
+}
+#createTableEntity .actionRows {
+  width: 100%;
+}
+#createTableEntity .actionRows .tileFunction {
+  height: 30px;
+  width: 68px;
+  -webkit-user-select: none;
+  line-height: 30px;
+  float: right;
+  margin: 0 0 8px 8px;
+}
+#createTableEntity .actionRows label {
+  float: left;
+  line-height: 30px;
+  margin-bottom: 8px;
+}
+#createTableEntity .input-group-sm > .input-group-sm {
+  margin-top: 4px;
+}
+#createTableEntity .input-group-addon {
+  width: 118px;
+  text-align: left;
+  border-color: #b4b4b4;
+  background-color: #e6eef4;
+}
+#createTableEntity .input-group-addon:focus {
+  outline: none;
+  border: 1px solid #80b6df;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px #80b6df;
+}
+#createTableEntity ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#createTableEntity .form-control {
+  border-color: #b4b4b4;
+}
+#createTableEntity .form-control:focus {
+  border-color: #a3d7ff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #a3d7ff;
+}
+#createTableEntity .checkbox {
+  float: left;
+  margin: 7px 0 5px;
+}
+#createTableEntity .checkbox .checkbox-label {
+  padding-left: 21px;
+}
+#createTableEntity .checkbox .checkbox-label:before {
+  height: 19px;
+  width: 19px;
+  background: #ffffff;
+}
+#createTableEntity .checkbox .checkbox-label:after {
+  font-size: 9pt;
+  line-height: 13px;
+}
+#createTableEntity select {
+  float: left;
+  height: 24px;
+  margin: 3px 0 3px 2px;
+  font-size: 12px;
+  border: 2px #d9d9d9 solid;
+  background-color: #e6eef4;
+}
+#createTableEntity select:hover {
+  outline: none;
+  border: 2px solid #95c2e4;
+}
+#createTableEntity select:focus {
+  outline: none;
+}
+#createTableEntity select option {
+  background: #e0f1ff;
+}
+
+#tables_length label {
+  font-size: 12px;
+  line-height: 29px;
+  margin: 4px 10px;
+}
+#tables_length select {
+  border: 2px #d9d9d9 solid;
+  padding: 2px 4px;
+  outline: none;
+  margin: 0px 0px 2px 0px;
+}
+#tables_length select:hover, #tables_length select:focus {
+  border: 2px solid #95c2e4;
+}
+#tables_length select:focus {
+  border: 2px solid #d9d9d9;
+}
+#tables_length select option {
+  background: #fff;
+}
+
+#tables_paginate {
+  margin: 6px 8px;
+}
+#tables_paginate .paginate_button {
+  padding: 4px 12px;
+  font-family: "Segoe UI_", "Open Sans", Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  background-color: #d8e4ee;
+}
+#tables_paginate .paginate_button:active, #tables_paginate .paginate_button:hover {
+  background-color: #addbff !important;
+}
+#tables_paginate .paginate_button.current {
+  background-color: #7AC5FF;
+  color: #ffffff;
+}
+#tables_paginate .paginate_button.current:hover {
+  background-color: #7AC5FF !important;
+}
+#tables_paginate .paginate_button.disabled {
+  background-color: #edf3f7 !important;
+  cursor: default !important;
+}
+#tables_paginate .paginate_button.disabled:active {
+  color: #bebebe !important;
+}
+#tables_paginate .paginate_button.previous {
+  margin-right: 9px;
+}
+#tables_paginate .paginate_button.next {
+  margin-left: 7px;
+}
+#tables_paginate a {
+  text-decoration: none;
+}
+#tables_paginate .ellipsis {
+  padding: 4px 4px;
+  background-color: transparent;
+  cursor: default;
+  font-size: 16px;
+  line-height: 16px;
+  display: block;
+  float: left;
+  margin-right: 1px;
+}
+
+.forTables, .forRedis, .forTiles {
   margin: 10px;
   font-family: "Segoe UI_", "Open Sans", Verdana, Arial, Helvetica, sans-serif;
   height: calc(100% - 20px);
+  /*Header*/
 }
-.forTables .navbar, .forRedis .navbar {
+.forTables .navbar, .forRedis .navbar, .forTiles .navbar {
   min-height: 40px;
   white-space: nowrap;
 }
-.forTables .navbar-brand, .forRedis .navbar-brand {
+.forTables .navbar-brand, .forRedis .navbar-brand, .forTiles .navbar-brand {
   height: 40px;
-  padding: 10px;
-  padding-top: 2px;
+  padding: 2px 10px 10px 9px;
+  font-size: 19px;
 }
-.forTables .icon-cloud, .forRedis .icon-cloud {
-  font-size: 38px;
-  vertical-align: -26%;
+.forTables .navbar-brand .icon-cloud, .forRedis .navbar-brand .icon-cloud, .forTiles .navbar-brand .icon-cloud {
+  font-size: 40px;
+  vertical-align: -27%;
   line-height: 0.8;
   padding-right: 5px;
+  padding-left: 3px;
 }
-.forTables .input-group-sm > .input-group-addon, .forRedis .input-group-sm > .input-group-addon {
-  padding: 5px 8px;
+.forTables .navbar-brand .fa, .forRedis .navbar-brand .fa, .forTiles .navbar-brand .fa {
+  font-size: 30px;
+  vertical-align: -12%;
+  line-height: 1.2;
+  padding-right: 5px;
 }
 
+/*Header*/
 .navbar-brand {
   padding-top: 3px;
 }
@@ -266,14 +545,11 @@
   color: #ffffff;
 }
 
-.leftOffset {
-  margin-left: 113px;
-}
-
 .noMarginBottom {
   margin-bottom: 0px;
 }
 
+/*Functional panel*/
 #navbarTilesFunction {
   margin: 0px;
   padding: 0px;
@@ -282,7 +558,7 @@
 }
 #navbarTilesFunction .navbar-nav {
   margin: 0px;
-  padding-right: 10px;
+  padding-left: 9px;
   background: #F8F8F8;
   border: 1px solid #e2e2e2;
   width: 100%;
@@ -297,7 +573,7 @@
   height: 60px;
   text-align: center;
   color: #ffffff;
-  margin: 10px 0 10px 10px;
+  margin: 10px 10px 10px 0px;
 }
 .tileFunction:active {
   transform: perspective(400px) rotateX(0.2rad);
@@ -328,9 +604,10 @@
 .delimiter-tiles {
   border-left: 1px solid #e2e2e2;
   height: 70px;
-  margin: 5px -1px 5px 9px;
+  margin: 5px 9px 5px -1px;
 }
 
+/*Dialog windows*/
 .popup {
   margin: 0;
   position: absolute;
@@ -338,7 +615,40 @@
   top: calc(50% - 119px);
   display: inline-block;
   z-index: 1000;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.175);
+  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.4);
+}
+.popup .panel-heading {
+  padding: 8px 15px;
+  font-size: 15px;
+}
+.popup .checkbox .checkbox-label:before {
+  height: 21px;
+  width: 21px;
+  border: 2px #d9d9d9 solid;
+}
+.popup .btn-group {
+  float: right;
+  margin-top: 10px;
+}
+.popup .btn-default:active {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.125);
+}
+
+.panel-warning.popup {
+  width: 500px;
+}
+
+.forRedis .input-group-sm > .input-group-addon, .forTables .input-group-sm > .input-group-addon {
+  padding: 5px 8px;
+  width: 96px;
+  float: left;
+}
+.forRedis .input-group-sm > .input-group-sm, .forTables .input-group-sm > .input-group-sm {
+  margin-top: 2px;
+}
+.forRedis .input-group .form-control, .forTables .input-group .form-control {
+  width: 372px;
+  float: left;
 }
 
 .loading {
@@ -362,8 +672,9 @@
   cursor: pointer;
 }
 
+/*Body*/
 #content {
-  height: 100%;
+  height: calc(100% - 40px);
 }
 
 .wrapLeftBlock {
@@ -379,7 +690,7 @@
   white-space: nowrap;
 }
 .headBlock .fa {
-  padding: 0 8px;
+  padding: 0 8px 0 10px;
   font-size: 18px;
   vertical-align: -10%;
 }
@@ -446,9 +757,8 @@
   right: 12px;
 }
 
-#tables_wrapper, #data_wrapper {
+#tables_wrapper, #data_wrapper, #hashSetTable_wrapper, #setTable_wrapper {
   border: 1px solid #b4b4b4;
-  overflow: hidden;
 }
 
 .forTables #alertArea, .forTables #errorNotification {
@@ -464,13 +774,6 @@
   .margin-to-align {
     margin-left: 0px;
     position: relative;
-  }
-}
-@media (max-width: 992px) {
-  .tile-preview {
-    margin-left: 0px;
-    position: relative;
-    width: 160px;
   }
 }
 @media (min-width: 992px) {
@@ -491,12 +794,4 @@
 }
 .clearFloat {
   clear: both;
-}
-
-table.dataTable,
-table.dataTable th,
-table.dataTable td {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
 }

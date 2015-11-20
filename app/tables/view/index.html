@@ -1,6 +1,6 @@
 <div class="metro grid" style="font-weight: normal;" ng-controller="TablesController">
     <bg-splitter orientation="horizontal">
-        <bg-pane min-size="50" init-percentage="26.7">
+        <bg-pane min-size="50" init-width-percentage="26.2">
             <div class="wrapLeftBlock">
                 <div class="headBlock">
                     <i class="fa fa-th-large"></i><span id="accountName">{{TablesViewModel.Settings.AccountName}}</span>
@@ -64,48 +64,66 @@
     </div>
 
     <div class="input-group input-group-sm">
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Url</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" style="width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Url</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Name</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" style="float:left; width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Key</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" style="float:left;width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Key</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" />
         </div>
     </div>
 </script>
 
 <script type="text/ng-template" id="createTableTemplate">
     <div class="input-group input-group-sm">
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Table Name</span>
-            <input ng-model="DialogViewModel.BodyViewModel.TableName" class="form-control" style="width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Table Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.TableName" class="form-control" />
         </div>
-        <div class="input-group input-group-sm" style="margin-top:2px" 
+        <div class="input-group input-group-sm"  
         ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">
         {{ DialogViewModel.BodyViewModel.ErrorMessage }}</div>
     </div>
 </script>
 
 <script type="text/ng-template" id="createTableEntityTemplate">
-    <div class="input-group input-group-sm">
-    <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
-    <li>
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <input type="checkbox" style="float:left;" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()">
-            <span class="input-group-addon" style="width:96px;">{{property.Key}}</span>
-            <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
-            <input ng-model="property.Value" class="form-control" style="width:372px" />
+    <div id="createTableEntity">
+        <div class="input-group input-group-sm actionRows">
+            <label>Fill in the fields to create a new entity</label>
+            <span class="tileFunction">
+                <a class="fa-links" title="Delete selected rows" ng-click="RedisViewModel.updateKey()">Delete</a>
+            </span>
+            <span class="tileFunction">
+            <a class="fa-links" title="Add row" ng-click="RedisViewModel.updateKey()">Add row</a>
+            </span>
         </div>
-        </li>
-</ul>
-        <div class="input-group input-group-sm" style="margin-top:2px" 
-        ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">{{ DialogViewModel.BodyViewModel.ErrorMessage }}</div>
+        <div class="wrapListFields"> 
+            <div>
+                <ul ng-repeat="property in DialogViewModel.BodyViewModel.TableProperties">
+                    <li class="input-group input-group-sm">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="DialogViewModel.IsChecked" ng-change="DialogViewModel.onChecked()" />
+                            <span class="checkbox-label"></span>
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <input class="input-group-addon" value="{{property.Key}}" />
+                            <input ng-model="property.Value" class="form-control" />
+                            <select ng-model="property.Type.Selected" ng-options="type as type for type in property.Type.Types"></select>
+                        </div>
+                    </li>
+                </ul>
+                <div class="input-group input-group-sm"  
+                ng-show="DialogViewModel.BodyViewModel.ErrorMessage !== undefined && DialogViewModel.BodyViewModel.ErrorMessage !== null">
+                    {{ DialogViewModel.BodyViewModel.ErrorMessage }}
+                </div>
+            </div>
+        </div>
     </div>
 </script>

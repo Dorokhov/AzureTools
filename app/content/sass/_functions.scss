@@ -2,6 +2,9 @@
 	.navbar-default {
 		background-color: $colorHead;
 		border-color: $colorHead;
+		.navbar-brand:hover {
+			color: hsl(hue($colorTile), 100%, 92%); 
+		}
 	}
 	.tileFunction {
 		background-color: $colorTile;
@@ -14,6 +17,20 @@
 		.panel-heading {
 			background-color: $colorHead;
 			border-color: $colorHead;
+		}
+		.btn-default {
+			background-color: hsl(hue($colorTile), 40%, 97%);
+			&:hover, &:focus, &:active{
+				color: #fff;
+				background-color: $colorTile;
+				border-color: $colorTile;
+			}
+		}
+	}
+	.panel-warning.popup {
+		.panel-heading {
+			color: $colorHead;
+			background: #FFE44E;
 		}
 	}
 	.loading {
@@ -47,6 +64,9 @@
 		.table.hovered tbody tr:hover {
 			background-color: hsl(hue($colorTile), 100%, 95%);
 		}
+	}
+	.table tr.selected {
+		background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
 	}
 }
 

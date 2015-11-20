@@ -37,14 +37,14 @@
 </head>
 
 <body ng-controller="AppController">
-    <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables', 'forRedis': state.current.name === 'redis', 'forBlobs': state.current.name === 'blobs'}">
+    <div ng-controller="ActionBarController" ng-class="{'forTables': state.current.name === 'tables', 'forRedis': state.current.name === 'redis', 'forBlobs': state.current.name === 'blobs', 'forTiles': state.current.name === 'tiles'}">
         <nav class="navbar navbar-default noMarginBottom" role="navigation">
-            <div ng-class="{'margin-to-align': state.current.name === 'blobs' || state.current.name === 'tiles'}">
-                <div class="navbar-header" ng-style="{'margin-left: auto; margin-right:auto;': state.current.name === 'blobs' || state.current.name === 'tiles'}">
+            <div ng-class="{'margin-to-align': state.current.name === 'blobs'}">
+                <div class="navbar-header" ng-style="{'margin-left: auto; margin-right:auto;': state.current.name === 'blobs'}">
                     <a class="row-fluid navbar-brand" ui-sref="tiles">
-                        <span class="icon-cloud"></span>
+                        <i ng-show="state.current.name === 'tables' || state.current.name === 'redis'" class="fa fa-arrow-circle-left"></i><span ng-show="state.current.name === 'tiles' || state.current.name === 'blobs'" class="icon-cloud"></span>
                         <span>Azure Tools</span>
-                        <span>{{ActionBarItems.ModuleName}}</span>
+                        <span ng-show="state.current.name !== 'tiles'">{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
 
@@ -121,14 +121,7 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li ng-show="ActionBarItems.Continuation != null">
-                    <div class="tileFunction">
-                        <a class="fa-links" title="Load More" ng-click="ActionBarItems.loadMore()">
-                            <i class="fa fa-play"></i><br /><span>Entities</span>
-                        </a>
-                    </div>
-                </li>
-               <li>
+                <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Create new table" ng-click="ActionBarItems.createTable()">
                             <i class="fa fa-table"></i><br /><span>Create</span>
@@ -142,18 +135,26 @@
                         </a>
                     </div>
                 </li>
-                <!--<li>
+                <li class="delimiter-tiles"></li>
+                <li>
                     <div class="tileFunction">
-                        <a class="fa-links" title="Create new table" ng-click="ActionBarItems.createTableEntity()">
-                            <i class="fa fa-table"></i><span>+Entity</span>
+                        <a class="fa-links" title="Add entity" ng-click="ActionBarItems.createTableEntity()">
+                            <i class="fa fa-plus-circle"></i><br /><span>Entity</span>
                         </a>
                     </div>
-                </li>-->
+                </li>
                 <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Delete entity" ng-click="ActionBarItems.deleteTableEntity()">
-                            <i class="fa fa-trash-o"></i>
+                            <i class="fa fa-minus-circle"></i><br />
                             <span>Entity</span>
+                        </a>
+                    </div>
+                </li>
+                <li ng-show="ActionBarItems.Continuation != null">
+                    <div class="tileFunction">
+                        <a class="fa-links" title="Load more" ng-click="ActionBarItems.loadMore()">
+                            <i class="fa fa-play-circle"></i><br /><span>Entities</span>
                         </a>
                     </div>
                 </li>
@@ -180,7 +181,7 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>
@@ -194,14 +195,14 @@
                     <span class="checkbox-label">{{DialogViewModel.OptionText}}</span>
                 </label>
 
-                <div class="btn-group" style="float:right; margin-top:10px" ng-disabled="DialogViewModel.AreButtonsDisabled">
+                <div class="btn-group" ng-disabled="DialogViewModel.AreButtonsDisabled">
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <div id="confirmationDialog" class="panel panel-warning popup" style="width:500px; height:145px;" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
+        <div id="confirmationDialog" class="panel panel-warning popup" ng-controller="ConfirmationController" ng-show="ConfirmationViewModel.IsVisible">
             <div class="panel-heading">
                 {{ConfirmationViewModel.Header}}
             </div>
@@ -210,7 +211,7 @@
                 <div ng-bind="ConfirmationViewModel.Body">
                 </div>
 
-                <div class="btn-group" style="float:right; margin-top:10px">
+                <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.yes()">Yes</button>
                     <button type="button" class="btn btn-default" ng-click="ConfirmationViewModel.no()">No</button>
                 </div>

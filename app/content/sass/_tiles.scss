@@ -1,0 +1,73 @@
+.forTiles {
+	a.navbar-brand{
+		cursor: default;
+	}
+	.navbar-default .navbar-brand:hover {
+		color: #ffffff; 
+	}
+	.navbar-default {
+		background: #2e8bcc;
+		background: linear-gradient(to right, #2e8bcc 0%, #00ADAA 100%);
+	}
+}
+
+.tiles-preview {
+	height: calc(100% - 2px);
+	background: $bg-colorBlock;
+	border: $borderBlock;
+	margin: 0 auto;
+}
+
+.tilePreview {
+	display: block;
+	cursor: pointer;
+	float: left;
+	width: 154px;
+	height: 154px;
+	text-align: center;	
+	color: #ffffff;
+	margin: 12px 0px 0px 12px;
+	&:last-child {
+		margin-right: 12px;
+	}
+	// background: #2e8bcc;
+	@each $module, $color in $tile-colors {
+		&-#{$module} {
+			background-color: $color;
+		}
+	}
+	&:active {
+		transform: perspective(400px) rotateX(0.1rad);
+		transform-origin: 50% bottom;
+	}
+	&:hover {
+		opacity: 0.7;
+	}
+	a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	img {
+		width: 110px; 
+		height: 110px;
+		margin-top: 5px; 
+	} 
+	h4 {
+		line-height: 26px;
+		font-size: 30px; 
+		margin: 0;
+		letter-spacing: 1px;
+	}
+}
+
+
+
+
+
+
+

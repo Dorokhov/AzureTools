@@ -16,20 +16,16 @@
             if (self.oTable != null) {
                 self.oTable.columns.adjust().draw();
             }
-
-            if (self.oValueTable != null) {
-                self.oValueTable.columns.adjust().draw();
-            }
         };
 
         self.showKeys = function(data, onselect, selected) {
             self.Keys = data;
 
             var calcDataTableHeight = function() {
-                return ($(window).height() - 270);
+                return ($(window).height() - 150);
             };
 
-            // self.cleanUp();
+           // self.cleanUp();
 
             $(window).unbind('resize');
             $(window).bind('resize', function() {
@@ -43,7 +39,7 @@
             }
             if (self.oTable != null) {
                 self.oTable.destroy();
-            }
+           }
 
             $('#data').empty();
             self.oTable = $('#data').DataTable({
@@ -137,7 +133,7 @@
                 bFilter: false,
                 bInfo: false,
                 bPaginate: false,
-                scrollY: 400,
+                // scrollY: calcDataTableHeight(),
                 //scrollCollapse: true,
                 data: data,
                 autoWidth: false,

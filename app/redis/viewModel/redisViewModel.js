@@ -218,14 +218,10 @@
                                 if (selected != null) {
                                     if (selected.Type === 'set') {
                                         var parsed = jQuery.parseJSON(selected.Value);
-                                        $timeout(function() {
-                                            $dataTablePresenter.showSet(parsed);
-                                        });
+                                        $dataTablePresenter.showSet(parsed);
                                     } else if (selected.Type === 'hash') {
                                         var parsed = jQuery.parseJSON(selected.Value);
-                                        $timeout(function() {
-                                            $dataTablePresenter.showHashSet(parsed);
-                                        });
+                                        $dataTablePresenter.showHashSet(parsed);
                                     }
                                 }
                             });
@@ -279,7 +275,6 @@
                             });
                             $busyIndicator.setIsBusy(loadKeysOperation, true, function() {
                                 client.end();
-                                updateKeysPresentation();
                             });
                         }
                     };

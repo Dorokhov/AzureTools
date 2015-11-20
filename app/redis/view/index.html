@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="metro grid" style="font-weight: normal; -webkit-user-select: text" ng-controller="RedisController">
 		<bg-splitter orientation="horizontal">
-			<bg-pane min-size="170" init-width-percentage="26.7">
+			<bg-pane min-size="170" init-percentage="26.7">
 				<div class="wrapLeftBlock">
 					<div id="headBlock-Database" class="headBlock">
 						<i class="fa fa-database"></i><span>Database</span>
@@ -52,7 +52,7 @@
 						</div>
 						<div id="value-HashSet" ng-show="RedisViewModel.SelectedKey.Type == 'hash'">
 							<bg-splitter orientation="vertical">
-								<bg-pane min-size="100" init-height-percentage="55">
+								<bg-pane min-size="100" init-percentage="55">
 									 <table id="hashSetTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
 								<bg-pane min-size="119">
@@ -69,10 +69,10 @@
 						
 						<div id="value-Set" ng-show="RedisViewModel.SelectedKey.Type == 'set'">
 							<bg-splitter orientation="vertical">
-								<bg-pane min-size="100" init-height-percentage="55">
+								<bg-pane min-size="400" init-percentage="65">
 						             <table id="setTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
 								</bg-pane>
-								<bg-pane min-size="119">
+								<bg-pane min-size="119" max-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
 										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>

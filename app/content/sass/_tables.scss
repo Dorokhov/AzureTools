@@ -44,7 +44,7 @@
 
 .popup-createEntity.popup {
 	width: 656px;
-	height: 543px;
+	height: 534px;
 	left: calc(50% - 325px);
 	top: calc(50% - 227px);
 	.panel-body {
@@ -53,7 +53,7 @@
 }
 
 #createTableEntity {
-	height: 436px;
+	height: 426px;
 	.wrapListFields {
 		background: $bg-colorBlock;
 		border: $borderBlock;
@@ -81,7 +81,11 @@
 			margin-bottom: 8px;
 		}
 	}
+	.input-group-sm > .input-group-sm {
+		margin-top: 4px;
+	}
 	.input-group-addon {
+		
 		width: 118px;
 		text-align: left;
 		border-color: #b4b4b4;

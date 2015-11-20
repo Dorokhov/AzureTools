@@ -331,7 +331,7 @@
 /*Dialog window "+Entity"*/
 .popup-createEntity.popup {
   width: 656px;
-  height: 543px;
+  height: 534px;
   left: calc(50% - 325px);
   top: calc(50% - 227px);
 }
@@ -340,7 +340,7 @@
 }
 
 #createTableEntity {
-  height: 436px;
+  height: 426px;
 }
 #createTableEntity .wrapListFields {
   background: #F8F8F8;
@@ -368,6 +368,9 @@
   float: left;
   line-height: 30px;
   margin-bottom: 8px;
+}
+#createTableEntity .input-group-sm > .input-group-sm {
+  margin-top: 4px;
 }
 #createTableEntity .input-group-addon {
   width: 118px;

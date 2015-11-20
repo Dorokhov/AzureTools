@@ -2,7 +2,7 @@
 	@include colorsModule($bg-colorHead-Tables, $bg-colorTile-Tables);
 
 	.bodyLeftBlock {
-		padding: 4px 5px 5px 5px;
+		padding: 4px 5px 6px 5px;
 	}
 }
 
@@ -25,7 +25,7 @@
 			background: hsl(hue($bg-colorTile-Tables), 100%, 95%);
 		}
 		&.selected {
-			background: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 4%);; 
+			background: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 4%); 
 			border: $borderTD; 
 			border-right: none;
 			line-height: 24px;
@@ -43,7 +43,7 @@
 /*Dialog window "+Entity"*/
 
 .popup-createEntity.popup {
-	width: 650px;
+	width: 656px;
 	height: 543px;
 	left: calc(50% - 325px);
 	top: calc(50% - 227px);
@@ -53,12 +53,12 @@
 }
 
 #createTableEntity {
-	height: 434px;
+	height: 436px;
 	.wrapListFields {
 		background: $bg-colorBlock;
 		border: $borderBlock;
 		height: calc(100% - 38px);
-		padding: 5px 2px 5px 4px;
+		padding: 6px 4px 6px 6px;
 		div:first-child {
 			background: $bg-colorBlock;
 			overflow: auto;
@@ -69,6 +69,7 @@
 		width: 100%;
 		.tileFunction {
 			height: 30px;
+			width: 68px;
 			-webkit-user-select: none;
 			line-height: 30px;
 			float: right;
@@ -84,10 +85,11 @@
 		width: 118px;
 		text-align: left;
 		border-color: #b4b4b4;
+		background-color: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 2%);
 		&:focus {
 			outline: none;
-			border: 1px solid desaturate($bg-colorTile-Tables, 40%);
-			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px desaturate($bg-colorTile-Tables, 40%);
+			border: 1px solid darken(desaturate($bg-colorTile-Tables, 40%), 5%);
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 3px darken(desaturate($bg-colorTile-Tables, 40%), 5%);
 		}
 	}
 	ul {
@@ -98,8 +100,8 @@
 	.form-control {
 		border-color: #b4b4b4;
 		&:focus {
-			border-color: lighten($bg-colorTile-Tables, 10%);
-			box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($bg-colorTile-Tables, 10%);
+			border-color: lighten($bg-colorTile-Tables, 8%);
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($bg-colorTile-Tables, 8%);
 		}
 	}
 	.checkbox {
@@ -124,11 +126,11 @@
     	margin: 3px 0 3px 2px;
     	font-size: 12px;
     	border: 2px #d9d9d9 solid;
-    	background-color: hsl(hue($bg-colorTile-Tables), 40%, 95%);
+    	background-color: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 2%);
     	&:hover {
 			outline: none;
 			border: 2px solid desaturate($bg-colorTile-Tables, 40%);
-			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px desaturate($bg-colorTile-Tables, 40%);
+			// box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px desaturate($bg-colorTile-Tables, 40%);
 		}
     	&:focus {
 			outline: none;
@@ -139,6 +141,75 @@
 	}
 }
 
+#tables_length {
+	label {
+		font-size: 12px;
+		line-height: 29px;
+		margin: 4px 10px;
+	}
+	select {
+		border: 2px #d9d9d9 solid;
+		padding: 2px 4px;
+		outline: none;
+		margin: 0px 0px 2px 0px;
+			&:hover, &:focus{
+				border: 2px solid desaturate($bg-colorTile-Tables, 40%);	
+			}
+			&:focus{
+				border: 2px solid #d9d9d9 ;	
+			}
+			option {
+				background: #fff;
+			}
+		} 
+	}
+
+#tables_paginate {
+	margin: 6px 8px;
+	.paginate_button {
+		padding: 4px 12px;
+		font-family: $fontFamily;
+		font-size: 12px;
+		line-height: 16px;
+		background-color: darken(hsl(hue($bg-colorTile-Tables), 40%, 95%), 6%);
+		&:active, &:hover {
+			background-color: lighten($bg-colorTile-Tables, 10%) !important;
+		}
+		&.current {
+			background-color: $bg-colorTile-Tables;
+			color: #ffffff;
+			&:hover {
+				background-color: $bg-colorTile-Tables !important;
+			}
+		}
+		&.disabled {
+			background-color: hsl(hue($bg-colorTile-Tables), 40%, 95%) !important;
+			cursor: default !important;
+			&:active {
+				color: #bebebe !important;
+			}
+		}
+		&.previous {
+			margin-right: 9px;
+		}
+		&.next {
+			margin-left: 7px;
+		}
+	}
+	a {
+		text-decoration: none;
+	}
+	.ellipsis {
+		padding: 4px 4px;
+		background-color: transparent;
+		cursor: default;
+		font-size: 16px;
+		line-height: 16px;
+		display: block;
+		float: left;
+		margin-right: 1px;
+	}
+}
 
 
 

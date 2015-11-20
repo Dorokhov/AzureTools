@@ -19,7 +19,7 @@
 			border-color: $colorHead;
 		}
 		.btn-default {
-			background-color: hsl(hue($colorTile), 40%, 98%);
+			background-color: hsl(hue($colorTile), 40%, 97%);
 			&:hover, &:focus, &:active{
 				color: #fff;
 				background-color: $colorTile;
@@ -30,7 +30,7 @@
 	.panel-warning.popup {
 		.panel-heading {
 			color: $colorHead;
-			background: #FED702;
+			background: #FFE44E;
 		}
 	}
 	.loading {

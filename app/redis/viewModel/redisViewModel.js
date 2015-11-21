@@ -337,13 +337,13 @@
                     };
 
                     var showInfo = function(msg) {
-                        if (msg !== undefined && msg !== null) {
-                            $timeout(function() {
-                                $notifyViewModel.scope().$apply(function() {
-                                    $notifyViewModel.showInfo(msg);
-                                });
-                            });
-                        }
+                        //if (msg !== undefined && msg !== null) {
+                        //    $timeout(function() {
+                        //        $notifyViewModel.scope().$apply(function() {
+                        //            $notifyViewModel.showInfo(msg);
+                        //        });
+                        //    });
+                        //}
                     };
 
 

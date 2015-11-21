@@ -136,13 +136,13 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li>
+                <!--<li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Add entity" ng-click="ActionBarItems.createTableEntity()">
                             <i class="fa fa-plus-circle"></i><br /><span>Entity</span>
                         </a>
                     </div>
-                </li>
+                </li>-->
                 <li>
                     <div class="tileFunction">
                         <a class="fa-links" title="Delete entity" ng-click="ActionBarItems.deleteTableEntity()">
@@ -167,10 +167,10 @@
             <a id="sendEmail" class="alert-link" target="_blank">Click here to send report to developer</a>
         </div>
 
-        <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible" style="height: 50px;position: relative; z-index: 999;">
+      <!--  <div id="errorNotification" class="alert alert-warning" ng-controller="DialogsController" ng-show="NotifyViewModel.IsVisible" style="height: 50px;position: relative; z-index: 999;">
             <div style="float: left;">{{NotifyViewModel.Body}}</div>
             <a style="margin-left: 3px; cursor: pointer;" ng-show="NotifyViewModel.CommandText != null" ng-click="NotifyViewModel.Command()">{{NotifyViewModel.CommandText}}</a>
-        </div>
+        </div>-->
         
         <div id="content" ui-view>
         </div>

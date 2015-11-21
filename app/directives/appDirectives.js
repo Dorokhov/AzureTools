@@ -120,13 +120,17 @@ pane2Max = pane2.maxSize || 0,
                     });
 
                     handler.bind('mousedown', function (ev) {
+                        drag = false;
                         ev.preventDefault();
                         drag = true;
                     });
 
                     angular.element(document).bind('mouseup', function () {
+                        if(drag === true){
+                        scope.$emit('splitter-resize');
+                        }
+
                         drag = false;
-                        scope.$emit('splitter-resize')
                     });
                 }
             };

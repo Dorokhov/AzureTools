@@ -13,6 +13,7 @@
 
         };
         self.adjustColumns = function() {
+            console.log('adjust columns');
             if (self.oTable != null) {
                 self.oTable.columns.adjust().draw();
             }
@@ -33,6 +34,7 @@
 
             $(window).unbind('resize');
             $(window).bind('resize', function() {
+                console.log('resize');
                 $('.dataTables_scrollBody').css('height', calcDataTableHeight());
                 self.oTable.columns.adjust().draw();
             });

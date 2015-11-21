@@ -34,6 +34,7 @@ npm run lint
 ```
 
 # Change Log
+- 0.6 (21 November 2015) - Redis Viewer redesign. Tables Viewer: columns reordering; paging; create table; delete table.
 - 0.5 (07 October 2015) - Tables Viewer redesign. Bug fixing.
 - 0.4 (30 August 2015) - Blobs Viewer was released.
 - 0.3 (26 July 2015) - Tables Viewer was released.

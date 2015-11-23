@@ -500,55 +500,101 @@
   margin-right: 1px;
 }
 
-.forTables, .forRedis, .forTiles {
+.forBlobs .navbar-default {
+  background-color: #039BC1;
+  border-color: #039BC1;
+}
+.forBlobs .navbar-default .navbar-brand:hover {
+  color: #d6f9ff;
+}
+.forBlobs .tileFunction {
+  background-color: #6FDEF2;
+}
+.forBlobs .tileFunction:hover {
+  background-color: #9ee9f6;
+}
+.forBlobs .popup {
+  border-color: #039BC1;
+}
+.forBlobs .popup .panel-heading {
+  background-color: #039BC1;
+  border-color: #039BC1;
+}
+.forBlobs .popup .btn-default {
+  background-color: #f4f9fa;
+}
+.forBlobs .popup .btn-default:hover, .forBlobs .popup .btn-default:focus, .forBlobs .popup .btn-default:active {
+  color: #fff;
+  background-color: #6FDEF2;
+  border-color: #6FDEF2;
+}
+.forBlobs .panel-warning.popup .panel-heading {
+  color: #039BC1;
+  background: #FFE44E;
+}
+.forBlobs .loading .fa {
+  color: #37d1ed;
+}
+.forBlobs .loading a {
+  color: #37d1ed;
+}
+.forBlobs .form-control:focus {
+  border-color: #9ee9f6;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #9ee9f6;
+}
+.forBlobs .input-group-addon {
+  background-color: #edf6f7;
+}
+.forBlobs .headBlock {
+  background: #039BC1;
+}
+.forBlobs .dataTables_scrollHead th {
+  background-color: #edf6f7;
+}
+.forBlobs .dataTables_scrollHead th:focus {
+  outline-color: #039BC1;
+}
+.forBlobs .metro .table.hovered tbody tr:hover {
+  background-color: #e5fbff;
+}
+.forBlobs .table tr.selected {
+  background-color: #dfeef1;
+}
+
+#wrapperAzure {
   margin: 10px;
   font-family: "Segoe UI_", "Open Sans", Verdana, Arial, Helvetica, sans-serif;
   height: calc(100% - 20px);
-  /*Header*/
 }
-.forTables .navbar, .forRedis .navbar, .forTiles .navbar {
+
+/*Header*/
+.navbar {
   min-height: 40px;
   white-space: nowrap;
+  margin-bottom: 0px;
 }
-.forTables .navbar-brand, .forRedis .navbar-brand, .forTiles .navbar-brand {
+
+.navbar-brand {
   height: 40px;
   padding: 2px 10px 10px 9px;
   font-size: 19px;
 }
-.forTables .navbar-brand .icon-cloud, .forRedis .navbar-brand .icon-cloud, .forTiles .navbar-brand .icon-cloud {
+.navbar-brand .icon-cloud {
   font-size: 40px;
   vertical-align: -27%;
   line-height: 0.8;
   padding-right: 5px;
   padding-left: 3px;
 }
-.forTables .navbar-brand .fa, .forRedis .navbar-brand .fa, .forTiles .navbar-brand .fa {
+.navbar-brand .fa {
   font-size: 30px;
   vertical-align: -12%;
   line-height: 1.2;
   padding-right: 5px;
 }
 
-/*Header*/
-.navbar-brand {
-  padding-top: 3px;
-}
-
-.navbar-default .navbar-brand:hover {
-  color: #DCF2FB;
-}
-
-.icon-cloud {
-  font-size: 35px;
-  vertical-align: -16%;
-}
-
 .navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus {
   color: #ffffff;
-}
-
-.noMarginBottom {
-  margin-bottom: 0px;
 }
 
 /*Functional panel*/
@@ -640,15 +686,17 @@
   width: 500px;
 }
 
-.forRedis .input-group-sm > .input-group-addon, .forTables .input-group-sm > .input-group-addon {
+.input-group-sm > .input-group-addon {
   padding: 5px 8px;
   width: 96px;
   float: left;
 }
-.forRedis .input-group-sm > .input-group-sm, .forTables .input-group-sm > .input-group-sm {
+
+.input-group-sm > .input-group-sm {
   margin-top: 2px;
 }
-.forRedis .input-group .form-control, .forTables .input-group .form-control {
+
+.input-group .form-control {
   width: 372px;
   float: left;
 }

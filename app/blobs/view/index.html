@@ -1,13 +1,47 @@
 <div class="container">
-    <div class="metro grid" style="font-weight: normal;">
-
+    <div class="metro grid">
         <bg-splitter orientation="horizontal">
             <bg-pane min-size="50" init-percentage="30">
-                <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                <div class="wrapLeftBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-th-large"></i><span>AccountName</span>
+                    </div>
+                    <div class="bodyLeftBlock">
+                        <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                    </div>
+                </div>               
             </bg-pane>
 
             <bg-pane min-size="50">
-                <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                <div class="wrapRightBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-table"></i>
+                        <span id="tableName">
+                            bikes
+                        </span>
+                    </div>
+                    <div class="bodyRightBlock">
+                        <div class="searchBar">
+                            <div class="saerchText">
+                                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                ng-enter="ActionBarItems.SearchViewModel.search()"
+                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                type="text" class="form-control" autofocus />
+                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+                            </div>
+                            <span class="tileFunction">
+                                <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                            <div class="clearFloat"></div>
+                        </div>
+
+                        <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                    </div>
+                </div>
+
             </bg-pane>
         </bg-splitter>
 

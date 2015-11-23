@@ -3,58 +3,42 @@
 @import "tiles.scss";
 @import "redis.scss";
 @import "tables.scss"; 
+@import "blobs.scss"; 
 
-.forTables, .forRedis, .forTiles {
+#wrapperAzure {
 	margin: 10px;
 	font-family: $fontFamily;
 	height: calc(100% - 20px);
-	
-	/*Header*/
-	.navbar {
-		min-height: 40px;
-		white-space: nowrap;
-	}
-	.navbar-brand {
-		height: 40px;
-		padding: 2px 10px 10px 9px;
-		font-size: 19px;
-		.icon-cloud {
-			font-size: 40px;
-			vertical-align: -27%;
-			line-height: 0.8;
-			padding-right: 5px;
-			padding-left: 3px;
-		}
-		.fa {
-			font-size: 30px;
-			vertical-align: -12%;
-			line-height: 1.2;
-			padding-right: 5px;
-		}
-	}
 }
 
 /*Header*/
+.navbar {
+	min-height: 40px;
+	white-space: nowrap;
+	margin-bottom: 0px;
+}
 
 .navbar-brand {
-	padding-top: 3px;
-}
-
-.navbar-default .navbar-brand:hover {
-	color: #DCF2FB; 
-}
-
-.icon-cloud {
-	font-size: 35px; 
-	vertical-align: -16%;
+	height: 40px;
+	padding: 2px 10px 10px 9px;
+	font-size: 19px;
+	.icon-cloud {
+		font-size: 40px;
+		vertical-align: -27%;
+		line-height: 0.8;
+		padding-right: 5px;
+		padding-left: 3px;
+	}
+	.fa {
+		font-size: 30px;
+		vertical-align: -12%;
+		line-height: 1.2;
+		padding-right: 5px;
+	}
 }
 
 .navbar-default .navbar-brand:visited, .navbar-default .navbar-brand:focus  {
 	color: #ffffff;  
-}
-
-.noMarginBottom {
-	margin-bottom: 0px;
 }
 
 /*Functional panel*/
@@ -150,20 +134,19 @@
 	width: 500px; 
 } 
 
-.forRedis, .forTables {
-	.input-group-sm>.input-group-addon {
-		padding: 5px 8px;
-		width: 96px;
-		float: left;
-	}
-	.input-group-sm>.input-group-sm {
-		margin-top:2px;
-	}
-	.input-group .form-control {
-		width:372px;
-		float: left;
-	}
+.input-group-sm>.input-group-addon {
+	padding: 5px 8px;
+	width: 96px;
+	float: left;
 }
+.input-group-sm>.input-group-sm {
+	margin-top:2px;
+}
+.input-group .form-control {
+	width: 372px;
+	float: left;
+}
+
 
 .loading {
 	width: 367px;

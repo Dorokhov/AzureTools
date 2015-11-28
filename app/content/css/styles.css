@@ -114,6 +114,9 @@
 .forRedis .headBlock {
   background: #00ADAA;
 }
+.forRedis .dataTables_scrollHead {
+  background-color: #FFF;
+}
 .forRedis .dataTables_scrollHead th {
   background-color: #edf7f4;
 }
@@ -123,7 +126,7 @@
 .forRedis .metro .table.hovered tbody tr:hover {
   background-color: #e5fff7;
 }
-.forRedis .table tr.selected {
+.forRedis .table tr.selected, .forRedis .table tr.shown {
   background-color: #dff1ec;
 }
 .forRedis .wrapRightBlock .headBlock span {
@@ -278,6 +281,9 @@
 .forTables .headBlock {
   background: #2e8bcc;
 }
+.forTables .dataTables_scrollHead {
+  background-color: #FFF;
+}
 .forTables .dataTables_scrollHead th {
   background-color: #edf3f7;
 }
@@ -287,7 +293,7 @@
 .forTables .metro .table.hovered tbody tr:hover {
   background-color: #e5f4ff;
 }
-.forTables .table tr.selected {
+.forTables .table tr.selected, .forTables .table tr.shown {
   background-color: #dfe9f1;
 }
 .forTables .bodyLeftBlock {
@@ -365,6 +371,7 @@
   margin: 0 0 8px 8px;
 }
 #createTableEntity .actionRows label {
+  font-size: 12px;
   float: left;
   line-height: 30px;
   margin-bottom: 8px;
@@ -548,6 +555,9 @@
 .forBlobs .headBlock {
   background: #039BC1;
 }
+.forBlobs .dataTables_scrollHead {
+  background-color: #FFF;
+}
 .forBlobs .dataTables_scrollHead th {
   background-color: #edf6f7;
 }
@@ -557,7 +567,7 @@
 .forBlobs .metro .table.hovered tbody tr:hover {
   background-color: #e5fbff;
 }
-.forBlobs .table tr.selected {
+.forBlobs .table tr.selected, .forBlobs .table tr.shown {
   background-color: #dfeef1;
 }
 
@@ -648,6 +658,9 @@
   font-size: 13px;
   line-height: 0px;
 }
+.tileFunction.longText span {
+  letter-spacing: -0.5px;
+}
 
 .delimiter-tiles {
   border-left: 1px solid #e2e2e2;
@@ -701,6 +714,7 @@
   float: left;
 }
 
+/*load indicator*/
 .loading {
   width: 367px;
   height: 301px;
@@ -756,6 +770,9 @@
   margin: 0px 10px 10px 6px;
   height: 100%;
 }
+.wrapRightBlock .headBlock .fa {
+  padding-right: 4px;
+}
 
 .searchBar {
   margin-bottom: 10px;
@@ -787,61 +804,24 @@
 
 .searchclear {
   position: absolute;
-  right: 55px;
-  top: 0;
+  right: 20px;
+  top: 12px;
   bottom: 0;
+  margin: 0;
   height: 14px;
-  margin: auto;
   font-size: 14px;
   cursor: pointer;
   color: #ccc;
 }
 
-.forTables .searchclear, .forRedis .searchclear {
-  right: 20px;
-  top: 12px;
-  margin: 0;
-}
-
-.forRedis .searchclear {
+.forRedis .searchclear, .forBlobs .searchclear {
   right: 12px;
-}
-
-#tables_wrapper, #data_wrapper, #hashSetTable_wrapper, #setTable_wrapper {
-  border: 1px solid #b4b4b4;
 }
 
 .forTables #alertArea, .forTables #errorNotification {
   display: none;
 }
 
-.thumbnail {
-  margin-top: 10px;
-  margin-right: 4px;
-}
-
-@media (max-width: 992px) {
-  .margin-to-align {
-    margin-left: 0px;
-    position: relative;
-  }
-}
-@media (min-width: 992px) {
-  .margin-to-align {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: 940px;
-  }
-}
-@media (min-width: 1200px) {
-  .margin-to-align {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: 1140px;
-  }
-}
 .clearFloat {
   clear: both;
 }

@@ -20,7 +20,7 @@
 		color: #2A2A2A;
 		letter-spacing: 0;
 		padding-left: 4px;
-		cursor:pointer;
+		cursor: pointer;
 		&:hover {   
 			background: hsl(hue($bg-colorTile-Tables), 100%, 95%);
 		}
@@ -76,6 +76,7 @@
 			margin: 0 0 8px 8px;
 		}
 		label {
+			font-size: 12px;
 			float: left;
 			line-height: 30px;
 			margin-bottom: 8px;

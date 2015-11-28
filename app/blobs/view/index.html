@@ -1,7 +1,7 @@
 <div class="container">
     <div class="metro grid">
         <bg-splitter orientation="horizontal">
-            <bg-pane min-size="50" init-percentage="30">
+            <bg-pane min-size="160" init-percentage="26.2">
                 <div class="wrapLeftBlock">
                     <div class="headBlock">
                         <i class="fa fa-th-large"></i><span>AccountName</span>
@@ -15,10 +15,8 @@
             <bg-pane min-size="50">
                 <div class="wrapRightBlock">
                     <div class="headBlock">
-                        <i class="fa fa-table"></i>
-                        <span id="tableName">
-                            bikes
-                        </span>
+                        <i class="fa fa-folder-open"></i>
+                        <span id="blobName">bikes</span>
                     </div>
                     <div class="bodyRightBlock">
                         <div class="searchBar">
@@ -55,19 +53,19 @@
     </div>
 
     <div class="input-group input-group-sm">
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Url</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" style="width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Url</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Name</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" style="float:left; width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Key</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" style="float:left;width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Key</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" />
         </div>
     </div>
 </script>

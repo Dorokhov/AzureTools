@@ -92,7 +92,11 @@
 		font-size: 13px;
 		line-height: 0px;
 	}
+	&.longText span {
+		letter-spacing: -0.5px;
+	}
 }
+
 
 .delimiter-tiles {
 	border-left: $borderBlock;
@@ -139,14 +143,17 @@
 	width: 96px;
 	float: left;
 }
+
 .input-group-sm>.input-group-sm {
 	margin-top:2px;
 }
+
 .input-group .form-control {
 	width: 372px;
 	float: left;
 }
 
+/*load indicator*/
 
 .loading {
 	width: 367px;
@@ -203,6 +210,9 @@
 .wrapRightBlock {
 	margin: 0px 10px 10px 6px;
 	height: 100%;
+	.headBlock .fa {
+		padding-right: 4px;
+	} 
 }
 
 .searchBar {
@@ -235,63 +245,25 @@
 
 .searchclear {
 	position: absolute;
-	right: 55px;
-	top: 0;
+	right: 20px;
+	top: 12px;
 	bottom: 0;
+	margin: 0;
 	height: 14px;
-	margin: auto;
 	font-size: 14px;
 	cursor: pointer;
 	color: #ccc;
 }
 
-.forTables, .forRedis  {
+.forRedis, .forBlobs {
 	.searchclear {
-		right: 20px;
-		top: 12px;
-		margin: 0;
+		right: 12px;
 	}
 }
 
-.forRedis .searchclear {
-	right: 12px;
-}
-
-#tables_wrapper, #data_wrapper, #hashSetTable_wrapper, #setTable_wrapper {
- 	border: $borderTable;
-}
-
-.forTables #alertArea, .forTables #errorNotification {
-	display: none;
-}
-
-.thumbnail {
-	margin-top: 10px;
-	margin-right: 4px;
-}
-
-@media (max-width:992px) {
-	.margin-to-align {
-		margin-left: 0px;
-		position: relative;
-	}
-}
-
-@media (min-width: 992px) {
-	.margin-to-align {
-		margin-left: auto;
-		margin-right: auto;
-		position: relative;
-		width: 940px;
-	}
-}
-
-@media (min-width: 1200px) {
-	.margin-to-align {
-		margin-left: auto;
-		margin-right: auto;
-		position: relative;
-		width: 1140px;
+.forTables {
+	#alertArea, #errorNotification {
+		display: none;
 	}
 }
 

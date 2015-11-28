@@ -222,7 +222,7 @@
 		max-height: 250px; 
 		height: 36px;
 		border: $borderTable;
-		padding: 7px 12px;
+		padding: 7px 30px 7px 12px;
 		font-size: 13px;
 		width: 100%;
 		resize: vertical;
@@ -257,7 +257,7 @@
 
 .forRedis, .forBlobs {
 	.searchclear {
-		right: 12px;
+		right: 10px;
 	}
 }
 

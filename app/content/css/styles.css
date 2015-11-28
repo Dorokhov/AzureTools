@@ -132,6 +132,9 @@
 .forRedis .wrapRightBlock .headBlock span {
   padding-left: 10px;
 }
+.forRedis .bodyLeftBlock {
+  padding-left: 9px;
+}
 
 #headBlock-Database .fa {
   float: left;
@@ -570,6 +573,12 @@
 .forBlobs .table tr.selected, .forBlobs .table tr.shown {
   background-color: #dfeef1;
 }
+.forBlobs .bodyLeftBlock {
+  padding-left: 9px;
+}
+.forBlobs .wrapRightBlock .headBlock .fa {
+  padding-left: 9px;
+}
 
 #wrapperAzure {
   margin: 10px;
@@ -782,7 +791,7 @@
   max-height: 250px;
   height: 36px;
   border: 1px solid #b4b4b4;
-  padding: 7px 12px;
+  padding: 7px 30px 7px 12px;
   font-size: 13px;
   width: 100%;
   resize: vertical;
@@ -815,7 +824,7 @@
 }
 
 .forRedis .searchclear, .forBlobs .searchclear {
-  right: 12px;
+  right: 10px;
 }
 
 .forTables #alertArea, .forTables #errorNotification {

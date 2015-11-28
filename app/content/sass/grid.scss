@@ -43,6 +43,7 @@ table.dataTable td {
 #blobs {
 	td {
 		line-height: 14px;
+		word-break: break-all;
 	}
 }
 
@@ -86,7 +87,7 @@ table.dataTable td {
 	}
 }
 
-/*Redis*/
+/* for Redis and Blobs*/
 
 .forRedis, .forBlobs {
 	.metro {

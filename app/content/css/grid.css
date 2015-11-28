@@ -34,6 +34,7 @@ table.dataTable td {
 
 #blobs td {
   line-height: 14px;
+  word-break: break-all;
 }
 
 .dataTables_scroll {
@@ -67,7 +68,7 @@ table.dataTable td {
   font-size: 1px;
 }
 
-/*Redis*/
+/* for Redis and Blobs*/
 .forRedis .metro .table, .forBlobs .metro .table {
   margin-bottom: 0;
 }

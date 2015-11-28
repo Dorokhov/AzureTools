@@ -1,0 +1,17 @@
+.forBlobs {
+	@include colorsModule($bg-colorHead-Blobs, $bg-colorTile-Blobs);
+
+	.bodyLeftBlock {
+		padding-left: 9px;
+	}
+
+	.wrapRightBlock .headBlock .fa {
+		padding-left: 9px;
+	}
+}
+
+
+
+
+
+

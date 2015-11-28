@@ -2,29 +2,6 @@
   width: 100%;
 }
 
-.updateButton {
-  float: right;
-  margin-top: 5px !important;
-}
-
-tr.details td.details-control {
-  background: green no-repeat center center;
-}
-
-.grid label {
-  font-size: 12px;
-}
-
-tr.shown {
-  background: #eeeeee;
-}
-
-.dataTables_scrollHead {
-  background: white;
-  top: 20px;
-  z-index: 200;
-}
-
 table.dataTable,
 table.dataTable th,
 table.dataTable td {
@@ -33,67 +10,72 @@ table.dataTable td {
   box-sizing: content-box;
 }
 
-/*Tables and Redis*/
-#tables, #data, #hashSetTable, #value-Set {
+#tables_wrapper, #data_wrapper, #hashSetTable_wrapper,
+#setTable_wrapper, #containers_wrapper, #blobs_wrapper {
+  border: 1px solid #b4b4b4;
+}
+
+#tables, #data, #hashSetTable, #value-Set, #containers, #blobs {
   -webkit-user-select: text;
 }
-#tables td, #data td, #hashSetTable td, #value-Set td {
+#tables td, #data td, #hashSetTable td, #value-Set td, #containers td, #blobs td {
   font-size: 12px;
   line-height: 14px;
   border-right: 1px #DDDDDD solid;
   border-bottom: 1px #DDDDDD solid;
   padding: 5px 12px 5px 8px;
 }
-#tables td:last-child, #data td:last-child, #hashSetTable td:last-child, #value-Set td:last-child {
-  border-right: none;
-}
 
-#data td, #hashSetTable td, #value-Set td {
+#data td, #hashSetTable td, #value-Set td, #containers td, #blobs td {
   font-size: 13px;
   line-height: 16px;
   padding: 7px 12px 7px 8px;
 }
-#data tr:last-child td, #hashSetTable tr:last-child td, #value-Set tr:last-child td {
-  border-bottom: none;
+
+#blobs td {
+  line-height: 14px;
+  word-break: break-all;
 }
 
-.forTables .dataTables_scroll, .forRedis .dataTables_scroll {
+.dataTables_scroll {
   margin-top: 0px;
 }
-.forTables .dataTables_scrollHead, .forRedis .dataTables_scrollHead {
-  top: 0px;
+
+.dataTables_scrollHead {
+  z-index: 200;
 }
-.forTables .dataTables_scrollHead th, .forRedis .dataTables_scrollHead th {
+.dataTables_scrollHead th {
   position: relative;
 }
-.forTables .metro .table th, .forRedis .metro .table th {
+
+.metro .table {
+  margin-top: -1px;
+}
+.metro .table th {
   font-size: 12px;
   border-right: 1px #DDDDDD solid;
   padding: 4px 12px 4px 8px;
 }
-.forTables .metro .table th:last-child, .forRedis .metro .table th:last-child {
-  border-right: none;
-}
-.forTables .metro .table thead th, .forRedis .metro .table thead th {
+.metro .table thead th {
   border-bottom: 1px solid #b4b4b4;
 }
-.forTables .metro .dataTable thead .sorting_asc:after, .forTables .metro .dataTable thead .sorting_desc:after, .forTables .metro .dataTable thead .sorting:after, .forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after {
+.metro .dataTable thead .sorting_asc:after, .metro .dataTable thead .sorting_desc:after, .metro .dataTable thead .sorting:after {
   position: absolute;
   float: right;
   right: 1px;
 }
-.forTables .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .forTables .metro .dataTables_scrollBody .dataTable thead .sorting:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .forRedis .metro .dataTables_scrollBody .dataTable thead .sorting:after {
+.metro .dataTables_scrollBody .dataTable thead .sorting_asc:after, .metro .dataTables_scrollBody .dataTable thead .sorting_desc:after, .metro .dataTables_scrollBody .dataTable thead .sorting:after {
   font-size: 1px;
 }
 
-/*Redis*/
-.forRedis .metro .table {
+/* for Redis and Blobs*/
+.forRedis .metro .table, .forBlobs .metro .table {
   margin-bottom: 0;
 }
-.forRedis .metro .table th {
+.forRedis .metro .table th, .forBlobs .metro .table th {
   font-size: 13px;
   line-height: 22px;
 }
-.forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after {
+.forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after, .forBlobs .metro .dataTable thead .sorting_asc:after, .forBlobs .metro .dataTable thead .sorting_desc:after, .forBlobs .metro .dataTable thead .sorting:after {
   right: 5px;
 }

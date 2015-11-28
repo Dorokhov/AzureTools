@@ -53,6 +53,7 @@
 		background: $colorHead;
 	}
 	.dataTables_scrollHead {
+		background-color: #FFF;
 		th {
 			background-color: hsl(hue($colorTile), 40%, 95%); 
 			&:focus {
@@ -65,8 +66,10 @@
 			background-color: hsl(hue($colorTile), 100%, 95%);
 		}
 	}
-	.table tr.selected {
-		background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+	.table {
+		tr.selected, tr.shown {
+			background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+		}
 	}
 }
 

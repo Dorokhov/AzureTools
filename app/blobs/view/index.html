@@ -1,13 +1,45 @@
 <div class="container">
-    <div class="metro grid" style="font-weight: normal;">
-
+    <div class="metro grid">
         <bg-splitter orientation="horizontal">
-            <bg-pane min-size="50" init-percentage="30">
-                <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+            <bg-pane min-size="160" init-percentage="26.15384615384615">
+                <div class="wrapLeftBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-th-large"></i><span>AccountName</span>
+                    </div>
+                    <div class="bodyLeftBlock">
+                        <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                    </div>
+                </div>               
             </bg-pane>
 
             <bg-pane min-size="50">
-                <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                <div class="wrapRightBlock">
+                    <div class="headBlock">
+                        <i class="fa fa-folder-open"></i>
+                        <span id="blobName">bikes</span>
+                    </div>
+                    <div class="bodyRightBlock">
+                        <div class="searchBar">
+                            <div class="saerchText">
+                                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
+                                ng-change="ActionBarItems.SearchViewModel.onChange()"
+                                ng-enter="ActionBarItems.SearchViewModel.search()"
+                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
+                                type="text" class="form-control" autofocus />
+                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+                            </div>
+                            <span class="tileFunction">
+                                <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </span>
+                            <div class="clearFloat"></div>
+                        </div>
+
+                        <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                    </div>
+                </div>
+
             </bg-pane>
         </bg-splitter>
 
@@ -21,19 +53,19 @@
     </div>
 
     <div class="input-group input-group-sm">
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Url</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" style="width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Url</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountUrl" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Name</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" style="float:left; width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Name</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountName" class="form-control" />
         </div>
 
-        <div class="input-group input-group-sm" style="margin-top:2px">
-            <span class="input-group-addon" style="width:96px;">Account Key</span>
-            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" style="float:left;width:372px" />
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">Account Key</span>
+            <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" />
         </div>
     </div>
 </script>

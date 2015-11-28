@@ -2,11 +2,12 @@
 @import "functions.scss";
 
 .split-panes {
-	margin-top: 53px;
 	left: 0px;
 	right: 0px;
-	top: 0px;
-	bottom: 0px;
+	top: 134px;
+	bottom: 10px;
+	margin: 0;
+	padding: 0;
 	position: absolute;
 }
 
@@ -20,8 +21,8 @@
 
 .split-panes.horizontal > .split-handler {
 	width: 4px;
-		top: 50px;  left: 50%;
-	bottom: 0px;
+	top: 30px;
+	bottom: 50px;
 	cursor: ew-resize;
 }
 
@@ -38,7 +39,18 @@
 .split-panes.horizontal > .split-pane2 {
 	left: 50%;
 	right: 0px;
-	border-left: 1px solid #aaa;
+}
+
+.forTables .split-panes.horizontal > .split-handler { 
+	background: url(../img/splitHorizontal-Tables.png) no-repeat 0 center;  
+}
+
+.forRedis .split-panes.horizontal > .split-handler { 
+	background: url(../img/splitHorizontal-Redis.png) no-repeat 0 center;  
+}
+
+.forBlobs .split-panes.horizontal > .split-handler { 
+	background: url(../img/splitHorizontal-Blobs.png) no-repeat 0 center;  
 }
 
 
@@ -46,7 +58,7 @@
 
 .split-panes.vertical > .split-handler {
 	height: 4px;
- 	top: 50%; 
+	top: 50%; 
 	left: 0px;
 	right: 0px;
 	cursor: ns-resize;
@@ -68,36 +80,9 @@
 	border-top: 1px solid #aaa;
 }
 
-/*split-pane for Tables and Redis*/
-.forTables, .forRedis {
-	.split-panes {
-		left: 0px;
-		right: 0px;
-		top: 134px;
-		bottom: 10px;
-		margin: 0;
-		padding: 0;
-		position: absolute;
-	}
-	.split-panes.horizontal > .split-pane2 {
-		border: none;
-	}
-	.split-panes.horizontal > .split-handler {
-		width: 4px;
-		top: 30px;
-		bottom: 50px;
-	}
-}
-
-.forTables .split-panes.horizontal > .split-handler { 
-	background: url(../img/splitHorizontal-Tables.png) no-repeat 0 center;  
-}
+/* For Redis Vertical */
 
 .forRedis {
-	.split-panes.horizontal > .split-handler { 
-		background: url(../img/splitHorizontal-Redis.png) no-repeat 0 center;  
-	}
-
 	.split-panes.vertical {
 		left: 6px;
 		right: 10px;
@@ -116,9 +101,8 @@
 	.split-panes.vertical > .split-pane2 {
 		border-top: none;
 		margin-top: 8px;
-    	padding-top: 6px;
+		padding-top: 6px;
 	}
 }
-
 
 

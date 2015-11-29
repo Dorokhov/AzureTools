@@ -79,3 +79,8 @@ table.dataTable td {
 .forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after, .forBlobs .metro .dataTable thead .sorting_asc:after, .forBlobs .metro .dataTable thead .sorting_desc:after, .forBlobs .metro .dataTable thead .sorting:after {
   right: 5px;
 }
+
+.ngViewport {
+height: auto !important;
+min-height: 200px !important;
+}

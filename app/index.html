@@ -14,6 +14,11 @@
     <link href="content/css/fonts/fontawesome-webfont.woff" rel="stylesheet">
     <link href="content/css/fonts/fontawesome-webfont.woff2" rel="stylesheet">
 
+    <link rel="stylesheet" href="content/css/ui-grid/ui-grid.eot" />
+    <link rel="stylesheet" href="content/css/ui-grid/ui-grid.svg" />
+    <link rel="stylesheet" href="content/css/ui-grid/ui-grid.ttf" />
+    <link rel="stylesheet" href="content/css/ui-grid/ui-grid.woff" />
+
     <link href="content/css/metro-ui-css/iconFont.css" rel="stylesheet">
     <link href="content/css/metro-ui-css/font-awesome.css" rel="stylesheet">
 
@@ -29,10 +34,15 @@
     <link rel="stylesheet" href="content/css/styles/colReorder.css" />
 
      <link rel="stylesheet" href="content/css/drmonty-datatables-colvis/dataTables.colVis.min.css" />
+     <link rel="stylesheet" href="content/css/ui-grid/ui-grid.min.css" />
+     <link rel="stylesheet" href="content/css/angular-resizable/angular-resizable.css" />
 
     <!--js-->
     <script type="text/javascript" src="content/js/jquery.js"></script>
     <script type="text/javascript" src="content/js/bootstrap.js"></script>
+    <script type="text/javascript" src="content/js/ui-grid.min.js"></script>
+    <script type="text/javascript" src="content/js/ng-grid-flexible-height.js"></script>
+    
     <script type="text/javascript" src="bundle.js"></script>
 </head>
 
@@ -178,25 +188,25 @@
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li>
+                <li ng-click="ActionBarItems.blobsViewModel.showImage()" ng-show="ActionBarItems.blobsViewModel.blobOptions.selectedBlob !== null">
                     <div class="tileFunction">
-                        <a class="fa-links" title="View the image" ng-click="ActionBarItems.createTableEntity()">
+                        <a class="fa-links" title="View the image" >
                             <i class="fa fa-picture-o"></i><br /><span>Image</span>
                         </a>
                     </div>
                 </li>
-                <li>
+                <li ng-click="ActionBarItems.blobsViewModel.showText()" ng-show="ActionBarItems.blobsViewModel.blobOptions.selectedBlob !== null">
                     <div class="tileFunction">
-                        <a class="fa-links" title="View the text" ng-click="ActionBarItems.deleteTableEntity()">
+                        <a class="fa-links" title="View the text">
                             <i class="fa fa-file-text-o"></i><br />
                             <span>Text</span>
                         </a>
                     </div>
                 </li>
                 <li class="delimiter-tiles"></li>
-                <li>
+                <li ng-click="ActionBarItems.blobsViewModel.download()" ng-show="ActionBarItems.blobsViewModel.blobOptions.selectedBlob !== null">
                     <div class="tileFunction longText">
-                        <a class="fa-links" title="Download the blob" ng-click="ActionBarItems.loadMore()">
+                        <a class="fa-links" title="Download the blob">
                             <i class="fa fa-download"></i><br /><span>Download</span>
                         </a>
                     </div>
@@ -224,12 +234,12 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible">
+        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible" data-drag="true" jqyoui-draggable data-jqyoui-options="{ containment: 'parent'}">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>
 
-            <div class="panel-body">
+            <div class="panel-body resizable">
                 <div ng-include="DialogViewModel.Body">
                 </div>
 
@@ -239,7 +249,7 @@
                 </label>
 
                 <div class="btn-group" ng-disabled="DialogViewModel.AreButtonsDisabled">
-                    <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="DialogViewModel.save()" ng-show="DialogViewModel.IsSaveVisible">Save</button>
                     <button type="button" class="btn btn-default" ng-click="DialogViewModel.cancel()">Cancel</button>
                 </div>
             </div>

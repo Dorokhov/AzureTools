@@ -16,7 +16,6 @@
             '$scope', '$dialogViewModel', '$notifyViewModel', function ($scope, $dialogViewModel, $notifyViewModel) {
                 $scope.DialogViewModel = $dialogViewModel();
                 $scope.NotifyViewModel = $notifyViewModel;
-
                 $scope.$on('$stateChangeStart',
                     function () {
                         $dialogViewModel().IsVisible = false;

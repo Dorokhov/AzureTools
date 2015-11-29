@@ -7,9 +7,9 @@
                         <i class="fa fa-th-large"></i><span>AccountName</span>
                     </div>
                     <div class="bodyLeftBlock">
-                        <table id="containers" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                        <div ui-grid="containerOptions" ui-grid-auto-resize ui-grid-selection ng-style="containerOptions.getStyle()"></div>
                     </div>
-                </div>               
+                </div>
             </bg-pane>
 
             <bg-pane min-size="50">
@@ -18,15 +18,14 @@
                         <i class="fa fa-folder-open"></i>
                         <span id="blobName">bikes</span>
                     </div>
-                    <div class="bodyRightBlock">
+                    <div class="bodyRightBlock" style="display:flex; flex-direction: column; padding-bottom: 53px;">
                         <div class="searchBar">
                             <div class="saerchText">
-                                <input ng-model="ActionBarItems.SearchViewModel.Pattern"
-                                ng-change="ActionBarItems.SearchViewModel.onChange()"
-                                ng-enter="ActionBarItems.SearchViewModel.search()"
-                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                type="text" class="form-control" autofocus />
-                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
+                                <input ng-model="ActionBarItems.SearchViewModel.Pattern" ng-change="ActionBarItems.SearchViewModel.onChange()" ng-enter="ActionBarItems.SearchViewModel.search()"
+                                ng-ctrl-enter="ActionBarItems.SearchViewModel.search()" type="text" class="form-control"
+                                autofocus />
+                                <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()"
+                                ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
                             </div>
                             <span class="tileFunction">
                                 <a class="fa-links" title="Search" ng-click="ActionBarItems.SearchViewModel.search()">
@@ -36,7 +35,7 @@
                             <div class="clearFloat"></div>
                         </div>
 
-                        <table id="blobs" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="-webkit-user-select: text"></table>
+                        <div ui-grid="blobOptions" ui-grid-auto-resize ui-grid-selection ng-style="blobOptions.getStyle()"></div>
                     </div>
                 </div>
 
@@ -68,4 +67,12 @@
             <input ng-model="DialogViewModel.BodyViewModel.AccountKey" class="form-control" />
         </div>
     </div>
+</script>
+
+<script type="text/ng-template" id="blobImage">
+    <img data-ng-src="data:image/png;base64,{{DialogViewModel.BodyViewModel.source}}" style="width: 500px;"/>
+</script>
+
+<script type="text/ng-template" id="blobText">
+    <textarea class="details-textarea" ng-model="DialogViewModel.BodyViewModel.source"/>
 </script>

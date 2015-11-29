@@ -4,11 +4,16 @@
     var angular = require('angular'),
         angularRoute = require('angular-ui-router'),
         dataTable = require('datatables'),
+        uiGrid = require('ui-grid'),
+        dranDrop = require('angular-dragdrop'),
+        resizable = require('angular-resizable'),
         app;
 
     window.$ = require('jquery');
     window.$.DataTable = dataTable;
     window.$.dataTable = dataTable;
+
+    var jqueryUI = require('jquery-ui');
 
     var reorder = require('colReorder');
     var colVis = require('colVis');
@@ -27,6 +32,11 @@
 
     app = angular
         .module('app', [
+            'ui.grid',
+            'ui.grid.autoResize',
+            'ui.grid.selection',
+            'ngDragDrop',
+            'angularResizable',
             'exceptionOverride',
             'common',
             'actionBar',

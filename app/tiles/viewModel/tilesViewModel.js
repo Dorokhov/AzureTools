@@ -6,7 +6,8 @@
         '$timeout',
         '$actionBarItems',
         '$notifyViewModel',
-        function($scope, $state, $timeout, $actionBarItems, $notifyViewModel) {
+        '$dialogViewModel',
+        function($scope, $state, $timeout, $actionBarItems, $notifyViewModel,$dialogViewModel) {
             $scope.TilesViewModel = new function() {
                 var self = this;
                 $actionBarItems.IsActionBarVisible = false;

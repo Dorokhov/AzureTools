@@ -23,6 +23,7 @@ module.exports = function(grunt) {
                         'colResize': './libs/colResize/dataTables.colResize',
                         'colVis': 'drmonty-datatables-colvis',
                         'dataTablesSelect' : './libs/select/js/dataTables.select',
+                        'ui-grid' : './app/content/js/ui-grid.min',
 
                         'util': './libs/net-chromify/node_modules/util/util',
                         'events': './libs/net-chromify/node_modules/events/events',

@@ -348,6 +348,11 @@
   padding: 8px 15px 15px 15px;
 }
 
+.resizable{
+  resize: both;
+  overflow: auto;
+}
+
 #createTableEntity {
   height: 426px;
 }

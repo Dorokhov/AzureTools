@@ -234,7 +234,7 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible" data-drag="true" jqyoui-draggable data-jqyoui-options="{ containment: 'parent'}">
+        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible" data-drag="true" jqyoui-draggable data-jqyoui-options="{ containment: 'parent'}" style="display: inline-block">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>

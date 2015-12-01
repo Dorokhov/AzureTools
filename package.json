@@ -58,7 +58,8 @@
     "datatables.net": "1.10.9",
     "angular-ui-grid": "3.0.7",
     "angular-dragdrop":"1.0.12",
-    "angular-resizable": "1.2.0"
+    "angular-resizable": "1.2.0",
+    "nwjs-browserify": "1.0.4"
   },
   "config": {
     "ghooks": {

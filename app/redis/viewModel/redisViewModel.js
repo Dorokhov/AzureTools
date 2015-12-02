@@ -65,6 +65,7 @@
                         width: '*'
                     }],
                     data: [],
+                    noUnselect: true,
                     enableRowSelection: true,
                     enableSelectAll: false,
                     enableFullRowSelection: true,
@@ -72,6 +73,7 @@
                     multiSelect: true,
                     enableColumnMenus: false,
                     selectedKeys: [],
+                    modifierKeysToMultiSelect: true,
                     onRegisterApi: function(gridApi) {
                         $scope.keyApi = gridApi;
                         $scope.keyApi.selection.on.rowSelectionChanged($scope, function(row) {

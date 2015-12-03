@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-
+var nwjsify = require('nwjs-browserify');
     grunt.initConfig({
         watch: {
             build: {
@@ -16,6 +16,7 @@ module.exports = function(grunt) {
             dist: {
                 src: './app/app.js',
                 dest: './app/bundle.js',
+                transform: [nwjsify /** or nwjsify.with('_require') **/],
                 options: {
                     alias: {
                         'jquery': 'jquery-browserify',

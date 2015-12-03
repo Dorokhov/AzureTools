@@ -8,38 +8,40 @@
 						
 							<div class="dropdown">
 								<button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									{{RedisViewModel.DatabaseViewModel.Current}}
+									{{DatabaseViewModel.Current}}
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-									<li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="RedisViewModel.DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
+									<li role="presentation" ng-repeat="n in [0, 1, 2, 3,4,5,6,7,8,9,10]"><a ng-click="DatabaseViewModel.setCurrent(n)">{{n}}</a></li>
 								</ul>
 							</div>
 							<div class="clearFloat"></div>
 						
 					</div>
-					<div class="bodyLeftBlock">
+					<div class="bodyLeftBlock" style="display:flex; flex-direction: column; padding-bottom: 53px;">
 						<div class="searchBar">
 							<div class="saerchText">
-								<input ng-model="RedisViewModel.SearchViewModel.Pattern"
-								ng-change="RedisViewModel.SearchViewModel.onChange()"
-								ng-enter="RedisViewModel.SearchViewModel.search()"
-								ng-ctrl-enter="RedisViewModel.SearchViewModel.search()"
+								<input ng-model="SearchViewModel.Pattern"
+								ng-change="SearchViewModel.onChange()"
+								ng-enter="SearchViewModel.search()"
+								ng-ctrl-enter="SearchViewModel.search()"
 								type="text" class="form-control" autofocus />
-								<span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="RedisViewModel.SearchViewModel.clear()" ng-show="RedisViewModel.SearchViewModel.IsClearVisible"></span>
+								<span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="SearchViewModel.clear()" ng-show="SearchViewModel.IsClearVisible"></span>
 							</div>
 							<span class="tileFunction">
-								<a class="fa-links" title="Search" ng-click="RedisViewModel.SearchViewModel.search()">
+								<a class="fa-links" title="Search" ng-click="SearchViewModel.search()">
 									<i class="fa fa-search"></i>
 								</a>
 							</span>
 							<div class="clearFloat"></div>
 						</div>
-						<table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="width:100%"></table>
+						<!--<table id="data" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable" style="width:100%"></table>-->
+
+						<div ui-grid="keyOptions" ui-grid-auto-resize ui-grid-selection ng-style="keyOptions.getStyle()"></div>
 					</div>
 				</div>
 			</bg-pane>
-			<bg-pane min-size="150">
+			<bg-pane>
 				<div class="wrapRightBlock">
 					<div class="headBlock">
 						<span>Value</span>
@@ -47,49 +49,49 @@
 					<div class="bodyRightBlock">
 						<div id="navbarValue">
 							<div class="typeValue">
-								<p>Type: <span>{{RedisViewModel.SelectedKey.Type}}</span></p>
+								<p>Type: <span>{{keyOptions.selectedKeys[0].Type}}</span></p>
 							</div>
 						</div>
-						<div id="value-HashSet" ng-show="RedisViewModel.SelectedKey.Type == 'hash'">
+						<div id="value-HashSet" ng-show="keyOptions.selectedKeys[0].Type == 'hash'">
 							<bg-splitter orientation="vertical">
-								<bg-pane min-size="400" init-percentage="65">
-									 <table id="hashSetTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+								<bg-pane init-percentage="65" min-size="119">
+					            	<div ui-grid="hashOptions" ui-grid-auto-resize ui-grid-selection ng-style="hashOptions.getStyle()"></div>
 								</bg-pane>
-								<bg-pane min-size="119" max-size="119">
+								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
-										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
+										<textarea type="text" class="form-control" autofocus  ng-model="keyOptions.selectedKeys[0].Value"></textarea>
 										<span class="tileFunction">
-											<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
+											<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
 										</span>
 									</div>
 								</bg-pane>
 							</bg-splitter>
 						</div>
 						
-						<div id="value-Set" ng-show="RedisViewModel.SelectedKey.Type == 'set'">
+						<div id="value-Set" ng-show="keyOptions.selectedKeys[0].Type == 'set'">
 							<bg-splitter orientation="vertical">
-								<bg-pane min-size="400" init-percentage="65">
-						             <table id="setTable" cellpadding="0" cellspacing="0" border="0" class="table striped hovered dataTable"></table>
+								<bg-pane init-percentage="65" min-size="119">
+					            	<div ui-grid="setOptions" ui-grid-auto-resize ui-grid-selection ng-style="setOptions.getStyle()"></div>
 								</bg-pane>
-								<bg-pane min-size="119" max-size="119">
+								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
-										<textarea type="text" class="form-control" autofocus  ng-model="RedisViewModel.SelectedKey.Value"></textarea>
+										<textarea type="text" class="form-control" autofocus  ng-model="keyOptions.selectedKeys[0].Value"></textarea>
 										<span class="tileFunction">
-											<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
+											<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
 										</span>
 									</div>
 								</bg-pane>
 							</bg-splitter>
 						</div>  
 						
-						<div id="value-String" ng-show="RedisViewModel.SelectedKey.Type == 'string'">
+						<div id="value-String" ng-show="keyOptions.selectedKeys[0].Type == 'string'">
 							<div class="editValue">
 								<p>Edit Value</p>
-								<textarea type="text" class="form-control" autofocus ng-model="RedisViewModel.SelectedKey.Value"></textarea>
+								<textarea type="text" class="form-control" autofocus ng-model="keyOptions.selectedKeys[0].Value"></textarea>
 								<span class="tileFunction">
-									<a class="fa-links" title="Save value" ng-click="RedisViewModel.updateKey()">Save</a>
+									<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
 								</span>
 							</div>
 						</div>

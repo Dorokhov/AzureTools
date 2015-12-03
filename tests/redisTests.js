@@ -23,7 +23,7 @@ describe('RedisController', function () {
                 $scope: scope,
 
             });
-            var viewModel = scope.RedisViewModel;
+            var viewModel = scope;
             data = [
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value:'2' }
@@ -33,9 +33,9 @@ describe('RedisController', function () {
             viewModel.loadKeys('*');
 
             // assert
-            expect(viewModel.Keys.length).toBe(2);
-            expect(viewModel.Keys[0].Key).toBe('key:1');
-            expect(viewModel.Keys[1].Key).toBe('key:2');
+            expect(viewModel.keyOptions.data.length).toBe(2);
+            expect(viewModel.keyOptions.data[0].Key).toBe('key:1');
+            expect(viewModel.keyOptions.data[1].Key).toBe('key:2');
         }));
 
     it('should save string value',
@@ -45,7 +45,7 @@ describe('RedisController', function () {
            $controller("RedisController", {
                $scope: scope,
            });
-           var viewModel = scope.RedisViewModel;
+           var viewModel = scope;
            data = [
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
@@ -60,10 +60,10 @@ describe('RedisController', function () {
            viewModel.loadKeys('*');
 
            // assert
-           expect(viewModel.Keys.length).toBe(3);
-           expect(viewModel.Keys[0].Key).toBe('key:1');
-           expect(viewModel.Keys[1].Key).toBe('key:2');
-           expect(viewModel.Keys[2].Key).toBe('key:3');
+           expect(viewModel.keyOptions.data.length).toBe(3);
+           expect(viewModel.keyOptions.data[0].Key).toBe('key:1');
+           expect(viewModel.keyOptions.data[1].Key).toBe('key:2');
+           expect(viewModel.keyOptions.data[2].Key).toBe('key:3');
        }));
 
     it('should save hash set',
@@ -73,7 +73,7 @@ describe('RedisController', function () {
            $controller("RedisController", {
                $scope: scope,
            });
-           var viewModel = scope.RedisViewModel;
+           var viewModel = scope;
            data = [
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
@@ -89,9 +89,9 @@ describe('RedisController', function () {
            viewModel.loadKeys('*');
 
            // assert
-           expect(viewModel.Keys.length).toBe(3);
-           expect(viewModel.Keys[2].Key).toBe('key:3');
-           expect(viewModel.Keys[2].Value).toBe('[["name1","value1"],["name2","value2"]]');
+           expect(viewModel.keyOptions.data.length).toBe(3);
+           expect(viewModel.keyOptions.data[2].Key).toBe('key:3');
+           expect(viewModel.keyOptions.data[2].Value).toBe('[["name1","value1"],["name2","value2"]]');
        }));
 
     it('should save set',
@@ -101,7 +101,7 @@ describe('RedisController', function () {
            $controller("RedisController", {
                $scope: scope,
            });
-           var viewModel = scope.RedisViewModel;
+           var viewModel = scope;
            data = [
                 { Key: 'key:1', Type: 'string', Value: '1' },
                 { Key: 'key:2', Type: 'string', Value: '2' }
@@ -117,8 +117,8 @@ describe('RedisController', function () {
            viewModel.loadKeys('*');
 
            // assert
-           expect(viewModel.Keys.length).toBe(3);
-           expect(viewModel.Keys[2].Key).toBe('key:3');
-           expect(viewModel.Keys[2].Value).toBe('["item1","item2"]');
+           expect(viewModel.keyOptions.data.length).toBe(3);
+           expect(viewModel.keyOptions.data[2].Key).toBe('key:3');
+           expect(viewModel.keyOptions.data[2].Value).toBe('["item1","item2"]');
        }));
 });

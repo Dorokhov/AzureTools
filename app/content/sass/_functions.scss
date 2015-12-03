@@ -1,4 +1,5 @@
 @mixin colorsModule ($colorHead, $colorTile) {
+	
 	.navbar-default {
 		background-color: $colorHead;
 		border-color: $colorHead;
@@ -6,12 +7,14 @@
 			color: hsl(hue($colorTile), 100%, 92%); 
 		}
 	}
+	
 	.tileFunction {
 		background-color: $colorTile;
 		&:hover {
 			background-color: lighten($colorTile, 10%);
 		}
 	}
+	
 	.popup {
 		border-color: $colorHead;
 		.panel-heading {
@@ -27,12 +30,14 @@
 			}
 		}
 	}
+	
 	.panel-warning.popup {
 		.panel-heading {
 			color: $colorHead;
 			background: #FFE44E;
 		}
 	}
+	
 	.loading {
 		.fa {
 			color: darken($colorTile, 12%);
@@ -41,6 +46,7 @@
 			color: darken($colorTile, 12%);
 		}
 	}
+	
 	.form-control:focus {
 		border-color: lighten($colorTile, 10%);
 		box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 4px lighten($colorTile, 10%);
@@ -49,11 +55,12 @@
 	.input-group-addon {
 		background-color: hsl(hue($colorTile), 40%, 95%);
 	}
+	
 	.headBlock {
 		background: $colorHead;
 	}
+	
 	.dataTables_scrollHead {
-		background-color: #FFF;
 		th {
 			background-color: hsl(hue($colorTile), 40%, 95%); 
 			&:focus {
@@ -61,13 +68,42 @@
 			}
 		}
 	}
+	
 	.metro {
 		.table.hovered tbody tr:hover {
 			background-color: hsl(hue($colorTile), 100%, 95%);
 		}
 	}
+	
 	.table {
 		tr.selected, tr.shown {
+			background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+		}
+	}
+
+	.ui-grid-top-panel {
+		background: hsl(hue($colorTile), 40%, 95%);		
+	}
+
+	// .ui-grid-header-cell-wrapper {
+	// 	background: hsl(hue($colorTile), 40%, 95%);
+	// }
+	.ui-grid-header-cell-primary-focus {
+		&:focus {
+			outline-color: $colorHead; 
+		}
+	}
+	
+	.ui-grid-row:nth-child(even), .ui-grid-row:nth-child(odd) {
+		.ui-grid-cell {
+			background-color: #fff;
+			&:hover {
+				background-color: hsl(hue($colorTile), 100%, 95%);
+			}
+		}
+	}
+	.ui-grid-row-selected:nth-child(even), .ui-grid-row-selected:nth-child(odd) {
+		.ui-grid-cell {
 			background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
 		}
 	}

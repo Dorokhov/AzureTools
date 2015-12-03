@@ -187,6 +187,14 @@
 	height: 100%;
 }
 
+.wrapRightBlock {
+	margin: 0px 10px 10px 6px;
+	height: 100%;
+	.headBlock .fa {
+		padding-right: 4px;
+	} 
+}
+
 .headBlock {
 	color: #ffffff;
 	height: 30px;
@@ -205,14 +213,6 @@
 	border: $borderBlock;
 	height: calc(100% - 30px);
 	padding: 8px;
-}
-
-.wrapRightBlock {
-	margin: 0px 10px 10px 6px;
-	height: 100%;
-	.headBlock .fa {
-		padding-right: 4px;
-	} 
 }
 
 .searchBar {

@@ -1,12 +1,18 @@
 .forBlobs {
 	@include colorsModule($bg-colorHead-Blobs, $bg-colorTile-Blobs);
 
-	.bodyLeftBlock {
+	.wrapRightBlock .headBlock .fa {
 		padding-left: 9px;
 	}
 
-	.wrapRightBlock .headBlock .fa {
-		padding-left: 9px;
+	.bodyLeftBlock {
+		padding: 8px 8px 10px 9px;
+	}
+
+	.bodyRightBlock {
+		display:flex; 
+		flex-direction: column; 
+		padding-bottom: 56px;
 	}
 }
 

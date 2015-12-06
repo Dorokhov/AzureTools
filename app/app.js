@@ -35,6 +35,8 @@
             'ui.grid',
             'ui.grid.autoResize',
             'ui.grid.selection',
+            'ui.grid.resizeColumns',
+            'ui.grid.moveColumns',
             'ngDragDrop',
             'angularResizable',
             'exceptionOverride',

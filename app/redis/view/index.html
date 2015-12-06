@@ -55,7 +55,7 @@
 						<div id="value-HashSet" ng-show="keyOptions.selectedKeys[0].Type == 'hash'">
 							<bg-splitter orientation="vertical">
 								<bg-pane init-percentage="65" min-size="119">
-					            	<div ui-grid="hashOptions" ui-grid-auto-resize ui-grid-selection ng-style="hashOptions.getStyle()"></div>
+					            	<div ui-grid="hashOptions" ui-grid-move-columns ui-grid-resize-columns ui-grid-auto-resize ui-grid-selection ng-style="hashOptions.getStyle()"></div>
 								</bg-pane>
 								<bg-pane min-size="119">
 									<div class="editValue">
@@ -72,7 +72,7 @@
 						<div id="value-Set" ng-show="keyOptions.selectedKeys[0].Type == 'set'">
 							<bg-splitter orientation="vertical">
 								<bg-pane init-percentage="65" min-size="119">
-					            	<div ui-grid="setOptions" ui-grid-auto-resize ui-grid-selection ng-style="setOptions.getStyle()"></div>
+					            	<div ui-grid="setOptions" ui-grid-resize-columns ui-grid-auto-resize ui-grid-selection ng-style="setOptions.getStyle()"></div>
 								</bg-pane>
 								<bg-pane min-size="119">
 									<div class="editValue">

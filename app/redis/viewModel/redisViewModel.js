@@ -89,8 +89,7 @@
                                     });
                                 };
                                 $scope.hashOptions.data = hash;
-                            }
-                            else if(row.entity.Type === 'set'){
+                            } else if (row.entity.Type === 'set') {
                                 var data = JSON.parse(row.entity.Value);
                                 var set = [];
                                 for (var i = 0; i < data.length; i++) {
@@ -134,6 +133,8 @@
                     multiSelect: false,
                     enableColumnMenus: false,
                     selectedItems: [],
+                    enableColumnResizing: true,
+                    enableColumnReordering: true,
                     onRegisterApi: function(gridApi) {
                         $scope.hashApi = gridApi;
                         $scope.hashApi.selection.on.rowSelectionChanged($scope, function(row) {
@@ -168,6 +169,7 @@
                     multiSelect: false,
                     enableColumnMenus: false,
                     selectedItems: [],
+                    enableColumnResizing: true,
                     onRegisterApi: function(gridApi) {
                         $scope.hashApi = gridApi;
                         $scope.hashApi.selection.on.rowSelectionChanged($scope, function(row) {

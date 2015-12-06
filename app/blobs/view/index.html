@@ -18,7 +18,7 @@
                         <i class="fa fa-folder-open"></i>
                         <span id="blobName">bikes</span>
                     </div>
-                    <div class="bodyRightBlock" style="display:flex; flex-direction: column; padding-bottom: 53px;">
+                    <div class="bodyRightBlock">
                         <div class="searchBar">
                             <div class="saerchText">
                                 <input ng-model="ActionBarItems.SearchViewModel.Pattern" ng-change="ActionBarItems.SearchViewModel.onChange()" ng-enter="ActionBarItems.SearchViewModel.search()"
@@ -70,9 +70,9 @@
 </script>
 
 <script type="text/ng-template" id="blobImage">
-    <img data-ng-src="data:image/png;base64,{{DialogViewModel.BodyViewModel.source}}" style="width: 500px;"/>
+    <img data-ng-src="data:image/png;base64,{{DialogViewModel.BodyViewModel.source}}" />
 </script>
 
 <script type="text/ng-template" id="blobText">
-    <textarea class="details-textarea" ng-model="DialogViewModel.BodyViewModel.source"/>
+    <textarea class="details-textarea" ng-model="DialogViewModel.BodyViewModel.source" />
 </script>

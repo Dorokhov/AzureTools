@@ -7,6 +7,13 @@
 
 	.bodyLeftBlock {
 		padding-left: 9px;
+		display:flex; 
+		flex-direction: column; 
+		padding-bottom: 56px;
+	}
+
+	.bodyRightBlock .ui-grid {
+		height: calc(100% - 10px) !important;
 	}
 }
 
@@ -87,12 +94,12 @@
 	height: 100%;
 	p {
 		margin: 0 0 8px;
-		padding-top: 2px;
+		
 	}
 	.form-control {
-		height: calc(100% - 65px);
+		height: calc(100% - 66px);
 		border: $borderTable;
-		padding: 7px 12px;
+		padding: 8px 12px;
 		font-size: 13px;
 		width: 100%;
 		min-height: 36px;

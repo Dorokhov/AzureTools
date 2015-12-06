@@ -1,7 +1,3 @@
-.details-textarea {
-  width: 100%;
-}
-
 table.dataTable,
 table.dataTable th,
 table.dataTable td {
@@ -10,15 +6,14 @@ table.dataTable td {
   box-sizing: content-box;
 }
 
-#tables_wrapper, #data_wrapper, #hashSetTable_wrapper,
-#setTable_wrapper, #containers_wrapper, #blobs_wrapper {
+#tables_wrapper {
   border: 1px solid #b4b4b4;
 }
 
-#tables, #data, #hashSetTable, #value-Set, #containers, #blobs {
+#tables {
   -webkit-user-select: text;
 }
-#tables td, #data td, #hashSetTable td, #value-Set td, #containers td, #blobs td {
+#tables td {
   font-size: 12px;
   line-height: 14px;
   border-right: 1px #DDDDDD solid;
@@ -26,22 +21,12 @@ table.dataTable td {
   padding: 5px 12px 5px 8px;
 }
 
-#data td, #hashSetTable td, #value-Set td, #containers td, #blobs td {
-  font-size: 13px;
-  line-height: 16px;
-  padding: 7px 12px 7px 8px;
-}
-
-#blobs td {
-  line-height: 14px;
-  word-break: break-all;
-}
-
 .dataTables_scroll {
   margin-top: 0px;
 }
 
 .dataTables_scrollHead {
+  background-color: #F8F8F8;
   z-index: 200;
 }
 .dataTables_scrollHead th {
@@ -68,19 +53,74 @@ table.dataTable td {
   font-size: 1px;
 }
 
-/* for Redis and Blobs*/
-.forRedis .metro .table, .forBlobs .metro .table {
-  margin-bottom: 0;
-}
-.forRedis .metro .table th, .forBlobs .metro .table th {
-  font-size: 13px;
-  line-height: 22px;
-}
-.forRedis .metro .dataTable thead .sorting_asc:after, .forRedis .metro .dataTable thead .sorting_desc:after, .forRedis .metro .dataTable thead .sorting:after, .forBlobs .metro .dataTable thead .sorting_asc:after, .forBlobs .metro .dataTable thead .sorting_desc:after, .forBlobs .metro .dataTable thead .sorting:after {
-  right: 5px;
+/*ui-grid for Redis and Blobs*/
+.ui-grid {
+  border: 1px solid #b4b4b4;
 }
 
-.ngViewport {
-height: auto !important;
-min-height: 200px !important;
+/*header table*/
+.ui-grid-header {
+  border-bottom: 1px solid #b4b4b4;
+}
+.ui-grid-header .ui-grid-cell-contents {
+  font-size: 13px;
+  padding: 6px 4px 6px 8px;
+}
+.ui-grid-header .ui-grid-cell-contents .ui-grid-header-cell-label {
+  font-weight: bold;
+}
+
+.ui-grid-header-cell {
+  border-right: none;
+}
+
+.ui-grid-header-cell .sortable {
+  border-right: 1px #DDDDDD solid;
+}
+
+.ui-grid-header-cell:last-child .sortable {
+  border-right: none;
+}
+
+.ui-grid-sort-priority-number {
+  display: none;
+}
+
+.ui-grid-icon-up-dir, .ui-grid-icon-down-dir {
+  display: block;
+  float: right;
+}
+.ui-grid-icon-up-dir:before, .ui-grid-icon-down-dir:before {
+  font-size: 16px;
+}
+
+.ui-grid-icon-down-dir {
+  padding-top: 2px;
+}
+
+/*Body table*/
+.ui-grid-canvas {
+  padding-top: 0px;
+}
+.ui-grid-canvas .ui-grid-cell {
+  border-right: 1px #DDDDDD solid;
+  border-bottom: 1px #DDDDDD solid;
+}
+.ui-grid-canvas .ui-grid-row:last-child .ui-grid-cell {
+  border-bottom: 1px #DDDDDD solid !important;
+}
+.ui-grid-canvas .ui-grid-cell-contents {
+  font-size: 13px;
+  line-height: 16px;
+  padding: 6px 8px 7px;
+  -webkit-user-select: text;
+  word-break: break-all;
+  white-space: normal;
+  overflow: visible;
+}
+.ui-grid-canvas .ui-grid-row .ui-grid-cell:last-child {
+  border-right: none;
+}
+.ui-grid-canvas .ui-grid-row, .ui-grid-canvas .ui-grid-cell {
+  height: auto !important;
 }

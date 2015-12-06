@@ -117,6 +117,7 @@
 	.panel-heading {
 		padding: 8px 15px;
 		font-size: 15px;
+		word-break: break-all;
 	}
 	.checkbox .checkbox-label:before {
 		height: 21px;
@@ -133,11 +134,6 @@
 		}
 	}
 }
-
-.panel-warning.popup {
-	width: 500px; 
-} 
-
 .input-group-sm>.input-group-addon {
 	padding: 5px 8px;
 	width: 96px;
@@ -153,7 +149,21 @@
 	float: left;
 }
 
-/*load indicator*/
+.details-textarea {
+	min-width: 600px;
+	min-height: 300px;
+	width: 100%;
+	font-size: 13px;
+	padding: 6px;
+	background: $bg-colorBlock; 
+	border: $borderTable;		
+}
+
+.panel-warning.popup {
+	width: 500px; 
+} 
+
+/*Load indicator*/
 
 .loading {
 	width: 367px;
@@ -187,6 +197,14 @@
 	height: 100%;
 }
 
+.wrapRightBlock {
+	margin: 0px 10px 10px 6px;
+	height: 100%;
+	.headBlock .fa {
+		padding-right: 4px;
+	} 
+}
+
 .headBlock {
 	color: #ffffff;
 	height: 30px;
@@ -205,14 +223,6 @@
 	border: $borderBlock;
 	height: calc(100% - 30px);
 	padding: 8px;
-}
-
-.wrapRightBlock {
-	margin: 0px 10px 10px 6px;
-	height: 100%;
-	.headBlock .fa {
-		padding-right: 4px;
-	} 
 }
 
 .searchBar {

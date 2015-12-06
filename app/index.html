@@ -27,15 +27,15 @@
     <link rel="stylesheet" type="text/css" href="content/css/metro-bootstrap.min.css" />
     <link href="content/css/metro-ui-css/metro-bootstrap-responsive.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="content/css/styles/colReorder.css" />
+
+    <link rel="stylesheet" href="content/css/drmonty-datatables-colvis/dataTables.colVis.min.css" />
+    <link rel="stylesheet" href="content/css/ui-grid/ui-grid.min.css" />
+    <link rel="stylesheet" href="content/css/angular-resizable/angular-resizable.css" />
+
     <link rel="stylesheet" href="content/css/grid.css" />
     <link rel="stylesheet" href="content/css/styles.css" />
     <link rel="stylesheet" href="content/css/splitter.css" />
-
-    <link rel="stylesheet" href="content/css/styles/colReorder.css" />
-
-     <link rel="stylesheet" href="content/css/drmonty-datatables-colvis/dataTables.colVis.min.css" />
-     <link rel="stylesheet" href="content/css/ui-grid/ui-grid.min.css" />
-     <link rel="stylesheet" href="content/css/angular-resizable/angular-resizable.css" />
 
     <!--js-->
     <script type="text/javascript" src="content/js/jquery.js"></script>
@@ -57,26 +57,6 @@
                         <span ng-show="state.current.name !== 'tiles'">{{ActionBarItems.ModuleName}}</span>
                     </a>
                 </div>
-
-                <!-- <div class="collapse navbar-collapse">  -->              
-                    <!--Blobs Action Bar-->
-                    <!-- <ul class="nav navbar-nav" ng-show="ActionBarItems.IsActionBarVisible && state.current.name === 'blobs'">
-                        <li ng-show="ActionBarItems.IsRefreshVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.refresh()"><span class="icon-reply on-left-more" style="margin-right: 5px;"></span><span>Refresh</span></a></li>
-                        <li ng-show="ActionBarItems.IsSettingsVisible"><a class="row-fluid" style="cursor: pointer;" ng-click="ActionBarItems.changeSettings()"><span class="icon-cog on-left-more" style="margin-right: 5px;"></span><span>Settings</span></a></li>
-                        <li class="row-fluid" ng-show="ActionBarItems.IsSearchVisible" style="display: inline-flex;">
-                            <input ng-model="ActionBarItems.SearchViewModel.Pattern"
-                                   ng-change="ActionBarItems.SearchViewModel.onChange()"
-                                   ng-enter="ActionBarItems.SearchViewModel.search()"
-                                   ng-ctrl-enter="ActionBarItems.SearchViewModel.search()"
-                                   type="text" class="form-control" style="margin-top: 8px; float: left; min-width:450px; " autofocus />
-                            <span id="searchclear" class="searchclear glyphicon glyphicon-remove-circle" ng-click="ActionBarItems.SearchViewModel.clear()" ng-show="ActionBarItems.SearchViewModel.IsClearVisible"></span>
-
-                            <a style="cursor: pointer; float: left;" ng-click="ActionBarItems.SearchViewModel.search()">
-                                <span class="icon-search"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div> -->
             </div>
         </nav>
 
@@ -203,7 +183,7 @@
                         </a>
                     </div>
                 </li>
-                <li class="delimiter-tiles"></li>
+                <li class="delimiter-tiles" ng-show="ActionBarItems.blobsViewModel.blobOptions.selectedBlob !== null"></li>
                 <li ng-click="ActionBarItems.blobsViewModel.download()" ng-show="ActionBarItems.blobsViewModel.blobOptions.selectedBlob !== null">
                     <div class="tileFunction longText">
                         <a class="fa-links" title="Download the blob">
@@ -234,7 +214,7 @@
             <a ng-click="BusyIndicator.cancel()">Cancel</a>
         </div>
 
-        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible" data-drag="true" jqyoui-draggable data-jqyoui-options="{ containment: 'parent'}" style="display: inline-block">
+        <div class="panel panel-primary popup" ng-class="{'popup-createEntity': DialogViewModel.Body === 'createTableEntityTemplate', 'popup-blobImage': DialogViewModel.Body === 'blobImage', 'popup-blobText': DialogViewModel.Body === 'blobText'}" ng-controller="DialogsController" ng-show="DialogViewModel.IsVisible" data-drag="true" jqyoui-draggable data-jqyoui-options="{ containment: 'parent'}" style="display: inline-block">
             <div class="panel-heading">
                 {{DialogViewModel.Header}}
             </div>

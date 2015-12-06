@@ -99,9 +99,6 @@ table.dataTable td {
 }
 
 /*Body table*/
-.ui-grid-canvas {
-  padding-top: 0px;
-}
 .ui-grid-canvas .ui-grid-cell {
   border-right: 1px #DDDDDD solid;
   border-bottom: 1px #DDDDDD solid;

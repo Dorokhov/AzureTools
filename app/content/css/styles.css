@@ -108,6 +108,10 @@
   border-color: #75ecc9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #75ecc9;
 }
+.forRedis .details-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
 .forRedis .input-group-addon {
   background-color: #edf7f4;
 }
@@ -135,7 +139,7 @@
 .forRedis .ui-grid-row:nth-child(even) .ui-grid-cell, .forRedis .ui-grid-row:nth-child(odd) .ui-grid-cell {
   background-color: #fff;
 }
-.forRedis .ui-grid-row:nth-child(even) .ui-grid-cell:hover, .forRedis .ui-grid-row:nth-child(odd) .ui-grid-cell:hover {
+.forRedis .ui-grid-row:nth-child(even):hover .ui-grid-cell, .forRedis .ui-grid-row:nth-child(odd):hover .ui-grid-cell {
   background-color: #e5fff7;
 }
 .forRedis .ui-grid-row-selected:nth-child(even) .ui-grid-cell, .forRedis .ui-grid-row-selected:nth-child(odd) .ui-grid-cell {
@@ -146,6 +150,12 @@
 }
 .forRedis .bodyLeftBlock {
   padding-left: 9px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 56px;
+}
+.forRedis .bodyRightBlock .ui-grid {
+  height: calc(100% - 10px) !important;
 }
 
 #headBlock-Database .fa {
@@ -221,12 +231,11 @@
 }
 .editValue p {
   margin: 0 0 8px;
-  padding-top: 2px;
 }
 .editValue .form-control {
-  height: calc(100% - 65px);
+  height: calc(100% - 66px);
   border: 1px solid #b4b4b4;
-  padding: 7px 12px;
+  padding: 8px 12px;
   font-size: 13px;
   width: 100%;
   min-height: 36px;
@@ -290,6 +299,10 @@
   border-color: #addbff;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #addbff;
 }
+.forTables .details-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
 .forTables .input-group-addon {
   background-color: #edf3f7;
 }
@@ -317,7 +330,7 @@
 .forTables .ui-grid-row:nth-child(even) .ui-grid-cell, .forTables .ui-grid-row:nth-child(odd) .ui-grid-cell {
   background-color: #fff;
 }
-.forTables .ui-grid-row:nth-child(even) .ui-grid-cell:hover, .forTables .ui-grid-row:nth-child(odd) .ui-grid-cell:hover {
+.forTables .ui-grid-row:nth-child(even):hover .ui-grid-cell, .forTables .ui-grid-row:nth-child(odd):hover .ui-grid-cell {
   background-color: #e5f4ff;
 }
 .forTables .ui-grid-row-selected:nth-child(even) .ui-grid-cell, .forTables .ui-grid-row-selected:nth-child(odd) .ui-grid-cell {
@@ -577,6 +590,10 @@
   border-color: #9ee9f6;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px #9ee9f6;
 }
+.forBlobs .details-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
 .forBlobs .input-group-addon {
   background-color: #edf6f7;
 }
@@ -604,7 +621,7 @@
 .forBlobs .ui-grid-row:nth-child(even) .ui-grid-cell, .forBlobs .ui-grid-row:nth-child(odd) .ui-grid-cell {
   background-color: #fff;
 }
-.forBlobs .ui-grid-row:nth-child(even) .ui-grid-cell:hover, .forBlobs .ui-grid-row:nth-child(odd) .ui-grid-cell:hover {
+.forBlobs .ui-grid-row:nth-child(even):hover .ui-grid-cell, .forBlobs .ui-grid-row:nth-child(odd):hover .ui-grid-cell {
   background-color: #e5fbff;
 }
 .forBlobs .ui-grid-row-selected:nth-child(even) .ui-grid-cell, .forBlobs .ui-grid-row-selected:nth-child(odd) .ui-grid-cell {
@@ -620,6 +637,15 @@
   display: flex;
   flex-direction: column;
   padding-bottom: 56px;
+}
+
+.popup img {
+  width: 600px;
+}
+
+.popup-blobImage.popup, .popup-blobText.popup {
+  left: calc(50% - 315px);
+  top: calc(50% - 215px);
 }
 
 #wrapperAzure {
@@ -732,6 +758,7 @@
 .popup .panel-heading {
   padding: 8px 15px;
   font-size: 15px;
+  word-break: break-all;
 }
 .popup .checkbox .checkbox-label:before {
   height: 21px;
@@ -744,10 +771,6 @@
 }
 .popup .btn-default:active {
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.125);
-}
-
-.panel-warning.popup {
-  width: 500px;
 }
 
 .input-group-sm > .input-group-addon {
@@ -765,7 +788,21 @@
   float: left;
 }
 
-/*load indicator*/
+.details-textarea {
+  min-width: 600px;
+  min-height: 300px;
+  width: 100%;
+  font-size: 13px;
+  padding: 6px;
+  background: #F8F8F8;
+  border: 1px solid #b4b4b4;
+}
+
+.panel-warning.popup {
+  width: 500px;
+}
+
+/*Load indicator*/
 .loading {
   width: 367px;
   height: 301px;

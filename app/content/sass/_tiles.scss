@@ -6,8 +6,8 @@
 		color: #ffffff; 
 	}
 	.navbar-default {
-		background: #2e8bcc;
-		background: linear-gradient(to right, #2e8bcc 0%, #00ADAA 100%);
+		background: $bg-colorHead-Tables;
+		background: linear-gradient(to right, $bg-colorHead-Tables 0%, $bg-colorHead-Redis 100%);
 	}
 }
 

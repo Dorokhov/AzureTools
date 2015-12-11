@@ -78,13 +78,13 @@
 	
 	.metro {
 		.table.hovered tbody tr:hover {
-			background-color: hsl(hue($colorTile), 100%, 95%);
+			background-color: hsl(hue($colorTile), 100%, 97.5%);
 		}
 	}
 	
 	.table {
 		tr.selected, tr.shown {
-			background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+			background-color: hsl(hue($colorTile), 100%, 96%);
 		}
 	}
 
@@ -104,13 +104,13 @@
 		}
 		&:hover {
 			.ui-grid-cell {
-				background-color: hsl(hue($colorTile), 100%, 95%);
+				background-color: hsl(hue($colorTile), 100%, 97.5%);
 			}
 		}
 	}
 	.ui-grid-row-selected:nth-child(even), .ui-grid-row-selected:nth-child(odd) {
 		.ui-grid-cell {
-			background-color: darken(hsl(hue($colorTile), 40%, 95%), 4%);
+			background-color: hsl(hue($colorTile), 100%, 96%);
 		}
 	}
 }

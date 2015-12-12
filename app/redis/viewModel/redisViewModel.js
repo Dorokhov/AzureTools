@@ -5,6 +5,7 @@
             '$timeout',
             '$activeDatabase',
             '$redisRepositoryFactory',
+            'redisRepo',
             '$redisScannerFactory',
             '$dataTablePresenter',
             '$actionBarItems',
@@ -15,11 +16,13 @@
             '$busyIndicator',
             '$messageBus',
             '$validator',
+            'uiGridConstants',
             function(
                 $scope,
                 $timeout,
                 $activeDatabase,
                 $redisRepositoryFactory,
+                redisRepo,
                 $redisScannerFactory,
                 $dataTablePresenter,
                 $actionBarItems,
@@ -29,8 +32,10 @@
                 $redisSettings,
                 $busyIndicator,
                 $messageBus,
-                $validator) {
+                $validator,
+                uiGridConstants) {
                 var loadKeysOperation = 'loadKeys';
+                var loadDetailsOperation = 'loadDetails';
 
                 var searchViewModel = {
                     search: function() {
@@ -62,8 +67,13 @@
                     columnDefs: [{
                         name: 'Key',
                         field: 'Key',
-                        width: '*'
+                        width: '*',
+                        sort: {
+                            direction: uiGridConstants.ASC,
+                            priority: 0,
+                        }
                     }],
+                    rowHeight: 18,
                     data: [],
                     noUnselect: true,
                     enableRowSelection: true,
@@ -77,27 +87,35 @@
                     onRegisterApi: function(gridApi) {
                         $scope.keyApi = gridApi;
                         $scope.keyApi.selection.on.rowSelectionChanged($scope, function(row) {
-                            $scope.keyOptions.selectedKeys = [row.entity];
+                            if ($busyIndicator.getIsBusy(loadDetailsOperation) === false) {
+                                $busyIndicator.setIsBusy(loadDetailsOperation, true);
+                                redisRepo.getKey(row.entity.Key, function(result) {
+                                    $busyIndicator.setIsBusy(loadDetailsOperation, false);
 
-                            if (row.entity.Type === 'hash') {
-                                var data = JSON.parse(row.entity.Value);
-                                var hash = [];
-                                for (var i = 0; i < data.length; i++) {
-                                    hash.push({
-                                        Name: data[i][0],
-                                        Value: data[i][1]
-                                    });
-                                };
-                                $scope.hashOptions.data = hash;
-                            } else if (row.entity.Type === 'set') {
-                                var data = JSON.parse(row.entity.Value);
-                                var set = [];
-                                for (var i = 0; i < data.length; i++) {
-                                    set.push({
-                                        Value: data[i]
-                                    });
-                                };
-                                $scope.setOptions.data = set;
+                                    $scope.keyOptions.selectedKeys = [result];
+
+                                    if (result.Type === 'hash') {
+                                        var data = result.Value;
+                                        var hash = [];
+                                        for (var name in data) {
+                                            var value = data[name];
+                                            hash.push({
+                                                Name: name,
+                                                Value: value
+                                            });
+                                        }
+                                        $scope.hashOptions.data = hash;
+                                    } else if (result.Type === 'set') {
+                                        var data = result.Value;
+                                        var set = [];
+                                        for (var i = 0; i < data.length; i++) {
+                                            set.push({
+                                                Value: data[i]
+                                            });
+                                        };
+                                        $scope.setOptions.data = set;
+                                    }
+                                });
                             }
                         });
                         gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
@@ -114,6 +132,7 @@
                     }
                 };
 
+                $scope.hashMemberForEdit = null;
                 $scope.hashOptions = {
                     enableSorting: true,
                     columnDefs: [{
@@ -125,6 +144,7 @@
                         field: 'Value',
                         width: '*'
                     }],
+                    rowHeight: 18,
                     data: [],
                     enableRowSelection: true,
                     enableSelectAll: false,
@@ -138,6 +158,10 @@
                     onRegisterApi: function(gridApi) {
                         $scope.hashApi = gridApi;
                         $scope.hashApi.selection.on.rowSelectionChanged($scope, function(row) {
+                            $scope.hashMemberForEdit = {
+                                Name: row.entity.Name,
+                                Value: row.entity.Value
+                            };
                             $scope.hashOptions.selectedItems = [row.entity];
                         });
                         gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
@@ -154,6 +178,7 @@
                     }
                 };
 
+                $scope.setMemberForEdit = null;
                 $scope.setOptions = {
                     enableSorting: true,
                     columnDefs: [{
@@ -161,6 +186,7 @@
                         field: 'Value',
                         width: '*'
                     }],
+                    rowHeight: 18,
                     data: [],
                     enableRowSelection: true,
                     enableSelectAll: false,
@@ -173,6 +199,9 @@
                     onRegisterApi: function(gridApi) {
                         $scope.hashApi = gridApi;
                         $scope.hashApi.selection.on.rowSelectionChanged($scope, function(row) {
+                            $scope.setMemberForEdit = {
+                                Value: row.entity.Value
+                            };
                             $scope.setOptions.selectedItems = [row.entity];
                         });
                         gridApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
@@ -309,87 +338,130 @@
                 $scope.SearchViewModel = searchViewModel;
                 $scope.DatabaseViewModel = databaseViewModel;
 
-                var groupByKey = function(type, key, value) {
-                    var existing = $scope.keyOptions.data.filter(function(item) {
-                        return item.Key == key;
-                    });
-
-                    if (existing !== null && existing[0] !== undefined) {
-                        var values = JSON.parse(existing[0].Value);
-                        values.push(value);
-                        existing[0].Value = JSON.stringify(values);
-                    } else {
-                        $scope.keyOptions.data.push({
-                            Key: key,
-                            Type: type,
-                            Value: JSON.stringify([value])
-                        });
-                        return true;
-                    }
-
-                    return false;
-                };
-
                 // load redis data
                 var maxItemsToLoad = 100;
 
+                var loadKeyDetails = function() {
+                    var client = $redisScannerFactory({
+                        pattern: pattern,
+                        each_callback: function(type, key, subkey, p, value, cb) {
+                            var added = true;
+                            if (type === 'set') {
+                                added = groupByKey(type, key, value);
+                            } else if (type === 'hash') {
+                                added = groupByKey(type, key, [subkey, value]);
+                            } else {
+                                $scope.keyOptions.data.push({
+                                    Key: key,
+                                    Type: type,
+                                    Value: value
+                                });
+                            }
+                            loadedNumber = added === true ? loadedNumber + 1 : loadedNumber;
 
+                            $scope.$apply(function() {
+                                $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
+                            });
+
+                            if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
+                                showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
+                                cb(true);
+                            } else {
+                                cb(false);
+                            }
+                        },
+                        done_callback: function(err) {
+                            $busyIndicator.setIsBusy(loadKeysOperation, false);
+                            if (err) {
+                                $messageBus.publish('redis-communication-error', err);
+                                $scope.loadKeys(pattern);
+                            }
+                        }
+                    })
+                };
 
                 $scope.loadKeys = function(pattern) {
                     $notifyViewModel.close();
                     if ($busyIndicator.getIsBusy(loadKeysOperation) === false) {
+                        console.log('LOAD')
+                        $scope.setMemberForEdit = null;
+                        $scope.setOptions.selectedItems = [];
+                        $scope.setOptions.data = [];
+
+                        $scope.hashMemberForEdit = null;
+                        $scope.hashOptions.selectedItems = [];
+                        $scope.hashOptions.data = [];
+
                         $scope.keyOptions.data.length = 0;
-                        var loadedNumber = 0;
-                        $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
-                        var client = $redisScannerFactory({
-                            pattern: pattern,
-                            each_callback: function(type, key, subkey, p, value, cb) {
-                                var added = true;
-                                if (type === 'set') {
-                                    added = groupByKey(type, key, value);
-                                } else if (type === 'hash') {
-                                    added = groupByKey(type, key, [subkey, value]);
-                                } else {
+                        $scope.keyOptions.selectedKeys = [];
+                        $busyIndicator.Text = 'Loading... ';
+
+                        var repo = $redisRepositoryFactory('string');
+                        repo.safeRedisCmd(function(client) {
+                            client.keys(pattern ? pattern : '*', function(err, keys) {
+                                if (err) return console.log(err);
+
+                                for (var i = 0, len = keys.length; i < len; i++) {
                                     $scope.keyOptions.data.push({
-                                        Key: key,
-                                        Type: type,
-                                        Value: value
+                                        Key: keys[i]
                                     });
                                 }
-                                loadedNumber = added === true ? loadedNumber + 1 : loadedNumber;
 
-                                $scope.$apply(function() {
-                                    $busyIndicator.Text = 'Loading... ' + loadedNumber + ' items';
-                                });
-
-                                if ((searchViewModel.Pattern === '' || searchViewModel.Pattern === '*') && loadedNumber >= maxItemsToLoad) {
-                                    showInfo('First ' + maxItemsToLoad + ' loaded. Use search to find specific keys.');
-                                    cb(true);
-                                } else {
-                                    cb(false);
-                                }
-                            },
-                            done_callback: function(err) {
                                 $busyIndicator.setIsBusy(loadKeysOperation, false);
-                                if (err) {
-                                    $messageBus.publish('redis-communication-error', err);
-                                    $scope.loadKeys(pattern);
-                                }
-                            }
+                            });
                         });
+
                         $busyIndicator.setIsBusy(loadKeysOperation, true, function() {
                             client.end();
                         });
                     }
                 };
 
-                $scope.updateKey = function() {
+                $scope.updateString = function() {
                     if ($scope.keyOptions.selectedKeys.length === 0) return;
 
                     var type = $scope.keyOptions.selectedKeys[0].Type;
                     var repo = $redisRepositoryFactory(type);
                     try {
-                        repo.update($scope.keyOptions.selectedKeys[0], function() {});
+                        repo.update($scope.keyOptions.selectedKeys[0].Key, $scope.keyOptions.selectedKeys[0].Value, function() {})
+                    } catch (ex) {
+                        showError(ex.message);
+                    }
+                };
+
+                $scope.updateSet = function() {
+                    if ($scope.keyOptions.selectedKeys.length === 0) return;
+
+                    var selectedMember = $scope.setOptions.selectedItems.length > 0 ? $scope.setOptions.selectedItems[0] : null;
+                    if (selectedMember == null) return;
+
+                    var type = $scope.keyOptions.selectedKeys[0].Type;
+                    var repo = $redisRepositoryFactory(type);
+                    try {
+                        repo.update($scope.keyOptions.selectedKeys[0].Key, selectedMember.Value, $scope.setMemberForEdit.Value, function() {})
+                    } catch (ex) {
+                        showError(ex.message);
+                    }
+                };
+
+                $scope.updateKey = function() {
+                    if ($scope.keyOptions.selectedKeys.length === 0) return;
+
+                    var selectedMember = $scope.hashOptions.selectedItems.length > 0 ? $scope.hashOptions.selectedItems[0] : null;
+                    if (selectedMember == null) return;
+
+                    var type = $scope.keyOptions.selectedKeys[0].Type;
+                    var repo = $redisRepositoryFactory(type);
+                    try {
+                        if (type === 'hash') {
+                            if ($scope.hashMemberForEdit.Name === selectedMember.Name) {
+                                repo.hset($scope.keyOptions.selectedKeys[0].Key, selectedMember.Name, selectedMember.Value, function() {});
+                            } else {
+                                repo.replaceMember($scope.keyOptions.selectedKeys[0].Key, selectedMember.Name, $scope.hashMemberForEdit.Name, $scope.hashMemberForEdit.Value, function() {});
+                            }
+                        } else if (type === 'set') {
+                            repo.update($scope.keyOptions.selectedKeys[0].Key, selectedMember.Name, selectedMember, $scope.setMemberForEdit.Value, function() {})
+                        }
                     } catch (ex) {
                         showError(ex.message);
                     }
@@ -464,7 +536,6 @@
                         $actionBarItems.refresh();
                     })
                 }
-
             }
         ]);
 };

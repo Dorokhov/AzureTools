@@ -1,17 +1,25 @@
-﻿exports.create = function ($redisDataAccess) {
+﻿exports.create = function($redisDataAccess) {
     'use strict';
 
-    return new function () {
+    return new function() {
         var self = this;
-        self.create = function (key, value, cb) {
-            self.safeRedisCmd(function (client) {
+        self.create = function(key, value, cb) {
+            self.safeRedisCmd(function(client) {
                 client.set(key, value, cb);
             });
         };
 
-        self.update = function (keyData, cb) {
-            self.safeRedisCmd(function (client) {
-                client.set(keyData.Key, keyData.Value, cb);
+        self.update = function(key, value, cb) {
+            console.log(key)
+            console.log(value)
+            self.safeRedisCmd(function(client) {
+                client.set(key, value, cb);
+            });
+        };
+
+        self.get = function(key, cb) {
+            self.safeRedisCmd(function(client) {
+                client.get(key, cb);
             });
         };
     };

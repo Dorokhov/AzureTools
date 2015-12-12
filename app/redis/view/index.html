@@ -57,10 +57,14 @@
 								<bg-pane init-percentage="65" min-size="119">
 					            	<div ui-grid="hashOptions" ui-grid-move-columns ui-grid-resize-columns ui-grid-auto-resize ui-grid-selection ng-style="hashOptions.getStyle()"></div>
 								</bg-pane>
-								<bg-pane min-size="119">
+								<bg-pane min-size="219">
 									<div class="editValue">
-										<p>Edit Value</p>
-										<textarea type="text" class="form-control" autofocus  ng-model="keyOptions.selectedKeys[0].Value"></textarea>
+										<p>Member</p>
+										<textarea type="text" class="form-control" autofocus  ng-model="hashMemberForEdit.Name"></textarea>
+
+
+										<p>Value</p>
+										<textarea type="text" class="form-control" autofocus  ng-model="hashMemberForEdit.Value"></textarea>
 										<span class="tileFunction">
 											<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
 										</span>
@@ -77,9 +81,9 @@
 								<bg-pane min-size="119">
 									<div class="editValue">
 										<p>Edit Value</p>
-										<textarea type="text" class="form-control" autofocus  ng-model="keyOptions.selectedKeys[0].Value"></textarea>
+										<textarea type="text" class="set-form-control" autofocus  ng-model="setMemberForEdit.Value"></textarea>
 										<span class="tileFunction">
-											<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
+											<a class="fa-links" title="Save value" ng-click="updateSet()">Save</a>
 										</span>
 									</div>
 								</bg-pane>
@@ -91,7 +95,7 @@
 								<p>Edit Value</p>
 								<textarea type="text" class="form-control" autofocus ng-model="keyOptions.selectedKeys[0].Value"></textarea>
 								<span class="tileFunction">
-									<a class="fa-links" title="Save value" ng-click="updateKey()">Save</a>
+									<a class="fa-links" title="Save value" ng-click="updateString()">Save</a>
 								</span>
 							</div>
 						</div>

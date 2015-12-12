@@ -62,10 +62,11 @@ table.dataTable td {
 /*header table*/
 .ui-grid-header {
   border-bottom: 1px solid #b4b4b4;
+  height: 30px;
 }
 .ui-grid-header .ui-grid-cell-contents {
   font-size: 13px;
-  padding: 6px 4px 6px 8px;
+  //padding: 6px 4px 6px 8px;
 }
 .ui-grid-header .ui-grid-cell-contents .ui-grid-header-cell-label {
   font-weight: bold;
@@ -101,24 +102,29 @@ table.dataTable td {
 
 /*Body table*/
 .ui-grid-canvas .ui-grid-cell {
-  border-right: 1px #DDDDDD solid;
-  border-bottom: 1px #DDDDDD solid;
+  //border-right: 1px #DDDDDD solid;
+ // border-bottom: 1px #DDDDDD solid;
 }
 .ui-grid-canvas .ui-grid-row:last-child .ui-grid-cell {
   border-bottom: 1px #DDDDDD solid !important;
 }
 .ui-grid-canvas .ui-grid-cell-contents {
-  font-size: 13px;
-  line-height: 16px;
-  padding: 6px 8px 7px;
+  font-size: 14px;
+  //line-height: 16px;
+  //padding: 6px 8px 7px;
   -webkit-user-select: text;
   word-break: break-all;
   white-space: normal;
   overflow: visible;
 }
+.ui-grid-cell-contents {
+  padding: 0px 0px 0px 10px !important;
+  color: black;
+}
+
 .ui-grid-canvas .ui-grid-row .ui-grid-cell:last-child {
   border-right: none;
 }
 .ui-grid-canvas .ui-grid-row, .ui-grid-canvas .ui-grid-cell {
-  height: auto !important;
+ // height: auto !important;
 }

@@ -58,6 +58,13 @@
                 return require('../model/redisRepositoryFactory.js').create($stringRepo, $setRepo, $hashSetRepo);
             }
         ])
+         .factory('redisRepo', [
+            '$baseRepo', '$redisDataAccess', '$redisRepositoryFactory', function ($baseRepo, $redisDataAccess, $redisRepositoryFactory) {
+                var redisRepo = require('../model/redisRepository.js').create($redisDataAccess, $redisRepositoryFactory);
+                angular.extend(redisRepo, $baseRepo);
+                return redisRepo;
+            }
+        ])
         .factory('$redisScannerFactory', [
             '$redisDataAccess', '$redisScanner',
             function ($redisDataAccess, $redisScanner) {

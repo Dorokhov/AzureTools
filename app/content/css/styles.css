@@ -234,6 +234,16 @@
   margin: 0 0 8px;
 }
 .editValue .form-control {
+  //height: calc(100% - 66px);
+  height: calc(50% - 48px);
+  border: 1px solid #b4b4b4;
+  padding: 8px 12px;
+  font-size: 13px;
+  width: 100%;
+  min-height: 36px;
+  resize: none;
+}
+.editValue .set-form-control {
   height: calc(100% - 66px);
   border: 1px solid #b4b4b4;
   padding: 8px 12px;
